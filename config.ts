@@ -5,13 +5,13 @@
 
 export const config = {
   // --- Text content ---
-  prefix: "I am a",
+  prefix: "I'm your",
   words: [
-    "partner",
-    "developer",
     "Google AppSheet expert",
-    "technical support",
+    "Google Workspace specialist",
+    "operations tech support",
     "technical partner",
+    "on-demand CTO",
   ],
 
   // --- Colors ---
@@ -31,8 +31,11 @@ export const config = {
   // fontWeight below to match.
   fontFamily: "'Montserrat', 'Helvetica Neue', Arial, sans-serif",
   fontWeight: 700,
-  fontSizeLandscape: 100, // px, for the 1920x1080 composition
-  fontSizeSquare: 80, // px, for the 1080x1080 composition
+  // These are caps, not fixed sizes — src/fit.ts shrinks the actual
+  // rendered size down automatically if your longest word wouldn't fit
+  // the canvas width, so edits to `words` above never clip off-screen.
+  fontSizeLandscape: 70, // px cap, for the 1920x100 banner composition
+  fontSizeSquare: 160, // px cap, for the 1080x1080 composition (prefix sits above the word, so it can run bigger)
 
   // --- Timing ---
   fps: 30,

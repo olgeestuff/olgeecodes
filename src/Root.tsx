@@ -16,8 +16,8 @@ export const RemotionRoot: React.FC = () => {
         durationInFrames={durationInFrames}
         fps={fps}
         width={1920}
-        height={1080}
-        defaultProps={{ fontSize: config.fontSizeLandscape }}
+        height={100}
+        defaultProps={{ fontSize: config.fontSizeLandscape, layout: "inline" }}
       />
       <Composition
         id="RotatingText-Square"
@@ -26,7 +26,7 @@ export const RemotionRoot: React.FC = () => {
         fps={fps}
         width={1080}
         height={1080}
-        defaultProps={{ fontSize: config.fontSizeSquare }}
+        defaultProps={{ fontSize: config.fontSizeSquare, layout: "stacked" }}
       />
     </>
   );

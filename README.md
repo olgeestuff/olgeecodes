@@ -1,10 +1,14 @@
 # Rotating Text — Remotion project
 
-A looping "I am a [rotating word]" typewriter animation for automationwithsholz.com, rendered to MP4 and GIF at both 1920x1080 and 1080x1080.
+A looping "I'm your [rotating word]" typewriter animation for automationwithsholz.com, exported as GIF at two sizes:
+- **1920x100** — a thin banner strip (for embedding on the site)
+- **1080x1080** — square, for social (prefix on its own line above the rotating word, since the longer phrases don't fit one line at a readable size on a 1:1 canvas)
 
 ## Edit the animation
 
 Everything you'd want to tweak lives in **`config.ts`** at the project root — word list, colors, font, and all timing (typing speed, hold time, deleting speed, cursor blink). No need to touch anything in `src/`.
+
+Font sizes in `config.ts` are caps, not fixed values — `src/fit.ts` automatically shrinks the rendered size if your longest word wouldn't fit the canvas width, so editing the word list never clips text off-screen.
 
 ## Setup
 
@@ -23,22 +27,15 @@ Opens the Remotion Studio, where you can scrub both compositions (`RotatingText-
 ## Render
 
 ```bash
-# MP4s (both sizes)
-npm run render:mp4
-
-# GIFs from the rendered MP4s (optimized, auto-capped under 2MB)
-npm run render:gif
-
-# Everything in one go
-npm run render:all
+npm run render
 ```
 
-Output lands in `out/`:
-- `rotating-text-1920x1080.mp4` / `.gif`
-- `rotating-text-1080x1080.mp4` / `.gif`
+Renders both compositions and converts them straight to GIF — MP4 is only an intermediate step and is discarded. Output lands in `out/`:
+- `rotating-text-1920x100.gif`
+- `rotating-text-1080x1080.gif`
 
-The GIF step (`scripts/render-gifs.sh`) uses ffmpeg's two-pass palette workflow and automatically backs off fps/resolution/colors if a GIF comes out over 2MB.
+`scripts/render-gifs.sh` uses ffmpeg's two-pass palette workflow and automatically backs off fps/resolution/colors until each GIF is safely under 2MB.
 
 ## Font
 
-The heading font couldn't be pulled from automationwithsholz.com automatically (network-restricted sandbox), so `config.ts` ships with a safe system-font fallback (`Helvetica Neue, Arial, sans-serif`). To match the site exactly, update `fontFamily`/`fontWeight` in `config.ts` — see the comment above those fields for how to load a Google Font if needed.
+Montserrat Bold, matching automationwithsholz.com — self-hosted from `public/fonts/montserrat-700.woff2` so rendering never depends on fetching from Google's font CDN.

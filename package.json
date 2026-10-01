@@ -5,11 +5,7 @@
   "description": "Remotion rotating-text animation for automationwithsholz.com",
   "scripts": {
     "dev": "remotion studio src/index.ts",
-    "render:landscape:mp4": "remotion render src/index.ts RotatingText-Landscape out/rotating-text-1920x1080.mp4",
-    "render:square:mp4": "remotion render src/index.ts RotatingText-Square out/rotating-text-1080x1080.mp4",
-    "render:mp4": "npm run render:landscape:mp4 && npm run render:square:mp4",
-    "render:gif": "bash scripts/render-gifs.sh",
-    "render:all": "npm run render:mp4 && npm run render:gif"
+    "render": "bash scripts/render-gifs.sh"
   },
   "dependencies": {
     "@fontsource/montserrat": "^5.3.0",
