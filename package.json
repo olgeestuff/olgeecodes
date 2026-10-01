@@ -1,0 +1,25 @@
+{
+  "name": "rotating-text",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Remotion rotating-text animation for automationwithsholz.com",
+  "scripts": {
+    "dev": "remotion studio src/index.ts",
+    "render:landscape:mp4": "remotion render src/index.ts RotatingText-Landscape out/rotating-text-1920x1080.mp4",
+    "render:square:mp4": "remotion render src/index.ts RotatingText-Square out/rotating-text-1080x1080.mp4",
+    "render:mp4": "npm run render:landscape:mp4 && npm run render:square:mp4",
+    "render:gif": "bash scripts/render-gifs.sh",
+    "render:all": "npm run render:mp4 && npm run render:gif"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "4.0.532",
+    "@remotion/cli": "4.0.532"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.1",
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0"
+  }
+}
