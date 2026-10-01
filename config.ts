@@ -22,22 +22,14 @@ export const config = {
   },
 
   // --- Typography ---
-  // TODO: automationwithsholz.com could not be reached from this sandbox
-  // (blocked by network policy). This is a safe system-font fallback that
-  // needs no network access to render reliably.
-  //
-  // To match your site exactly, replace fontFamily below with your heading
-  // font (and fontWeight with its weight), e.g.:
-  //   fontFamily: "'Poppins', sans-serif", fontWeight: 700
-  // If it's a Google Font, also install it so it loads at render time:
-  //   npm install @remotion/google-fonts
-  // then in src/RotatingText.tsx:
-  //   import {loadFont} from "@remotion/google-fonts/Poppins";
-  //   loadFont();
-  // (Loading a Google Font requires fetching it from Google's font CDN at
-  // render time, which only works where that network access is allowed —
-  // it will work fine on your own machine.)
-  fontFamily: "'Helvetica Neue', Arial, sans-serif",
+  // Montserrat Bold, self-hosted from public/fonts/montserrat-700.woff2
+  // (via @fontsource/montserrat) and loaded in src/RotatingText.tsx.
+  // Fallbacks after it only kick in if the font file is ever missing.
+  // To use a different weight, copy the matching file from
+  // node_modules/@fontsource/montserrat/files/ into public/fonts/,
+  // update the @font-face src in src/RotatingText.tsx, and set
+  // fontWeight below to match.
+  fontFamily: "'Montserrat', 'Helvetica Neue', Arial, sans-serif",
   fontWeight: 700,
   fontSizeLandscape: 100, // px, for the 1920x1080 composition
   fontSizeSquare: 80, // px, for the 1080x1080 composition

@@ -1,7 +1,15 @@
 import React from "react";
-import { AbsoluteFill, useCurrentFrame, useVideoConfig } from "remotion";
+import { AbsoluteFill, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
+import { loadFont } from "@remotion/fonts";
 import { config } from "../config";
 import { getWordState } from "./timing";
+
+void loadFont({
+  family: "Montserrat",
+  url: staticFile("fonts/montserrat-700.woff2"),
+  weight: "700",
+  style: "normal",
+});
 
 export interface RotatingTextProps {
   fontSize?: number;
