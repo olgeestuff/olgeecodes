@@ -40,9 +40,9 @@ export const RotatingText: React.FC<RotatingTextProps> = ({
   const cursorVisible = Math.floor(frame / cursorBlinkFrames) % 2 === 0;
 
   const targetWidthPx = width * MARGIN_FRACTION;
-  // Longest string any word in the loop can produce, +2 chars of slack for
-  // the cursor and inter-letter spacing — sized once from the full list so
-  // the font size stays constant across the loop instead of jumping per word.
+  // Longest string any word in the loop can produce — used by the "stacked"
+  // (square) layout so its font size stays constant across the whole loop
+  // instead of jumping per word.
   const longestWord = config.words.reduce((a, b) => (b.length > a.length ? b : a), "");
 
   const cursor = (
@@ -98,7 +98,12 @@ export const RotatingText: React.FC<RotatingTextProps> = ({
     );
   }
 
-  const fittedFontSize = fitFontSize(`${config.prefix} ${longestWord}__`, fontSize, targetWidthPx);
+  // Fit to the CURRENT word rather than the longest in the list, so on a
+  // narrow banner width most words render large and only the one longest
+  // phrase shrinks to fit — sizing is still constant for a given word's
+  // whole type/hold/delete cycle (it only changes between words, during the
+  // blank pause when nothing is drawn), so there's no mid-word jitter.
+  const fittedFontSize = fitFontSize(`${config.prefix} ${word}__`, fontSize, targetWidthPx);
 
   return (
     <AbsoluteFill

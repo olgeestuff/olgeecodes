@@ -65,8 +65,8 @@ render_and_convert () {
   convert_one "$mp4_tmp" "$OUT_DIR/$gif_name" "${attempts[@]}"
 }
 
-render_and_convert "RotatingText-Landscape" "rotating-text-1920x100.gif" \
-  "20 1920 160" "15 1920 128" "15 1280 96" "12 960 64"
+render_and_convert "RotatingText-Landscape" "rotating-text-960x100.gif" \
+  "20 960 192" "20 960 128" "15 960 128" "12 720 96"
 
 render_and_convert "RotatingText-Square" "rotating-text-1080x1080.gif" \
   "15 720 128" "12 540 96" "10 360 64" "8 270 64"

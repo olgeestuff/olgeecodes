@@ -1,7 +1,7 @@
 # Rotating Text — Remotion project
 
 A looping "I'm your [rotating word]" typewriter animation for automationwithsholz.com, exported as GIF at two sizes:
-- **1920x100** — a thin banner strip (for embedding on the site)
+- **960x100** — a compact banner strip (for embedding on the site). Font size fits each word to its own length rather than a single global size, so shorter words render bigger and only the longest phrase shrinks to fit — keeps it looking full rather than lost in whitespace, and scales more sanely between mobile and desktop widths than a very wide/flat banner would.
 - **1080x1080** — square, for social (prefix on its own line above the rotating word, since the longer phrases don't fit one line at a readable size on a 1:1 canvas)
 
 ## Edit the animation
@@ -31,7 +31,7 @@ npm run render
 ```
 
 Renders both compositions and converts them straight to GIF — MP4 is only an intermediate step and is discarded. Output lands in `out/`:
-- `rotating-text-1920x100.gif`
+- `rotating-text-960x100.gif`
 - `rotating-text-1080x1080.gif`
 
 `scripts/render-gifs.sh` uses ffmpeg's two-pass palette workflow and automatically backs off fps/resolution/colors until each GIF is safely under 2MB.

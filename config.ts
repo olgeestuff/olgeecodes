@@ -32,9 +32,11 @@ export const config = {
   fontFamily: "'Montserrat', 'Helvetica Neue', Arial, sans-serif",
   fontWeight: 700,
   // These are caps, not fixed sizes — src/fit.ts shrinks the actual
-  // rendered size down automatically if your longest word wouldn't fit
-  // the canvas width, so edits to `words` above never clip off-screen.
-  fontSizeLandscape: 70, // px cap, for the 1920x100 banner composition
+  // rendered size down automatically if a word wouldn't fit the canvas
+  // width, so edits to `words` above never clip off-screen. The banner
+  // fits each word to its own length (not just the longest), so shorter
+  // words render close to this cap and only the longest phrase shrinks.
+  fontSizeLandscape: 90, // px cap, for the 960x100 banner composition
   fontSizeSquare: 160, // px cap, for the 1080x1080 composition (prefix sits above the word, so it can run bigger)
 
   // --- Timing ---

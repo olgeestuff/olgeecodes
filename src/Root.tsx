@@ -15,7 +15,7 @@ export const RemotionRoot: React.FC = () => {
         component={RotatingText}
         durationInFrames={durationInFrames}
         fps={fps}
-        width={1920}
+        width={960}
         height={100}
         defaultProps={{ fontSize: config.fontSizeLandscape, layout: "inline" }}
       />
