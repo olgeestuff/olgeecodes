@@ -92,7 +92,9 @@ for e in E:
     elif k == "key":
         if t < 5 or int(round(t * 30)) % 2 == 0: fx.place(wood(float(rng.uniform(190, 260)), 0.06), t, 0.13 * v, p, 0.15)
     elif k == "tap_freeze":
-        fx.place(wood(240, 0.08), t - 0.01, 0.46, p, 0.2); fx.place(wood(190, 0.07), t + 0.06, 0.3, p, 0.2); fx.place(sub(44, 1.3), t, 0.5, 0, 0.35)
+        # a crisp click and a short thump, then nothing: the freeze is silent
+        fx.place(wood(240, 0.08), t - 0.01, 0.46, p, 0.12); fx.place(wood(190, 0.07), t + 0.06, 0.3, p, 0.12)
+        fx.place(sub(44, 0.32) * np.linspace(1, 0, int(SR * 0.32)) ** 2, t, 0.5, 0, 0.1)
     elif k == "lift": fx.place(air(0.44, 500, 2600, 1.3, 0.5), t, 0.24, -0.1, 0.45, pan_to=0.05)
     elif k == "open": fx.place(air(0.75, 180, 900, 1.1, 0.3), t, 0.24, 0, 0.5)
     elif k == "land":
@@ -123,16 +125,16 @@ def pad(freqs, dur, att=0.35, rel=0.5, cut=1500):
 def bass(f, dur):
     n = int(SR * (dur + 0.3)); t = np.arange(n) / SR
     return np.sin(2 * np.pi * f * t) * np.minimum(1, t / 0.08) * np.exp(-t * 0.9) * np.where(t > dur, np.exp(-(t - dur) * 12), 1)
-CH = [  # (start, end, pad notes ≥ G3 to keep the low-mids clear, bass root)
-    (SNAP, HOLD0 + 0.6, [196.0, 246.9, 293.7, 329.6, 493.9], 65.4),     # C maj9
-    (HOLD0 + 0.6, TAP2, [196.0, 261.6, 329.6, 392.0], 55.0),             # A min7
-    (TAP2, BLUE, [220.0, 261.6, 329.6, 349.2, 440.0], 43.7),             # F maj7
-    (BLUE, QLAND, [196.0, 246.9, 293.7, 392.0, 440.0], 49.0),            # G6/9
-    (QLAND, DUR + 0.5, [196.0, 261.6, 329.6, 392.0, 493.9, 587.3], 65.4),  # C maj9, held to the end
+CH = [  # (start, end, pad notes ≥ G3 to keep the low-mids clear, bass root) — silent through the hold, as the picture is
+    (SNAP, 5.85, [196.0, 246.9, 293.7, 329.6, 493.9], 65.4),            # C maj9, gone before the hold
+    (HOLD1, TAP2, [196.0, 261.6, 329.6, 392.0], 55.0),                  # A min7, with the push in
+    (TAP2, BLUE, [220.0, 261.6, 329.6, 349.2, 440.0], 43.7),            # F maj7
+    (BLUE, QLAND, [196.0, 246.9, 293.7, 392.0, 440.0], 49.0),           # G6/9
+    (QLAND, 13.75, [196.0, 261.6, 329.6, 392.0, 493.9, 587.3], 65.4),   # C maj9, dying away before the last second
 ]
 mus = Bus(1.6)
 for i, (a, b, notes, root) in enumerate(CH):
-    mus.place(pad(notes, b - a + 0.1, att=0.5 if i == 0 else 0.18, cut=1700 if i < 4 else 2200), a, 0.5, 0, 0.5)
+    mus.place(pad(notes, b - a + 0.1, att=0.5 if i < 2 else 0.18, rel=0.3 if i == 0 else 0.6, cut=1700 if i < 4 else 2200), a, 0.5, 0, 0.35 if i == 0 else 0.5)
     mus.place(bass(root, b - a), a, 0.22, 0, 0.1)
 mm = mus.render(wet=0.7)
 fade = np.ones(N); e0 = int((DUR - 0.5) * SR); fade[e0:] = np.linspace(1, 0, N - e0) ** 1.5

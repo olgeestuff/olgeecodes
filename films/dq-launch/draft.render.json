@@ -1,0 +1,27 @@
+{
+ "comp": "/home/user/olgeecodes/films/dq-launch/comp.html",
+ "fps": 30,
+ "scale": 1,
+ "size": [
+  1920,
+  1080
+ ],
+ "shutter": 180.0,
+ "samples": "adaptive",
+ "gap_px": 24.0,
+ "samples_per_moving_frame": {
+  "4": 335,
+  "5": 4,
+  "6": 2,
+  "8": 1,
+  "9": 1,
+  "12": 7
+ },
+ "workers": 3,
+ "frames": 450,
+ "still_frames": 100,
+ "cut_frames": 30,
+ "captures": 1673,
+ "seconds": 133.4,
+ "final": false
+}
