@@ -1,0 +1,107 @@
+{
+  "typography": [
+    {
+      "role": "display",
+      "fontFamily": "Big Shoulders Display",
+      "fontSize": "76px",
+      "fontWeight": "800",
+      "lineHeight": "69.92px",
+      "letterSpacing": "0.38px",
+      "color": "#14183A",
+      "sampleText": "One link. Everyone sees the line."
+    },
+    {
+      "role": "body",
+      "fontFamily": "system-ui",
+      "fontSize": "19px",
+      "fontWeight": "400",
+      "lineHeight": "27.55px",
+      "letterSpacing": "normal",
+      "color": "#555B78",
+      "sampleText": "Make a queue and share its link. People add their own names "
+    },
+    {
+      "role": "heading",
+      "fontFamily": "system-ui",
+      "fontSize": "15px",
+      "fontWeight": "700",
+      "lineHeight": "19.5px",
+      "letterSpacing": "normal",
+      "color": "#555B78",
+      "sampleText": "How it works"
+    },
+    {
+      "role": "label",
+      "fontFamily": "system-ui",
+      "fontSize": "15px",
+      "fontWeight": "650",
+      "lineHeight": "21.75px",
+      "letterSpacing": "normal",
+      "color": "#14183A",
+      "sampleText": "Name your queue"
+    },
+    {
+      "role": "link",
+      "fontFamily": "system-ui",
+      "fontSize": "14.5px",
+      "fontWeight": "650",
+      "lineHeight": "21.025px",
+      "letterSpacing": "normal",
+      "color": "#14183A",
+      "sampleText": "$20"
+    }
+  ],
+  "spacing": {
+    "observed": [
+      2,
+      6,
+      8,
+      10,
+      12,
+      14,
+      16,
+      18
+    ],
+    "baseUnit": 8
+  },
+  "radius": [
+    "10px"
+  ],
+  "shadows": [],
+  "buttons": [
+    {
+      "label": "Create queue",
+      "background": "#2536D6",
+      "backgroundImage": "",
+      "backdropFilter": "",
+      "color": "#FFFFFF",
+      "padding": "8px 18px",
+      "borderRadius": "10px",
+      "border": "1px solid rgb(37, 54, 214)",
+      "boxShadow": "none",
+      "fontSize": "16px",
+      "fontWeight": "650",
+      "height": "48px"
+    }
+  ],
+  "cards": [],
+  "nav": {
+    "label": "navigation",
+    "background": "transparent",
+    "backgroundImage": "",
+    "backdropFilter": "",
+    "color": "#14183A",
+    "padding": "0px",
+    "borderRadius": "0px",
+    "border": "0px none rgb(20, 24, 58)",
+    "boxShadow": "none",
+    "fontSize": "17px",
+    "fontWeight": "400",
+    "height": "48px"
+  },
+  "chips": [],
+  "statCells": [],
+  "tabs": [],
+  "backgrounds": [],
+  "glass": []
+}

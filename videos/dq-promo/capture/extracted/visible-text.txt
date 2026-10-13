@@ -1,0 +1,60 @@
+[h1] One link. Everyone sees the line.
+[p] Make a queue and share its link. People add their own names and watch the order update live. Only you can change it.
+[label] Name your queue
+[button] Create queue
+[h2] Queues you manage on this device
+[h2] How it works
+[strong] Create a queue
+[span] You get two links: a queue link and an owner link.
+[strong] Share the queue link
+[span] Anyone who opens it can add their name and see the order. No sign-up, no app to install.
+[strong] Keep the owner link
+[span] It is the only way to reorder, remove names, or close the queue. Give it to co-hosts you trust.
+[span] Free to use.
+[p] Support dq with a donation
+[p] Got a complaint or an idea?
+[a] Send feedback
+[p] Built by
+[a] Automation With Sholz
+[button] Share queue link
+[span] Connecting
+[h2] Your queue is ready
+[p] It has two links. Share the first. Keep the second to yourself.
+[strong] Queue link
+[span] Anyone who opens it can add their name and see the order.
+[button] Copy queue link
+[strong] Owner link
+[span] Whoever opens it can reorder and remove names. This device already has it saved. Copy it to manage the queue from another device or to add a co-host.
+[button] Copy owner link
+[button] Change name
+[button] Leave queue
+[label] Your name
+[button] Join queue
+[summary] Queue settings
+[button] Close to new names
+[button] Rename queue
+[button] Copy owner link
+[button] Reset owner link
+[button] Clear queue
+[p] Anyone with the owner link can reorder and remove names. Share it only with co-hosts. If it gets out, reset it and the old one stops working.
+[button] Delete queue
+[p] Removes the queue, every name in it and both links, for everyone. This cannot be undone.
+[button] Done, next person
+[p] Drag the grip to reorder, or tap a name for more options.
+[button] Copy list
+[span] Made with dq, free to use.
+[a] Create your own queue
+[p] Support dq with a donation
+[p] Got a complaint or an idea?
+[a] Send feedback
+[p] Built by
+[a] Automation With Sholz
+[h1] This queue is gone
+[p] The link may be mistyped, the host may have deleted it, or it expired after 30 days without changes.
+[a] Create a new queue
+[span] To top
+[span] Down
+[span] To end
+[span] Rename
+[span] Remove
+[button] Cancel
