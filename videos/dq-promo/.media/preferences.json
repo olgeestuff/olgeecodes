@@ -28,6 +28,13 @@
         "dq-promo"
       ],
       "updated_at": "2026-10-13T09:03:05.685Z"
+    },
+    "style_preset.product-launch-video": {
+      "value": "blue-professional",
+      "confirmed_in": [
+        "dq-promo"
+      ],
+      "updated_at": "2026-10-13T09:36:40.734Z"
     }
   },
   "sightings": {}

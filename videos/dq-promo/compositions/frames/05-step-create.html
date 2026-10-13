@@ -1,0 +1,129 @@
+<template>
+  <style>
+
+@font-face { font-family: "Big Shoulders Display"; font-weight: 800; src: url("assets/fonts/big-shoulders-display-latin-800-normal.woff2") format("woff2"); }
+@font-face { font-family: "Big Shoulders Display"; font-weight: 900; src: url("assets/fonts/big-shoulders-display-latin-900-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 500; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 600; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 700; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 800; src: url("assets/fonts/inter-latin-800-normal.woff2") format("woff2"); }
+@font-face { font-family: "Noto Color Emoji"; src: url("assets/fonts/noto-emoji-subset.ttf") format("truetype"); }
+
+
+#root { position: absolute; inset: 0; overflow: hidden; container-type: size; font-family: "Inter", sans-serif; color: #14183A; }
+.f05-bg { position: absolute; inset: 0; z-index: 0; }
+.f05-stage { position: absolute; inset: 0; z-index: 1; }
+.f05-abs { position: absolute; }
+.f05-disp { font-family: "Big Shoulders Display", sans-serif; font-weight: 900; line-height: .9; }
+.f05-emoji { font-family: "Noto Color Emoji"; font-weight: 400; }
+.f05-char { position: absolute; }
+.f05-char svg { display: block; width: 100%; height: auto; overflow: visible; }
+.f05-bubble { position: absolute; background: #FFFFFF; color: #14183A; border: .55cqw solid #14183A; border-radius: 3.4cqw; padding: 2.2cqw 3.2cqw; font-weight: 700; font-size: 4.3cqw; line-height: 1.15; }
+.f05-bubble.f05-blue { background: #2536D6; color: #FFFFFF; }
+.f05-tail { position: absolute; width: 3.4cqw; height: 3.4cqw; bottom: -1.95cqw; left: 6cqw; background: inherit; border-right: .55cqw solid #14183A; border-bottom: .55cqw solid #14183A; transform: rotate(45deg); }
+.f05-tail.f05-r { left: auto; right: 6cqw; }
+.f05-panel { position: absolute; background: #FFFFFF; border: .6cqw solid #14183A; border-radius: 2.4cqw; overflow: hidden; }
+.f05-burst { position: absolute; font-family: "Big Shoulders Display", sans-serif; font-weight: 900; color: #FFFFFF; background: #2536D6; padding: 1.4cqw 3cqw; border-radius: 1.6cqw; border: .55cqw solid #14183A; white-space: nowrap; }
+.f05-eyebrow { position: absolute; left: 8cqw; top: 10cqw; font-weight: 800; font-size: 3.6cqw; letter-spacing: .12em; color: #2536D6; background: rgba(37,54,214,.08); border-radius: 100px; padding: 1.4cqw 3.6cqw; }
+.f05-h1 { position: absolute; left: 8cqw; top: 20cqw; font-family: "Big Shoulders Display", sans-serif; font-weight: 900; font-size: 12.5cqw; line-height: .9; color: #14183A; white-space: nowrap; }
+.f05-word { display: inline-block; }
+.f05-wordmark { font-family: "Big Shoulders Display", sans-serif; font-weight: 900; line-height: .78; letter-spacing: -.01em; }
+
+
+.f05-phone { position: absolute; background: #14183A; border-radius: 9cqw; padding: 2.2cqw; box-shadow: 0 4cqw 9cqw rgba(20,24,58,.16); }
+.f05-screen { position: relative; width: 100%; height: 100%; border-radius: 7cqw; overflow: hidden; background: #F4F5FB; }
+.f05-app { position: absolute; left: 0; top: 0; width: 390px; height: 1200px; transform-origin: 0 0; background: #F4F5FB; color: #14183A; font: 17px/1.45 "Inter", sans-serif; -webkit-font-smoothing: antialiased; }
+.f05-page { padding: 14px 16px 48px; }
+.f05-app .top { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; }
+.f05-app .brand { font: 800 24px/1 "Big Shoulders Display", sans-serif; letter-spacing: .01em; padding: 10px 0; }
+.f05-app .hero { font: 800 54.6px/.92 "Big Shoulders Display", sans-serif; letter-spacing: .005em; margin: 28px 0 18px; }
+.f05-app .title { font: 800 41px/.98 "Big Shoulders Display", sans-serif; letter-spacing: .005em; margin: 18px 0 10px; }
+.f05-app .lede { font-size: 19px; color: #555B78; }
+.f05-app .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; font-size: 15px; color: #555B78; }
+.f05-app .live { display: inline-flex; align-items: center; gap: 7px; color: #17784A; font-weight: 600; }
+.f05-app .live::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: #17784A; }
+.f05-app .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 8px 18px; border: 1.5px solid #14183A; border-radius: 10px; background: transparent; color: #14183A; font-weight: 650; font-size: 16px; line-height: 1.15; white-space: nowrap; }
+.f05-app .btn-primary { background: #2536D6; border-color: #2536D6; color: #FFFFFF; }
+.f05-app .btn-ink { background: #14183A; border-color: #14183A; color: #F4F5FB; width: 100%; margin-top: 6px; }
+.f05-app .btn-quiet { border-color: #D6D9EA; }
+.f05-app .lbl { display: block; font-weight: 650; font-size: 15px; margin-bottom: 6px; }
+.f05-app .join { margin-top: 22px; }
+.f05-app .join-row { display: flex; gap: 8px; }
+.f05-app .input { flex: 1; min-width: 0; min-height: 48px; padding: 0 14px; border: 1.5px solid #14183A; border-radius: 10px; background: #FFFFFF; font-size: 17px; display: flex; align-items: center; white-space: nowrap; overflow: hidden; }
+.f05-app .input.focus { box-shadow: 0 0 0 3px #14183A; }
+.f05-app .ph { color: #555B78; opacity: .75; }
+.f05-app .caret { display: inline-block; width: 2px; height: 22px; background: #14183A; margin-left: 1px; }
+.f05-app .ready { margin-top: 22px; padding: 18px; background: #FFFFFF; border: 1.5px solid #14183A; border-radius: 14px; }
+.f05-app .ready h2 { font: 800 28px/1 "Big Shoulders Display", sans-serif; letter-spacing: .01em; margin-bottom: 6px; }
+.f05-app .link-row { padding: 14px 0 4px; border-top: 1px solid #D6D9EA; margin-top: 14px; }
+.f05-app .link-row strong { display: block; }
+.f05-app .link-row span { display: block; color: #555B78; font-size: 15px; margin-bottom: 10px; }
+.f05-app .link-row span.btn { display: inline-flex; color: #FFFFFF; font-size: 16px; margin-bottom: 0; }
+.f05-app .h2 { font: 700 15px/1.3 "Inter", sans-serif; color: #555B78; margin: 40px 0 6px; }
+.f05-app .summary { font-weight: 650; font-size: 15px; padding: 12px 0; }
+.f05-app .hint { color: #555B78; font-size: 15px; margin-top: 10px; }
+.f05-app .list { margin-top: 14px; }
+.f05-app .row { position: relative; display: flex; align-items: stretch; border-bottom: 1px solid #D6D9EA; background: #F4F5FB; }
+.f05-app .row-main { flex: 1; display: flex; align-items: center; gap: 12px; min-height: 58px; padding: 8px 10px 8px 4px; }
+.f05-app .num { flex: none; width: 46px; text-align: center; font: 800 34px/1 "Big Shoulders Display", sans-serif; }
+.f05-app .name { flex: 1; font-weight: 550; }
+.f05-app .grip { flex: none; width: 40px; display: flex; align-items: center; justify-content: center; color: #555B78; }
+.f05-app .grip svg { width: 16px; height: 24px; }
+.f05-app .row.first { background: #2536D6; color: #FFFFFF; border-bottom-color: transparent; border-radius: 14px; margin-bottom: 4px; }
+.f05-app .row.first .row-main { min-height: 78px; }
+.f05-app .row.first .num { font-size: 54px; width: 56px; }
+.f05-app .row.first .name { font-size: 20px; font-weight: 700; }
+.f05-app .row.first .grip { color: #FFFFFF; opacity: .8; }
+.f05-app .tag { flex: none; font-size: 13px; font-weight: 650; line-height: 1; padding: 6px 9px; border-radius: 999px; background: #515EDE; color: #FFFFFF; }
+.f05-app .list-tools { margin-top: 14px; }
+.f05-app .toast { position: absolute; left: 50%; top: 14px; margin-left: -88px; width: 176px; padding: 12px 16px; border-radius: 10px; background: #14183A; color: #F4F5FB; font-weight: 600; font-size: 15px; box-shadow: 0 10px 30px rgba(20,24,58,.18); text-align: center; z-index: 4; }
+.f05-app .tap { position: relative; overflow: visible; }
+.f05-app .ripple { position: absolute; left: 50%; top: 50%; width: 60px; height: 60px; margin: -30px 0 0 -30px; border-radius: 50%; background: rgba(37,54,214,.28); border: 3px solid #2536D6; z-index: 5; }
+
+.f05-sub { position: absolute; left: 8cqw; top: 33cqw; font-weight: 600; font-size: 5cqw; color: #555B78; }
+
+  </style>
+  <div id="root" data-composition-id="05-step-create" data-width="1080" data-height="1920" data-duration="3.5">
+    <div class="f05-bg clip" id="f05-bg" data-start="0" data-duration="3.5" data-track-index="0" style="background:#FFFFFF"></div>
+    
+    <div class="f05-stage" id="f05-stage">
+<div class='f05-eyebrow' id='f05-eb'>STEP 1</div>
+<div class='f05-h1' id='f05-h1'><span class='f05-word'>Create</span> <span class='f05-word'>your</span> <span class='f05-word'>dq</span></div>
+<div class='f05-sub' id='f05-sub'>No sign-up. No app.</div>
+<div class='f05-phone' id='f05-phone' style='left:19cqw; right:19cqw; top:42cqw; height:106cqw'><div class='f05-screen'>
+<div class='f05-app' id='f05-app' data-layout-allow-overflow style='transform:scale(1.6)'>
+<div class='f05-page' id='f05-home'><div class='top'><span class='brand'>dq</span></div><h1 class='hero'>One link. Everyone sees the line.</h1><p class='lede'>Make a queue and share its link. People add their own names and watch the order update live. Only you can change it.</p><div class='join'><span class='lbl'>Name your queue</span><div class='join-row'><div class='input focus' id='f05-in'><span class='ph' id='f05-ph'>Friday open mic</span><span class='f05-ch' data-k='0' style='display:none'>F</span><span class='f05-ch' data-k='1' style='display:none'>r</span><span class='f05-ch' data-k='2' style='display:none'>i</span><span class='f05-ch' data-k='3' style='display:none'>d</span><span class='f05-ch' data-k='4' style='display:none'>a</span><span class='f05-ch' data-k='5' style='display:none'>y</span><span class='f05-ch' data-k='6' style='display:none'>&nbsp;</span><span class='f05-ch' data-k='7' style='display:none'>N</span><span class='f05-ch' data-k='8' style='display:none'>i</span><span class='f05-ch' data-k='9' style='display:none'>g</span><span class='f05-ch' data-k='10' style='display:none'>h</span><span class='f05-ch' data-k='11' style='display:none'>t</span><span class='f05-ch' data-k='12' style='display:none'>&nbsp;</span><span class='f05-ch' data-k='13' style='display:none'>H</span><span class='f05-ch' data-k='14' style='display:none'>o</span><span class='f05-ch' data-k='15' style='display:none'>t</span><span class='f05-ch' data-k='16' style='display:none'>&nbsp;</span><span class='f05-ch' data-k='17' style='display:none'>S</span><span class='f05-ch' data-k='18' style='display:none'>e</span><span class='f05-ch' data-k='19' style='display:none'>a</span><span class='f05-ch' data-k='20' style='display:none'>t</span><span class='caret' id='f05-caret'></span></div><span class='btn btn-primary tap' id='f05-create'>Create queue<span class='ripple' id='f05-rip' style='opacity:0'></span></span></div></div><h2 class='h2'>How it works</h2></div>
+<div class='f05-page' id='f05-queue' style='position:absolute; left:0; top:0; width:390px; opacity:0'><div class='top'><span class='brand'>dq</span><span class='btn btn-quiet'>Share queue link</span></div><h1 class='title'>Friday Night Hot Seat</h1><p class='meta'><span class='live'>Live</span><span>Nobody waiting</span></p><section class='ready' id='f05-ready'><h2>Your queue is ready</h2><p>It has two links. Share the first. Keep the second to yourself.</p><div class='link-row'><strong>Queue link</strong><span>Anyone who opens it can add their name and see the order.</span><span class='btn btn-primary'>Copy queue link</span></div></section></div>
+</div></div></div>
+    </div>
+  </div>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <script>
+    (function () {
+      const $ = (s) => document.querySelector('[data-composition-id="05-step-create"] ' + s);
+      const $$ = (s) => Array.from(document.querySelectorAll('[data-composition-id="05-step-create"] ' + s));
+      const tl = gsap.timeline({ paused: true });
+      const pop = (sel, at, origin) => tl.fromTo(sel, { scale: 0.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.32, ease: "back.out(1.6)", transformOrigin: origin || "20% 100%" }, at);
+      const rise = (sel, at, dist, dur) => tl.fromTo(sel, { y: dist || 300, opacity: 0 }, { y: 0, opacity: 1, duration: dur || 0.55, ease: "power3.out" }, at);
+      const shake = (sel, at, amp, n) => { for (let i = 0; i < n; i++) { const a = amp * (1 - i / n); tl.to(sel, { x: (i % 2 ? -a : a), y: (i % 3 - 1) * a * 0.4, duration: 0.045, ease: "none" }, at + i * 0.045); } tl.to(sel, { x: 0, y: 0, duration: 0.05, ease: "none" }, at + n * 0.045); };
+      const jitter = (sel, from, to, amp) => { const n = Math.floor((to - from) / 0.09); for (let i = 0; i < n; i++) tl.to(sel, { rotation: (i % 2 ? -amp : amp), duration: 0.09, ease: "sine.inOut", transformOrigin: "50% 85%" }, from + i * 0.09); tl.to(sel, { rotation: 0, duration: 0.09, transformOrigin: "50% 85%" }, from + n * 0.09); };
+      const type = (chars, from, step) => chars.forEach((c, i) => tl.set(c, { display: "inline" }, from + i * step));
+
+      tl.fromTo($("#f05-eb"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 0.0);
+      tl.fromTo($$("#f05-h1 .f05-word"), { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out", stagger: 0.08 }, 0.05);
+      tl.fromTo($("#f05-phone"), { y: 220, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, ease: "power3.out" }, 0.0);
+      tl.set($("#f05-ph"), { display: "none" }, 0.55);
+      type($$("#f05-in .f05-ch"), 0.55, 0.045);
+      const createBtn = $("#f05-create");
+      tl.fromTo($("#f05-rip"), { scale: 0.2, opacity: 0.9 }, { scale: 1.6, opacity: 0, duration: 0.45, ease: "power2.out" }, 1.6);
+      tl.fromTo(createBtn, { scale: 1 }, { scale: 0.94, duration: 0.08, ease: "power2.in" }, 1.6);
+      tl.to(createBtn, { scale: 1, duration: 0.2, ease: "power3.out" }, 1.68);
+      tl.to($("#f05-home"), { opacity: 0, y: -24, duration: 0.25, ease: "power2.in" }, 1.9);
+      tl.fromTo($("#f05-queue"), { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power2.out" }, 2.0);
+      tl.fromTo($("#f05-ready"), { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "power3.out" }, 2.05);
+      tl.fromTo($("#f05-sub"), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 2.6);
+
+      window.__timelines["05-step-create"] = tl;
+    })();
+  </script>
+</template>

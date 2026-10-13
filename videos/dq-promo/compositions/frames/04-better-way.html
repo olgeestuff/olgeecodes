@@ -1,0 +1,76 @@
+<template>
+  <style>
+
+@font-face { font-family: "Big Shoulders Display"; font-weight: 800; src: url("assets/fonts/big-shoulders-display-latin-800-normal.woff2") format("woff2"); }
+@font-face { font-family: "Big Shoulders Display"; font-weight: 900; src: url("assets/fonts/big-shoulders-display-latin-900-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 500; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 600; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 700; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 800; src: url("assets/fonts/inter-latin-800-normal.woff2") format("woff2"); }
+@font-face { font-family: "Noto Color Emoji"; src: url("assets/fonts/noto-emoji-subset.ttf") format("truetype"); }
+
+
+#root { position: absolute; inset: 0; overflow: hidden; container-type: size; font-family: "Inter", sans-serif; color: #14183A; }
+.f04-bg { position: absolute; inset: 0; z-index: 0; }
+.f04-stage { position: absolute; inset: 0; z-index: 1; }
+.f04-abs { position: absolute; }
+.f04-disp { font-family: "Big Shoulders Display", sans-serif; font-weight: 900; line-height: .9; }
+.f04-emoji { font-family: "Noto Color Emoji"; font-weight: 400; }
+.f04-char { position: absolute; }
+.f04-char svg { display: block; width: 100%; height: auto; overflow: visible; }
+.f04-bubble { position: absolute; background: #FFFFFF; color: #14183A; border: .55cqw solid #14183A; border-radius: 3.4cqw; padding: 2.2cqw 3.2cqw; font-weight: 700; font-size: 4.3cqw; line-height: 1.15; }
+.f04-bubble.f04-blue { background: #2536D6; color: #FFFFFF; }
+.f04-tail { position: absolute; width: 3.4cqw; height: 3.4cqw; bottom: -1.95cqw; left: 6cqw; background: inherit; border-right: .55cqw solid #14183A; border-bottom: .55cqw solid #14183A; transform: rotate(45deg); }
+.f04-tail.f04-r { left: auto; right: 6cqw; }
+.f04-panel { position: absolute; background: #FFFFFF; border: .6cqw solid #14183A; border-radius: 2.4cqw; overflow: hidden; }
+.f04-burst { position: absolute; font-family: "Big Shoulders Display", sans-serif; font-weight: 900; color: #FFFFFF; background: #2536D6; padding: 1.4cqw 3cqw; border-radius: 1.6cqw; border: .55cqw solid #14183A; white-space: nowrap; }
+.f04-eyebrow { position: absolute; left: 8cqw; top: 10cqw; font-weight: 800; font-size: 3.6cqw; letter-spacing: .12em; color: #2536D6; background: rgba(37,54,214,.08); border-radius: 100px; padding: 1.4cqw 3.6cqw; }
+.f04-h1 { position: absolute; left: 8cqw; top: 20cqw; font-family: "Big Shoulders Display", sans-serif; font-weight: 900; font-size: 12.5cqw; line-height: .9; color: #14183A; white-space: nowrap; }
+.f04-word { display: inline-block; }
+.f04-wordmark { font-family: "Big Shoulders Display", sans-serif; font-weight: 900; line-height: .78; letter-spacing: -.01em; }
+
+
+.f04-ghost { position: absolute; border: .5cqw solid rgba(238,240,255,.14); border-radius: 2.4cqw; }
+.f04-line { position: absolute; left: 8cqw; right: 8cqw; top: 52cqw; font-family: "Big Shoulders Display", sans-serif; font-weight: 800; font-size: 15cqw; line-height: .95; color: #EEF0FF; }
+.f04-mark { position: absolute; left: 8cqw; top: 100cqw; display: flex; font-size: 52cqw; color: #FFFFFF; }
+.f04-mark span { display: block; }
+.f04-copy { position: absolute; left: 0; top: 0; }
+
+  </style>
+  <div id="root" data-composition-id="04-better-way" data-width="1080" data-height="1920" data-duration="2.4">
+    <div class="f04-bg clip" id="f04-bg" data-start="0" data-duration="2.4" data-track-index="0" style="background:#0D1030"></div>
+    
+    <div class="f04-stage" id="f04-stage">
+<div class='f04-ghost' id='f04-g1' style='left:4cqw; top:8cqw; width:44.5cqw; height:68cqw'></div>
+<div class='f04-ghost' id='f04-g2' style='right:4cqw; top:8cqw; width:44.5cqw; height:68cqw'></div>
+<div class='f04-ghost' id='f04-g3' style='left:4cqw; top:80cqw; width:44.5cqw; height:68cqw'></div>
+<div class='f04-ghost' id='f04-g4' style='right:4cqw; top:80cqw; width:44.5cqw; height:68cqw'></div>
+<div class='f04-line' id='f04-line'>There's a better way.</div>
+<div class='f04-mark f04-wordmark' id='f04-mark' data-layout-allow-overlap><span id='f04-d' data-layout-allow-overlap>d</span><span id='f04-q' data-layout-allow-overlap style='color:#3F51F2'>q</span><span class='f04-copy' id='f04-copy' data-layout-allow-overlap>d</span></div>
+    </div>
+  </div>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <script>
+    (function () {
+      const $ = (s) => document.querySelector('[data-composition-id="04-better-way"] ' + s);
+      const $$ = (s) => Array.from(document.querySelectorAll('[data-composition-id="04-better-way"] ' + s));
+      const tl = gsap.timeline({ paused: true });
+      const pop = (sel, at, origin) => tl.fromTo(sel, { scale: 0.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.32, ease: "back.out(1.6)", transformOrigin: origin || "20% 100%" }, at);
+      const rise = (sel, at, dist, dur) => tl.fromTo(sel, { y: dist || 300, opacity: 0 }, { y: 0, opacity: 1, duration: dur || 0.55, ease: "power3.out" }, at);
+      const shake = (sel, at, amp, n) => { for (let i = 0; i < n; i++) { const a = amp * (1 - i / n); tl.to(sel, { x: (i % 2 ? -a : a), y: (i % 3 - 1) * a * 0.4, duration: 0.045, ease: "none" }, at + i * 0.045); } tl.to(sel, { x: 0, y: 0, duration: 0.05, ease: "none" }, at + n * 0.045); };
+      const jitter = (sel, from, to, amp) => { const n = Math.floor((to - from) / 0.09); for (let i = 0; i < n; i++) tl.to(sel, { rotation: (i % 2 ? -amp : amp), duration: 0.09, ease: "sine.inOut", transformOrigin: "50% 85%" }, from + i * 0.09); tl.to(sel, { rotation: 0, duration: 0.09, transformOrigin: "50% 85%" }, from + n * 0.09); };
+      const type = (chars, from, step) => chars.forEach((c, i) => tl.set(c, { display: "inline" }, from + i * step));
+
+      tl.fromTo($$(".f04-ghost"), { opacity: 1 }, { opacity: 0.55, duration: 0.6, ease: "power2.out" }, 0.0);
+      tl.fromTo($("#f04-line"), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 0.15);
+      tl.fromTo($("#f04-d"), { y: -140, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power3.out" }, 0.9);
+      tl.fromTo($("#f04-q"), { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0.0);
+      tl.fromTo($("#f04-copy"), { opacity: 0 }, { opacity: 1, duration: 0.01 }, 1.12);
+      tl.fromTo($("#f04-copy"), { xPercent: 0, rotationX: 0 }, { xPercent: 50, rotationX: 90, duration: 0.14, ease: "power2.in", transformPerspective: 900 }, 1.13);
+      tl.set($("#f04-copy"), { opacity: 0 }, 1.27);
+      tl.fromTo($("#f04-q"), { xPercent: -50, rotationX: -90, opacity: 1 }, { xPercent: 0, rotationX: 0, opacity: 1, duration: 0.2, ease: "power3.out", transformPerspective: 900, immediateRender: false }, 1.27);
+
+      window.__timelines["04-better-way"] = tl;
+    })();
+  </script>
+</template>

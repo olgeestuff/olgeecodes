@@ -1,0 +1,139 @@
+<template>
+  <style>
+
+@font-face { font-family: "Big Shoulders Display"; font-weight: 800; src: url("assets/fonts/big-shoulders-display-latin-800-normal.woff2") format("woff2"); }
+@font-face { font-family: "Big Shoulders Display"; font-weight: 900; src: url("assets/fonts/big-shoulders-display-latin-900-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 500; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 600; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 700; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 800; src: url("assets/fonts/inter-latin-800-normal.woff2") format("woff2"); }
+@font-face { font-family: "Noto Color Emoji"; src: url("assets/fonts/noto-emoji-subset.ttf") format("truetype"); }
+
+
+#root { position: absolute; inset: 0; overflow: hidden; container-type: size; font-family: "Inter", sans-serif; color: #14183A; }
+.f03-bg { position: absolute; inset: 0; z-index: 0; }
+.f03-stage { position: absolute; inset: 0; z-index: 1; }
+.f03-abs { position: absolute; }
+.f03-disp { font-family: "Big Shoulders Display", sans-serif; font-weight: 900; line-height: .9; }
+.f03-emoji { font-family: "Noto Color Emoji"; font-weight: 400; }
+.f03-char { position: absolute; }
+.f03-char svg { display: block; width: 100%; height: auto; overflow: visible; }
+.f03-bubble { position: absolute; background: #FFFFFF; color: #14183A; border: .55cqw solid #14183A; border-radius: 3.4cqw; padding: 2.2cqw 3.2cqw; font-weight: 700; font-size: 4.3cqw; line-height: 1.15; }
+.f03-bubble.f03-blue { background: #2536D6; color: #FFFFFF; }
+.f03-tail { position: absolute; width: 3.4cqw; height: 3.4cqw; bottom: -1.95cqw; left: 6cqw; background: inherit; border-right: .55cqw solid #14183A; border-bottom: .55cqw solid #14183A; transform: rotate(45deg); }
+.f03-tail.f03-r { left: auto; right: 6cqw; }
+.f03-panel { position: absolute; background: #FFFFFF; border: .6cqw solid #14183A; border-radius: 2.4cqw; overflow: hidden; }
+.f03-burst { position: absolute; font-family: "Big Shoulders Display", sans-serif; font-weight: 900; color: #FFFFFF; background: #2536D6; padding: 1.4cqw 3cqw; border-radius: 1.6cqw; border: .55cqw solid #14183A; white-space: nowrap; }
+.f03-eyebrow { position: absolute; left: 8cqw; top: 10cqw; font-weight: 800; font-size: 3.6cqw; letter-spacing: .12em; color: #2536D6; background: rgba(37,54,214,.08); border-radius: 100px; padding: 1.4cqw 3.6cqw; }
+.f03-h1 { position: absolute; left: 8cqw; top: 20cqw; font-family: "Big Shoulders Display", sans-serif; font-weight: 900; font-size: 12.5cqw; line-height: .9; color: #14183A; white-space: nowrap; }
+.f03-word { display: inline-block; }
+.f03-wordmark { font-family: "Big Shoulders Display", sans-serif; font-weight: 900; line-height: .78; letter-spacing: -.01em; }
+
+
+  </style>
+  <div id="root" data-composition-id="03-problems" data-width="1080" data-height="1920" data-duration="5.5">
+    <div class="f03-bg clip" id="f03-bg" data-start="0" data-duration="5.5" data-track-index="0" style="background:#0D1030"></div>
+    
+<svg class="f03-defs" width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<g id="f03-body"><path d="M18 262 C18 206 58 184 100 184 C142 184 182 206 182 262 Z" fill="#2536D6" stroke="#14183A" stroke-width="6"/><path d="M70 196 Q100 214 130 196" fill="none" stroke="#14183A" stroke-width="5" stroke-linecap="round"/></g>
+<g id="f03-head"><circle cx="40" cy="118" r="13" fill="#fff" stroke="#14183A" stroke-width="6"/><circle cx="160" cy="118" r="13" fill="#fff" stroke="#14183A" stroke-width="6"/><circle cx="100" cy="112" r="62" fill="#fff" stroke="#14183A" stroke-width="6"/></g>
+<g id="f03-angry" stroke="#14183A" stroke-linecap="round"><path d="M64 92 L92 104" stroke-width="8"/><path d="M136 92 L108 104" stroke-width="8"/><circle cx="80" cy="116" r="6" fill="#14183A" stroke="none"/><circle cx="120" cy="116" r="6" fill="#14183A" stroke="none"/><path d="M78 140 Q100 128 122 140 Q120 170 100 172 Q80 170 78 140 Z" fill="#14183A" stroke-width="2"/><path d="M88 162 Q100 152 112 162 Q106 170 100 170 Q94 170 88 162 Z" fill="#2536D6" stroke="none"/></g>
+<g id="f03-happy" stroke="#14183A" stroke-linecap="round" fill="none"><path d="M66 96 Q78 88 90 96" stroke-width="7"/><path d="M110 96 Q122 88 134 96" stroke-width="7"/><path d="M72 116 Q80 107 88 116" stroke-width="7"/><path d="M112 116 Q120 107 128 116" stroke-width="7"/><path d="M78 138 Q100 168 122 138 Z" fill="#14183A" stroke-width="3"/></g>
+<g id="f03-unsure" stroke="#14183A" stroke-linecap="round"><path d="M66 90 Q78 80 90 88" stroke-width="7" fill="none"/><path d="M110 98 L134 98" stroke-width="7"/><circle cx="80" cy="116" r="6" fill="#14183A" stroke="none"/><circle cx="120" cy="116" r="6" fill="#14183A" stroke="none"/><circle cx="104" cy="148" r="8" fill="#14183A" stroke="none"/></g>
+<g id="f03-hair-mike"><path d="M40 104 C36 52 68 36 100 36 C134 36 166 54 160 104 C150 80 128 72 100 72 C74 72 52 80 40 104 Z" fill="#14183A"/></g>
+<g id="f03-hair-sandra-back"><path d="M32 112 C28 54 64 30 100 30 C140 30 174 56 168 112 L174 206 C152 202 140 192 138 182 L62 182 C60 192 48 202 26 206 Z" fill="#14183A"/></g>
+<g id="f03-hair-sandra-front"><path d="M42 100 C50 58 92 42 136 54 C122 66 98 76 62 82 C52 86 46 92 42 100 Z" fill="#14183A"/></g>
+<g id="f03-hair-dustin"><path d="M38 96 C38 50 68 36 100 36 C134 36 162 50 162 96 Z" fill="#2536D6" stroke="#14183A" stroke-width="6"/><path d="M100 88 L186 94 C182 104 164 106 152 104 L100 100 Z" fill="#2536D6" stroke="#14183A" stroke-width="6" stroke-linejoin="round"/></g>
+<g id="f03-hair-keer"><circle cx="100" cy="34" r="22" fill="#14183A"/><path d="M40 106 C38 60 70 46 100 46 C132 46 162 60 160 106 C148 82 126 76 100 76 C74 76 52 82 40 106 Z" fill="#14183A"/></g>
+<g id="f03-hair-amaka-back"><circle cx="100" cy="72" r="70" fill="#14183A"/><circle cx="46" cy="100" r="36" fill="#14183A"/><circle cx="154" cy="100" r="36" fill="#14183A"/></g>
+<g id="f03-hair-host"><path d="M44 84 Q60 50 100 48 Q140 50 156 84 Q130 66 100 66 Q70 66 44 84 Z" fill="#14183A"/></g>
+<g id="f03-thumb"><circle cx="100" cy="226" r="19" fill="#fff" stroke="#14183A" stroke-width="6"/><path d="M100 210 L100 186" stroke="#14183A" stroke-width="12" stroke-linecap="round"/><path d="M100 210 L100 188" stroke="#fff" stroke-width="5" stroke-linecap="round"/></g>
+<g id="f03-action-light" stroke="#EEF0FF" stroke-width="5" stroke-linecap="round"><path d="M50 4 L50 24"/><path d="M84 18 L70 32"/><path d="M96 52 L76 52"/><path d="M16 18 L30 32"/><path d="M4 52 L24 52"/></g>
+<g id="f03-action-ink" stroke="#14183A" stroke-width="5" stroke-linecap="round"><path d="M50 4 L50 24"/><path d="M84 18 L70 32"/><path d="M96 52 L76 52"/><path d="M16 18 L30 32"/><path d="M4 52 L24 52"/></g>
+<g id="f03-list-a"><rect x="6" y="6" width="148" height="188" rx="10" fill="#fff" stroke="#14183A" stroke-width="6"/><text x="22" y="44" font-family="Inter" font-weight="800" font-size="20" fill="#2536D6">QUEUE</text><g font-family="Inter" font-weight="600" font-size="19" fill="#14183A"><text x="22" y="82">1 Mike</text><text x="22" y="114">2 Sandra</text><text x="22" y="146">3 Dustin</text><text x="22" y="178">4 Keer</text></g></g>
+<g id="f03-list-b"><rect x="6" y="6" width="148" height="188" rx="10" fill="#fff" stroke="#14183A" stroke-width="6"/><text x="22" y="44" font-family="Inter" font-weight="800" font-size="20" fill="#2536D6">QUEUE</text><g font-family="Inter" font-weight="600" font-size="19" fill="#14183A"><text x="22" y="82">1 Keer</text><text x="22" y="114">2 Mike</text><text x="22" y="146">3 Sandra</text><text x="22" y="178">4 Dustin</text></g></g>
+<g id="f03-magnifier"><circle cx="48" cy="48" r="34" fill="rgba(63,81,242,.18)" stroke="#14183A" stroke-width="9"/><path d="M74 74 L110 110" stroke="#14183A" stroke-width="14" stroke-linecap="round"/></g>
+</defs></svg>
+
+    <div class="f03-stage" id="f03-stage">
+<div class='f03-page' id='f03-page' style='position:absolute; inset:0'>
+<div class='f03-panel' id='f03-p1' style='left:4cqw; top:8cqw; width:44.5cqw; height:68cqw'>
+<svg class='f03-abs' id='f03-la' style='left:2cqw; top:4cqw; width:18cqw' viewBox='0 0 160 200'><use href='#f03-list-a'/></svg>
+<svg class='f03-abs' id='f03-lb' style='right:2cqw; top:4cqw; width:18cqw' viewBox='0 0 160 200'><use href='#f03-list-b'/></svg>
+<div class='f03-char' id='f03-k' data-layout-allow-overflow data-layout-allow-overlap style='left:-3cqw; bottom:-2cqw; width:24cqw'><svg viewBox='0 0 200 262'><use href='#f03-body'/><g class='f03-headg'><use href='#f03-head'/><use href='#f03-hair-keer'/><use href='#f03-angry'/></g></svg></div>
+<div class='f03-char' id='f03-mk' data-layout-allow-overflow data-layout-allow-overlap style='right:-3cqw; bottom:-2cqw; width:24cqw'><svg viewBox='0 0 200 262'><use href='#f03-body'/><g class='f03-headg'><use href='#f03-head'/><use href='#f03-hair-mike'/><use href='#f03-angry'/></g></svg></div>
+</div>
+<div class='f03-burst' id='f03-burst' data-layout-allow-overlap style='left:7cqw; top:31cqw; font-size:7cqw'>WHICH LIST?!</div>
+<div class='f03-panel' id='f03-p2' style='right:4cqw; top:8cqw; width:44.5cqw; height:68cqw'>
+<div class='f03-char' id='f03-h' data-layout-allow-overflow data-layout-allow-overlap style='left:9cqw; bottom:-3cqw; width:26cqw'><svg viewBox='0 0 200 262'><use href='#f03-body'/><g class='f03-headg'><use href='#f03-head'/><use href='#f03-hair-host'/><use href='#f03-angry'/></g></svg></div>
+<div class='f03-bubble' id='f03-a1' style='font-size:4cqw;left:2cqw; top:3cqw; padding:1.4cqw 2.4cqw'>Add me!</div>
+<div data-layout-allow-overlap class='f03-bubble f03-blue' id='f03-a2' style='font-size:4cqw;right:2cqw; top:13cqw; padding:1.4cqw 2.4cqw'>Add me too!!</div>
+<div class='f03-bubble' id='f03-a3' style='font-size:4cqw;left:4cqw; top:23cqw; padding:1.4cqw 2.4cqw'>Me first!</div>
+<div class='f03-bubble' id='f03-a4' style='font-size:4cqw;right:3cqw; top:33cqw; padding:1.4cqw 2.4cqw'>Add me!!</div>
+</div>
+<div class='f03-panel' id='f03-p3' style='left:4cqw; top:80cqw; width:44.5cqw; height:68cqw'>
+<div class='f03-char' id='f03-du' data-layout-allow-overflow data-layout-allow-overlap style='left:4cqw; bottom:-3cqw; width:27cqw'><svg viewBox='0 0 200 262'><use href='#f03-body'/><g class='f03-headg'><use href='#f03-head'/><use href='#f03-hair-dustin'/><use href='#f03-angry'/></g></svg></div>
+<svg class='f03-abs' id='f03-mag' style='right:2cqw; bottom:13cqw; width:17cqw' viewBox='0 0 120 120'><use href='#f03-magnifier'/></svg>
+<div class='f03-bubble' id='f03-l1' style='font-size:4.1cqw;left:2.5cqw; top:3cqw; max-width:40cqw'>Send the link again?<span class='f03-tail'></span></div>
+<div class='f03-bubble f03-blue' id='f03-l2' style='font-size:4.1cqw;right:2.5cqw; top:20cqw'>Which link??<span class='f03-tail f03-r'></span></div>
+</div>
+<div class='f03-panel' id='f03-p4' style='right:4cqw; top:80cqw; width:44.5cqw; height:68cqw'>
+<div class='f03-char' id='f03-am' data-layout-allow-overflow data-layout-allow-overlap style='left:7cqw; bottom:-3cqw; width:28cqw'><svg viewBox='0 0 200 262'><use href='#f03-hair-amaka-back'/><use href='#f03-body'/><g class='f03-headg'><use href='#f03-head'/><use href='#f03-unsure'/></g></svg></div>
+<div class='f03-bubble' id='f03-n1' style='font-size:3.9cqw;left:2.5cqw; top:3cqw; max-width:40cqw'>Hi, I'm new <span class='f03-emoji'>👋</span> Is there a queue?<span class='f03-tail'></span></div>
+<div class='f03-abs f03-disp' id='f03-qm' data-layout-allow-overlap style='right:4cqw; top:24cqw; font-size:20cqw; color:#2536D6'>?</div>
+</div>
+</div>
+<div data-layout-allow-overlap data-dx='-300' data-dy='0' class='f03-pile f03-bubble' id='f03-p0' style='font-size:4.4cqw;left:10cqw; top:30cqw; padding:1.4cqw 2.6cqw'>Who's next??</div>
+<div data-layout-allow-overlap data-dx='300' data-dy='0' class='f03-pile f03-bubble f03-blue' id='f03-p1' style='font-size:4.4cqw;right:8cqw; top:22cqw; padding:1.4cqw 2.6cqw'>Me next!</div>
+<div data-layout-allow-overlap data-dx='-300' data-dy='0' class='f03-pile f03-bubble' id='f03-p2' style='font-size:4.4cqw;left:14cqw; top:62cqw; padding:1.4cqw 2.6cqw'>Which list?</div>
+<div data-layout-allow-overlap data-dx='300' data-dy='0' class='f03-pile f03-bubble' id='f03-p3' style='font-size:4.4cqw;right:12cqw; top:58cqw; padding:1.4cqw 2.6cqw'>Link??</div>
+<div data-layout-allow-overlap data-dx='0' data-dy='-400' class='f03-pile f03-bubble f03-blue' id='f03-p4' style='font-size:4.4cqw;left:36cqw; top:42cqw; padding:1.4cqw 2.6cqw'>Add me!</div>
+<div data-layout-allow-overlap data-dx='0' data-dy='400' class='f03-pile f03-bubble' id='f03-p5' style='font-size:4.4cqw;left:22cqw; top:96cqw; padding:1.4cqw 2.6cqw'>Me first!</div>
+<div data-layout-allow-overlap data-dx='300' data-dy='0' class='f03-pile f03-bubble' id='f03-p6' style='font-size:4.4cqw;right:6cqw; top:112cqw; padding:1.4cqw 2.6cqw'>Who's next??</div>
+<div data-layout-allow-overlap data-dx='-300' data-dy='0' class='f03-pile f03-bubble f03-blue' id='f03-p7' style='font-size:4.4cqw;left:6cqw; top:126cqw; padding:1.4cqw 2.6cqw'>Add me too!!</div>
+<div data-layout-allow-overlap data-dx='0' data-dy='400' class='f03-pile f03-bubble' id='f03-p8' style='font-size:4.4cqw;left:52cqw; top:134cqw; padding:1.4cqw 2.6cqw'>My turn!</div>
+<div data-layout-allow-overlap data-dx='0' data-dy='-400' class='f03-pile f03-bubble' id='f03-p9' style='font-size:4.4cqw;left:24cqw; top:6cqw; padding:1.4cqw 2.6cqw'>Where's the queue?</div>
+    </div>
+  </div>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <script>
+    (function () {
+      const $ = (s) => document.querySelector('[data-composition-id="03-problems"] ' + s);
+      const $$ = (s) => Array.from(document.querySelectorAll('[data-composition-id="03-problems"] ' + s));
+      const tl = gsap.timeline({ paused: true });
+      const pop = (sel, at, origin) => tl.fromTo(sel, { scale: 0.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.32, ease: "back.out(1.6)", transformOrigin: origin || "20% 100%" }, at);
+      const rise = (sel, at, dist, dur) => tl.fromTo(sel, { y: dist || 300, opacity: 0 }, { y: 0, opacity: 1, duration: dur || 0.55, ease: "power3.out" }, at);
+      const shake = (sel, at, amp, n) => { for (let i = 0; i < n; i++) { const a = amp * (1 - i / n); tl.to(sel, { x: (i % 2 ? -a : a), y: (i % 3 - 1) * a * 0.4, duration: 0.045, ease: "none" }, at + i * 0.045); } tl.to(sel, { x: 0, y: 0, duration: 0.05, ease: "none" }, at + n * 0.045); };
+      const jitter = (sel, from, to, amp) => { const n = Math.floor((to - from) / 0.09); for (let i = 0; i < n; i++) tl.to(sel, { rotation: (i % 2 ? -amp : amp), duration: 0.09, ease: "sine.inOut", transformOrigin: "50% 85%" }, from + i * 0.09); tl.to(sel, { rotation: 0, duration: 0.09, transformOrigin: "50% 85%" }, from + n * 0.09); };
+      const type = (chars, from, step) => chars.forEach((c, i) => tl.set(c, { display: "inline" }, from + i * step));
+
+      const panelIn = (sel, at) => tl.fromTo(sel, { scale: 0.86, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "power3.out" }, at);
+      panelIn($("#f03-p1"), 0.0);
+      tl.fromTo($("#f03-la"), { rotationY: 90, rotation: 0 }, { rotationY: 0, rotation: -8, duration: 0.4, ease: "power3.out", transformPerspective: 600 }, 0.1);
+      tl.fromTo($("#f03-lb"), { rotationY: -90, rotation: 0 }, { rotationY: 0, rotation: 8, duration: 0.4, ease: "power3.out", transformPerspective: 600 }, 0.2);
+      rise([$("#f03-k"), $("#f03-mk")], 0.12, 200, 0.45);
+      tl.fromTo($("#f03-burst"), { scale: 2.2, rotation: -14, opacity: 0 }, { scale: 1, rotation: -6, opacity: 1, duration: 0.3, ease: "expo.out" }, 0.4);
+      panelIn($("#f03-p2"), 1.1);
+      rise($("#f03-h"), 1.15, 200, 0.4);
+      pop($("#f03-a1"), 1.3, "50% 50%"); pop($("#f03-a2"), 1.5, "50% 50%"); pop($("#f03-a3"), 1.65, "50% 50%"); pop($("#f03-a4"), 1.78, "50% 50%");
+      panelIn($("#f03-p3"), 2.2);
+      rise($("#f03-du"), 2.25, 200, 0.4);
+      tl.fromTo($("#f03-mag"), { x: -60, rotation: -20, opacity: 0 }, { x: 0, rotation: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 2.3);
+      tl.to($("#f03-mag"), { x: -24, rotation: -10, duration: 0.35, ease: "sine.inOut" }, 2.8);
+      tl.to($("#f03-mag"), { x: 0, rotation: 0, duration: 0.35, ease: "sine.inOut" }, 3.15);
+      pop($("#f03-l1"), 2.4); pop($("#f03-l2"), 2.9, "80% 100%");
+      panelIn($("#f03-p4"), 3.3);
+      tl.fromTo($("#f03-am"), { y: 260 }, { y: 0, duration: 0.55, ease: "power3.out" }, 3.35);
+      pop($("#f03-n1"), 3.6);
+      tl.fromTo($("#f03-qm"), { scale: 0.2, opacity: 0, rotation: -20 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.35, ease: "back.out(1.6)" }, 4.0);
+      shake($("#f03-page"), 4.4, 12, 22);
+      $$(".f03-pile").forEach((el, i) => {
+        tl.fromTo(el, { x: +el.dataset.dx, y: +el.dataset.dy, opacity: 0, scale: 0.8 },
+          { x: 0, y: 0, opacity: 1, scale: 1, duration: 0.32, ease: "power3.out" }, 4.45 + i * 0.075 * (1 - i * 0.04));
+      });
+      jitter($$(".f03-char .f03-headg"), 4.5, 5.5, 2);
+
+      window.__timelines["03-problems"] = tl;
+    })();
+  </script>
+</template>

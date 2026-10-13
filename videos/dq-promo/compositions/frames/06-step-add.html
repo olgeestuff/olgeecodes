@@ -1,0 +1,132 @@
+<template>
+  <style>
+
+@font-face { font-family: "Big Shoulders Display"; font-weight: 800; src: url("assets/fonts/big-shoulders-display-latin-800-normal.woff2") format("woff2"); }
+@font-face { font-family: "Big Shoulders Display"; font-weight: 900; src: url("assets/fonts/big-shoulders-display-latin-900-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 500; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 600; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 700; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 800; src: url("assets/fonts/inter-latin-800-normal.woff2") format("woff2"); }
+@font-face { font-family: "Noto Color Emoji"; src: url("assets/fonts/noto-emoji-subset.ttf") format("truetype"); }
+
+
+#root { position: absolute; inset: 0; overflow: hidden; container-type: size; font-family: "Inter", sans-serif; color: #14183A; }
+.f06-bg { position: absolute; inset: 0; z-index: 0; }
+.f06-stage { position: absolute; inset: 0; z-index: 1; }
+.f06-abs { position: absolute; }
+.f06-disp { font-family: "Big Shoulders Display", sans-serif; font-weight: 900; line-height: .9; }
+.f06-emoji { font-family: "Noto Color Emoji"; font-weight: 400; }
+.f06-char { position: absolute; }
+.f06-char svg { display: block; width: 100%; height: auto; overflow: visible; }
+.f06-bubble { position: absolute; background: #FFFFFF; color: #14183A; border: .55cqw solid #14183A; border-radius: 3.4cqw; padding: 2.2cqw 3.2cqw; font-weight: 700; font-size: 4.3cqw; line-height: 1.15; }
+.f06-bubble.f06-blue { background: #2536D6; color: #FFFFFF; }
+.f06-tail { position: absolute; width: 3.4cqw; height: 3.4cqw; bottom: -1.95cqw; left: 6cqw; background: inherit; border-right: .55cqw solid #14183A; border-bottom: .55cqw solid #14183A; transform: rotate(45deg); }
+.f06-tail.f06-r { left: auto; right: 6cqw; }
+.f06-panel { position: absolute; background: #FFFFFF; border: .6cqw solid #14183A; border-radius: 2.4cqw; overflow: hidden; }
+.f06-burst { position: absolute; font-family: "Big Shoulders Display", sans-serif; font-weight: 900; color: #FFFFFF; background: #2536D6; padding: 1.4cqw 3cqw; border-radius: 1.6cqw; border: .55cqw solid #14183A; white-space: nowrap; }
+.f06-eyebrow { position: absolute; left: 8cqw; top: 10cqw; font-weight: 800; font-size: 3.6cqw; letter-spacing: .12em; color: #2536D6; background: rgba(37,54,214,.08); border-radius: 100px; padding: 1.4cqw 3.6cqw; }
+.f06-h1 { position: absolute; left: 8cqw; top: 20cqw; font-family: "Big Shoulders Display", sans-serif; font-weight: 900; font-size: 12.5cqw; line-height: .9; color: #14183A; white-space: nowrap; }
+.f06-word { display: inline-block; }
+.f06-wordmark { font-family: "Big Shoulders Display", sans-serif; font-weight: 900; line-height: .78; letter-spacing: -.01em; }
+
+
+.f06-phone { position: absolute; background: #14183A; border-radius: 9cqw; padding: 2.2cqw; box-shadow: 0 4cqw 9cqw rgba(20,24,58,.16); }
+.f06-screen { position: relative; width: 100%; height: 100%; border-radius: 7cqw; overflow: hidden; background: #F4F5FB; }
+.f06-app { position: absolute; left: 0; top: 0; width: 390px; height: 1200px; transform-origin: 0 0; background: #F4F5FB; color: #14183A; font: 17px/1.45 "Inter", sans-serif; -webkit-font-smoothing: antialiased; }
+.f06-page { padding: 14px 16px 48px; }
+.f06-app .top { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; }
+.f06-app .brand { font: 800 24px/1 "Big Shoulders Display", sans-serif; letter-spacing: .01em; padding: 10px 0; }
+.f06-app .hero { font: 800 54.6px/.92 "Big Shoulders Display", sans-serif; letter-spacing: .005em; margin: 28px 0 18px; }
+.f06-app .title { font: 800 41px/.98 "Big Shoulders Display", sans-serif; letter-spacing: .005em; margin: 18px 0 10px; }
+.f06-app .lede { font-size: 19px; color: #555B78; }
+.f06-app .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; font-size: 15px; color: #555B78; }
+.f06-app .live { display: inline-flex; align-items: center; gap: 7px; color: #17784A; font-weight: 600; }
+.f06-app .live::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: #17784A; }
+.f06-app .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 8px 18px; border: 1.5px solid #14183A; border-radius: 10px; background: transparent; color: #14183A; font-weight: 650; font-size: 16px; line-height: 1.15; white-space: nowrap; }
+.f06-app .btn-primary { background: #2536D6; border-color: #2536D6; color: #FFFFFF; }
+.f06-app .btn-ink { background: #14183A; border-color: #14183A; color: #F4F5FB; width: 100%; margin-top: 6px; }
+.f06-app .btn-quiet { border-color: #D6D9EA; }
+.f06-app .lbl { display: block; font-weight: 650; font-size: 15px; margin-bottom: 6px; }
+.f06-app .join { margin-top: 22px; }
+.f06-app .join-row { display: flex; gap: 8px; }
+.f06-app .input { flex: 1; min-width: 0; min-height: 48px; padding: 0 14px; border: 1.5px solid #14183A; border-radius: 10px; background: #FFFFFF; font-size: 17px; display: flex; align-items: center; white-space: nowrap; overflow: hidden; }
+.f06-app .input.focus { box-shadow: 0 0 0 3px #14183A; }
+.f06-app .ph { color: #555B78; opacity: .75; }
+.f06-app .caret { display: inline-block; width: 2px; height: 22px; background: #14183A; margin-left: 1px; }
+.f06-app .ready { margin-top: 22px; padding: 18px; background: #FFFFFF; border: 1.5px solid #14183A; border-radius: 14px; }
+.f06-app .ready h2 { font: 800 28px/1 "Big Shoulders Display", sans-serif; letter-spacing: .01em; margin-bottom: 6px; }
+.f06-app .link-row { padding: 14px 0 4px; border-top: 1px solid #D6D9EA; margin-top: 14px; }
+.f06-app .link-row strong { display: block; }
+.f06-app .link-row span { display: block; color: #555B78; font-size: 15px; margin-bottom: 10px; }
+.f06-app .link-row span.btn { display: inline-flex; color: #FFFFFF; font-size: 16px; margin-bottom: 0; }
+.f06-app .h2 { font: 700 15px/1.3 "Inter", sans-serif; color: #555B78; margin: 40px 0 6px; }
+.f06-app .summary { font-weight: 650; font-size: 15px; padding: 12px 0; }
+.f06-app .hint { color: #555B78; font-size: 15px; margin-top: 10px; }
+.f06-app .list { margin-top: 14px; }
+.f06-app .row { position: relative; display: flex; align-items: stretch; border-bottom: 1px solid #D6D9EA; background: #F4F5FB; }
+.f06-app .row-main { flex: 1; display: flex; align-items: center; gap: 12px; min-height: 58px; padding: 8px 10px 8px 4px; }
+.f06-app .num { flex: none; width: 46px; text-align: center; font: 800 34px/1 "Big Shoulders Display", sans-serif; }
+.f06-app .name { flex: 1; font-weight: 550; }
+.f06-app .grip { flex: none; width: 40px; display: flex; align-items: center; justify-content: center; color: #555B78; }
+.f06-app .grip svg { width: 16px; height: 24px; }
+.f06-app .row.first { background: #2536D6; color: #FFFFFF; border-bottom-color: transparent; border-radius: 14px; margin-bottom: 4px; }
+.f06-app .row.first .row-main { min-height: 78px; }
+.f06-app .row.first .num { font-size: 54px; width: 56px; }
+.f06-app .row.first .name { font-size: 20px; font-weight: 700; }
+.f06-app .row.first .grip { color: #FFFFFF; opacity: .8; }
+.f06-app .tag { flex: none; font-size: 13px; font-weight: 650; line-height: 1; padding: 6px 9px; border-radius: 999px; background: #515EDE; color: #FFFFFF; }
+.f06-app .list-tools { margin-top: 14px; }
+.f06-app .toast { position: absolute; left: 50%; top: 14px; margin-left: -88px; width: 176px; padding: 12px 16px; border-radius: 10px; background: #14183A; color: #F4F5FB; font-weight: 600; font-size: 15px; box-shadow: 0 10px 30px rgba(20,24,58,.18); text-align: center; z-index: 4; }
+.f06-app .tap { position: relative; overflow: visible; }
+.f06-app .ripple { position: absolute; left: 50%; top: 50%; width: 60px; height: 60px; margin: -30px 0 0 -30px; border-radius: 50%; background: rgba(37,54,214,.28); border: 3px solid #2536D6; z-index: 5; }
+
+  </style>
+  <div id="root" data-composition-id="06-step-add" data-width="1080" data-height="1920" data-duration="3.5">
+    <div class="f06-bg clip" id="f06-bg" data-start="0" data-duration="3.5" data-track-index="0" style="background:#FFFFFF"></div>
+    
+    <div class="f06-stage" id="f06-stage">
+<div class='f06-eyebrow' id='f06-eb'>STEP 2</div>
+<div class='f06-h1' id='f06-h1'><span class='f06-word'>Add</span> <span class='f06-word'>to</span> <span class='f06-word'>your</span> <span class='f06-word'>list</span></div>
+<div class='f06-phone' id='f06-phone' style='left:19cqw; right:19cqw; top:42cqw; height:106cqw'><div class='f06-screen'>
+<div class='f06-app' id='f06-app' data-layout-allow-overflow style='transform:scale(1.6)'><div class='f06-page'><div class='top'><span class='brand'>dq</span><span class='btn btn-quiet'>Share queue link</span></div><h1 class='title'>Friday Night Hot Seat</h1><p class='meta'><span class='live'>Live</span><span class='f06-cnt' style='display:inline'>Nobody waiting</span><span class='f06-cnt' style='display:none'>1 person waiting</span><span class='f06-cnt' style='display:none'>2 people waiting</span><span class='f06-cnt' style='display:none'>3 people waiting</span><span class='f06-cnt' style='display:none'>4 people waiting</span></p><div class='join'><span class='lbl'>Add a name to the queue</span><div class='join-row'><div class='input focus'><span class='f06-nm' data-n='0'><span class='f06-ch' data-k='0' style='display:none'>M</span><span class='f06-ch' data-k='1' style='display:none'>i</span><span class='f06-ch' data-k='2' style='display:none'>k</span><span class='f06-ch' data-k='3' style='display:none'>e</span></span><span class='f06-nm' data-n='1'><span class='f06-ch' data-k='0' style='display:none'>S</span><span class='f06-ch' data-k='1' style='display:none'>a</span><span class='f06-ch' data-k='2' style='display:none'>n</span><span class='f06-ch' data-k='3' style='display:none'>d</span><span class='f06-ch' data-k='4' style='display:none'>r</span><span class='f06-ch' data-k='5' style='display:none'>a</span></span><span class='f06-nm' data-n='2'><span class='f06-ch' data-k='0' style='display:none'>D</span><span class='f06-ch' data-k='1' style='display:none'>u</span><span class='f06-ch' data-k='2' style='display:none'>s</span><span class='f06-ch' data-k='3' style='display:none'>t</span><span class='f06-ch' data-k='4' style='display:none'>i</span><span class='f06-ch' data-k='5' style='display:none'>n</span></span><span class='f06-nm' data-n='3'><span class='f06-ch' data-k='0' style='display:none'>K</span><span class='f06-ch' data-k='1' style='display:none'>e</span><span class='f06-ch' data-k='2' style='display:none'>e</span><span class='f06-ch' data-k='3' style='display:none'>r</span></span><span class='caret'></span></div><span class='btn btn-primary' id='f06-add'>Add name</span></div></div><div id='f06-tools' style='display:none'><div class='summary'>&#9656; Queue settings</div><span class='btn btn-ink'>Mike is done, next person</span><p class='hint'>Drag the grip to reorder, or tap a name for more options.</p></div><ol class='list'><li class='row first' id='f06-r0' style='display:none'><span class='grip'><svg viewBox='0 0 16 24' fill='currentColor'><circle cx='4' cy='5' r='2'/><circle cx='12' cy='5' r='2'/><circle cx='4' cy='12' r='2'/><circle cx='12' cy='12' r='2'/><circle cx='4' cy='19' r='2'/><circle cx='12' cy='19' r='2'/></svg></span><div class='row-main'><span class='num'>1</span><span class='name'>Mike</span><span class='tag'>Next up</span></div></li><li class='row' id='f06-r1' style='display:none'><span class='grip'><svg viewBox='0 0 16 24' fill='currentColor'><circle cx='4' cy='5' r='2'/><circle cx='12' cy='5' r='2'/><circle cx='4' cy='12' r='2'/><circle cx='12' cy='12' r='2'/><circle cx='4' cy='19' r='2'/><circle cx='12' cy='19' r='2'/></svg></span><div class='row-main'><span class='num'>2</span><span class='name'>Sandra</span></div></li><li class='row' id='f06-r2' style='display:none'><span class='grip'><svg viewBox='0 0 16 24' fill='currentColor'><circle cx='4' cy='5' r='2'/><circle cx='12' cy='5' r='2'/><circle cx='4' cy='12' r='2'/><circle cx='12' cy='12' r='2'/><circle cx='4' cy='19' r='2'/><circle cx='12' cy='19' r='2'/></svg></span><div class='row-main'><span class='num'>3</span><span class='name'>Dustin</span></div></li><li class='row' id='f06-r3' style='display:none'><span class='grip'><svg viewBox='0 0 16 24' fill='currentColor'><circle cx='4' cy='5' r='2'/><circle cx='12' cy='5' r='2'/><circle cx='4' cy='12' r='2'/><circle cx='12' cy='12' r='2'/><circle cx='4' cy='19' r='2'/><circle cx='12' cy='19' r='2'/></svg></span><div class='row-main'><span class='num'>4</span><span class='name'>Keer</span></div></li></ol></div></div></div></div>
+    </div>
+  </div>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <script>
+    (function () {
+      const $ = (s) => document.querySelector('[data-composition-id="06-step-add"] ' + s);
+      const $$ = (s) => Array.from(document.querySelectorAll('[data-composition-id="06-step-add"] ' + s));
+      const tl = gsap.timeline({ paused: true });
+      const pop = (sel, at, origin) => tl.fromTo(sel, { scale: 0.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.32, ease: "back.out(1.6)", transformOrigin: origin || "20% 100%" }, at);
+      const rise = (sel, at, dist, dur) => tl.fromTo(sel, { y: dist || 300, opacity: 0 }, { y: 0, opacity: 1, duration: dur || 0.55, ease: "power3.out" }, at);
+      const shake = (sel, at, amp, n) => { for (let i = 0; i < n; i++) { const a = amp * (1 - i / n); tl.to(sel, { x: (i % 2 ? -a : a), y: (i % 3 - 1) * a * 0.4, duration: 0.045, ease: "none" }, at + i * 0.045); } tl.to(sel, { x: 0, y: 0, duration: 0.05, ease: "none" }, at + n * 0.045); };
+      const jitter = (sel, from, to, amp) => { const n = Math.floor((to - from) / 0.09); for (let i = 0; i < n; i++) tl.to(sel, { rotation: (i % 2 ? -amp : amp), duration: 0.09, ease: "sine.inOut", transformOrigin: "50% 85%" }, from + i * 0.09); tl.to(sel, { rotation: 0, duration: 0.09, transformOrigin: "50% 85%" }, from + n * 0.09); };
+      const type = (chars, from, step) => chars.forEach((c, i) => tl.set(c, { display: "inline" }, from + i * step));
+
+      tl.fromTo($("#f06-eb"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 0.0);
+      tl.fromTo($$("#f06-h1 .f06-word"), { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out", stagger: 0.07 }, 0.05);
+      const cnt = $$(".f06-cnt");
+      const groups = $$(".f06-nm");
+      const addBtn = $("#f06-add");
+      [0.4, 0.95, 1.5, 2.05].forEach((t0, i) => {
+        const chars = Array.from(groups[i].querySelectorAll(".f06-ch"));
+        type(chars, t0, 0.05);
+        const done = t0 + 0.45;
+        tl.fromTo(addBtn, { scale: 1 }, { scale: 0.94, duration: 0.06, ease: "power2.in" }, done - 0.06);
+        tl.to(addBtn, { scale: 1, duration: 0.15, ease: "power3.out" }, done);
+        chars.forEach((c) => tl.set(c, { display: "none" }, done));
+        const r = $("#f06-r" + i);
+        tl.set(r, { display: "flex" }, done);
+        tl.fromTo(r, { y: -40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: "power3.out", immediateRender: false }, done);
+        tl.set(cnt[i], { display: "none" }, done);
+        tl.set(cnt[i + 1], { display: "inline" }, done);
+        if (i === 0) {
+          tl.set($("#f06-tools"), { display: "block" }, done);
+          tl.fromTo($("#f06-tools"), { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out", immediateRender: false }, done);
+        }
+      });
+
+      window.__timelines["06-step-add"] = tl;
+    })();
+  </script>
+</template>

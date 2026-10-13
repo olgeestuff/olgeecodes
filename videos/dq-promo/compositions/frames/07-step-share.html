@@ -1,0 +1,155 @@
+<template>
+  <style>
+
+@font-face { font-family: "Big Shoulders Display"; font-weight: 800; src: url("assets/fonts/big-shoulders-display-latin-800-normal.woff2") format("woff2"); }
+@font-face { font-family: "Big Shoulders Display"; font-weight: 900; src: url("assets/fonts/big-shoulders-display-latin-900-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 500; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 600; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 700; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 800; src: url("assets/fonts/inter-latin-800-normal.woff2") format("woff2"); }
+@font-face { font-family: "Noto Color Emoji"; src: url("assets/fonts/noto-emoji-subset.ttf") format("truetype"); }
+
+
+#root { position: absolute; inset: 0; overflow: hidden; container-type: size; font-family: "Inter", sans-serif; color: #14183A; }
+.f07-bg { position: absolute; inset: 0; z-index: 0; }
+.f07-stage { position: absolute; inset: 0; z-index: 1; }
+.f07-abs { position: absolute; }
+.f07-disp { font-family: "Big Shoulders Display", sans-serif; font-weight: 900; line-height: .9; }
+.f07-emoji { font-family: "Noto Color Emoji"; font-weight: 400; }
+.f07-char { position: absolute; }
+.f07-char svg { display: block; width: 100%; height: auto; overflow: visible; }
+.f07-bubble { position: absolute; background: #FFFFFF; color: #14183A; border: .55cqw solid #14183A; border-radius: 3.4cqw; padding: 2.2cqw 3.2cqw; font-weight: 700; font-size: 4.3cqw; line-height: 1.15; }
+.f07-bubble.f07-blue { background: #2536D6; color: #FFFFFF; }
+.f07-tail { position: absolute; width: 3.4cqw; height: 3.4cqw; bottom: -1.95cqw; left: 6cqw; background: inherit; border-right: .55cqw solid #14183A; border-bottom: .55cqw solid #14183A; transform: rotate(45deg); }
+.f07-tail.f07-r { left: auto; right: 6cqw; }
+.f07-panel { position: absolute; background: #FFFFFF; border: .6cqw solid #14183A; border-radius: 2.4cqw; overflow: hidden; }
+.f07-burst { position: absolute; font-family: "Big Shoulders Display", sans-serif; font-weight: 900; color: #FFFFFF; background: #2536D6; padding: 1.4cqw 3cqw; border-radius: 1.6cqw; border: .55cqw solid #14183A; white-space: nowrap; }
+.f07-eyebrow { position: absolute; left: 8cqw; top: 10cqw; font-weight: 800; font-size: 3.6cqw; letter-spacing: .12em; color: #2536D6; background: rgba(37,54,214,.08); border-radius: 100px; padding: 1.4cqw 3.6cqw; }
+.f07-h1 { position: absolute; left: 8cqw; top: 20cqw; font-family: "Big Shoulders Display", sans-serif; font-weight: 900; font-size: 12.5cqw; line-height: .9; color: #14183A; white-space: nowrap; }
+.f07-word { display: inline-block; }
+.f07-wordmark { font-family: "Big Shoulders Display", sans-serif; font-weight: 900; line-height: .78; letter-spacing: -.01em; }
+
+
+.f07-phone { position: absolute; background: #14183A; border-radius: 9cqw; padding: 2.2cqw; box-shadow: 0 4cqw 9cqw rgba(20,24,58,.16); }
+.f07-screen { position: relative; width: 100%; height: 100%; border-radius: 7cqw; overflow: hidden; background: #F4F5FB; }
+.f07-app { position: absolute; left: 0; top: 0; width: 390px; height: 1200px; transform-origin: 0 0; background: #F4F5FB; color: #14183A; font: 17px/1.45 "Inter", sans-serif; -webkit-font-smoothing: antialiased; }
+.f07-page { padding: 14px 16px 48px; }
+.f07-app .top { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; }
+.f07-app .brand { font: 800 24px/1 "Big Shoulders Display", sans-serif; letter-spacing: .01em; padding: 10px 0; }
+.f07-app .hero { font: 800 54.6px/.92 "Big Shoulders Display", sans-serif; letter-spacing: .005em; margin: 28px 0 18px; }
+.f07-app .title { font: 800 41px/.98 "Big Shoulders Display", sans-serif; letter-spacing: .005em; margin: 18px 0 10px; }
+.f07-app .lede { font-size: 19px; color: #555B78; }
+.f07-app .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; font-size: 15px; color: #555B78; }
+.f07-app .live { display: inline-flex; align-items: center; gap: 7px; color: #17784A; font-weight: 600; }
+.f07-app .live::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: #17784A; }
+.f07-app .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 8px 18px; border: 1.5px solid #14183A; border-radius: 10px; background: transparent; color: #14183A; font-weight: 650; font-size: 16px; line-height: 1.15; white-space: nowrap; }
+.f07-app .btn-primary { background: #2536D6; border-color: #2536D6; color: #FFFFFF; }
+.f07-app .btn-ink { background: #14183A; border-color: #14183A; color: #F4F5FB; width: 100%; margin-top: 6px; }
+.f07-app .btn-quiet { border-color: #D6D9EA; }
+.f07-app .lbl { display: block; font-weight: 650; font-size: 15px; margin-bottom: 6px; }
+.f07-app .join { margin-top: 22px; }
+.f07-app .join-row { display: flex; gap: 8px; }
+.f07-app .input { flex: 1; min-width: 0; min-height: 48px; padding: 0 14px; border: 1.5px solid #14183A; border-radius: 10px; background: #FFFFFF; font-size: 17px; display: flex; align-items: center; white-space: nowrap; overflow: hidden; }
+.f07-app .input.focus { box-shadow: 0 0 0 3px #14183A; }
+.f07-app .ph { color: #555B78; opacity: .75; }
+.f07-app .caret { display: inline-block; width: 2px; height: 22px; background: #14183A; margin-left: 1px; }
+.f07-app .ready { margin-top: 22px; padding: 18px; background: #FFFFFF; border: 1.5px solid #14183A; border-radius: 14px; }
+.f07-app .ready h2 { font: 800 28px/1 "Big Shoulders Display", sans-serif; letter-spacing: .01em; margin-bottom: 6px; }
+.f07-app .link-row { padding: 14px 0 4px; border-top: 1px solid #D6D9EA; margin-top: 14px; }
+.f07-app .link-row strong { display: block; }
+.f07-app .link-row span { display: block; color: #555B78; font-size: 15px; margin-bottom: 10px; }
+.f07-app .link-row span.btn { display: inline-flex; color: #FFFFFF; font-size: 16px; margin-bottom: 0; }
+.f07-app .h2 { font: 700 15px/1.3 "Inter", sans-serif; color: #555B78; margin: 40px 0 6px; }
+.f07-app .summary { font-weight: 650; font-size: 15px; padding: 12px 0; }
+.f07-app .hint { color: #555B78; font-size: 15px; margin-top: 10px; }
+.f07-app .list { margin-top: 14px; }
+.f07-app .row { position: relative; display: flex; align-items: stretch; border-bottom: 1px solid #D6D9EA; background: #F4F5FB; }
+.f07-app .row-main { flex: 1; display: flex; align-items: center; gap: 12px; min-height: 58px; padding: 8px 10px 8px 4px; }
+.f07-app .num { flex: none; width: 46px; text-align: center; font: 800 34px/1 "Big Shoulders Display", sans-serif; }
+.f07-app .name { flex: 1; font-weight: 550; }
+.f07-app .grip { flex: none; width: 40px; display: flex; align-items: center; justify-content: center; color: #555B78; }
+.f07-app .grip svg { width: 16px; height: 24px; }
+.f07-app .row.first { background: #2536D6; color: #FFFFFF; border-bottom-color: transparent; border-radius: 14px; margin-bottom: 4px; }
+.f07-app .row.first .row-main { min-height: 78px; }
+.f07-app .row.first .num { font-size: 54px; width: 56px; }
+.f07-app .row.first .name { font-size: 20px; font-weight: 700; }
+.f07-app .row.first .grip { color: #FFFFFF; opacity: .8; }
+.f07-app .tag { flex: none; font-size: 13px; font-weight: 650; line-height: 1; padding: 6px 9px; border-radius: 999px; background: #515EDE; color: #FFFFFF; }
+.f07-app .list-tools { margin-top: 14px; }
+.f07-app .toast { position: absolute; left: 50%; top: 14px; margin-left: -88px; width: 176px; padding: 12px 16px; border-radius: 10px; background: #14183A; color: #F4F5FB; font-weight: 600; font-size: 15px; box-shadow: 0 10px 30px rgba(20,24,58,.18); text-align: center; z-index: 4; }
+.f07-app .tap { position: relative; overflow: visible; }
+.f07-app .ripple { position: absolute; left: 50%; top: 50%; width: 60px; height: 60px; margin: -30px 0 0 -30px; border-radius: 50%; background: rgba(37,54,214,.28); border: 3px solid #2536D6; z-index: 5; }
+
+.f07-chip { position: absolute; background: #2536D6; color: #FFFFFF; font-weight: 700; font-size: 4.6cqw; border-radius: 100px; padding: 2.4cqw 4.4cqw; white-space: nowrap; }
+
+  </style>
+  <div id="root" data-composition-id="07-step-share" data-width="1080" data-height="1920" data-duration="4.4">
+    <div class="f07-bg clip" id="f07-bg" data-start="0" data-duration="4.4" data-track-index="0" style="background:#FFFFFF"></div>
+    
+<svg class="f07-defs" width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<g id="f07-body"><path d="M18 262 C18 206 58 184 100 184 C142 184 182 206 182 262 Z" fill="#2536D6" stroke="#14183A" stroke-width="6"/><path d="M70 196 Q100 214 130 196" fill="none" stroke="#14183A" stroke-width="5" stroke-linecap="round"/></g>
+<g id="f07-head"><circle cx="40" cy="118" r="13" fill="#fff" stroke="#14183A" stroke-width="6"/><circle cx="160" cy="118" r="13" fill="#fff" stroke="#14183A" stroke-width="6"/><circle cx="100" cy="112" r="62" fill="#fff" stroke="#14183A" stroke-width="6"/></g>
+<g id="f07-angry" stroke="#14183A" stroke-linecap="round"><path d="M64 92 L92 104" stroke-width="8"/><path d="M136 92 L108 104" stroke-width="8"/><circle cx="80" cy="116" r="6" fill="#14183A" stroke="none"/><circle cx="120" cy="116" r="6" fill="#14183A" stroke="none"/><path d="M78 140 Q100 128 122 140 Q120 170 100 172 Q80 170 78 140 Z" fill="#14183A" stroke-width="2"/><path d="M88 162 Q100 152 112 162 Q106 170 100 170 Q94 170 88 162 Z" fill="#2536D6" stroke="none"/></g>
+<g id="f07-happy" stroke="#14183A" stroke-linecap="round" fill="none"><path d="M66 96 Q78 88 90 96" stroke-width="7"/><path d="M110 96 Q122 88 134 96" stroke-width="7"/><path d="M72 116 Q80 107 88 116" stroke-width="7"/><path d="M112 116 Q120 107 128 116" stroke-width="7"/><path d="M78 138 Q100 168 122 138 Z" fill="#14183A" stroke-width="3"/></g>
+<g id="f07-unsure" stroke="#14183A" stroke-linecap="round"><path d="M66 90 Q78 80 90 88" stroke-width="7" fill="none"/><path d="M110 98 L134 98" stroke-width="7"/><circle cx="80" cy="116" r="6" fill="#14183A" stroke="none"/><circle cx="120" cy="116" r="6" fill="#14183A" stroke="none"/><circle cx="104" cy="148" r="8" fill="#14183A" stroke="none"/></g>
+<g id="f07-hair-mike"><path d="M40 104 C36 52 68 36 100 36 C134 36 166 54 160 104 C150 80 128 72 100 72 C74 72 52 80 40 104 Z" fill="#14183A"/></g>
+<g id="f07-hair-sandra-back"><path d="M32 112 C28 54 64 30 100 30 C140 30 174 56 168 112 L174 206 C152 202 140 192 138 182 L62 182 C60 192 48 202 26 206 Z" fill="#14183A"/></g>
+<g id="f07-hair-sandra-front"><path d="M42 100 C50 58 92 42 136 54 C122 66 98 76 62 82 C52 86 46 92 42 100 Z" fill="#14183A"/></g>
+<g id="f07-hair-dustin"><path d="M38 96 C38 50 68 36 100 36 C134 36 162 50 162 96 Z" fill="#2536D6" stroke="#14183A" stroke-width="6"/><path d="M100 88 L186 94 C182 104 164 106 152 104 L100 100 Z" fill="#2536D6" stroke="#14183A" stroke-width="6" stroke-linejoin="round"/></g>
+<g id="f07-hair-keer"><circle cx="100" cy="34" r="22" fill="#14183A"/><path d="M40 106 C38 60 70 46 100 46 C132 46 162 60 160 106 C148 82 126 76 100 76 C74 76 52 82 40 106 Z" fill="#14183A"/></g>
+<g id="f07-hair-amaka-back"><circle cx="100" cy="72" r="70" fill="#14183A"/><circle cx="46" cy="100" r="36" fill="#14183A"/><circle cx="154" cy="100" r="36" fill="#14183A"/></g>
+<g id="f07-hair-host"><path d="M44 84 Q60 50 100 48 Q140 50 156 84 Q130 66 100 66 Q70 66 44 84 Z" fill="#14183A"/></g>
+<g id="f07-thumb"><circle cx="100" cy="226" r="19" fill="#fff" stroke="#14183A" stroke-width="6"/><path d="M100 210 L100 186" stroke="#14183A" stroke-width="12" stroke-linecap="round"/><path d="M100 210 L100 188" stroke="#fff" stroke-width="5" stroke-linecap="round"/></g>
+<g id="f07-action-light" stroke="#EEF0FF" stroke-width="5" stroke-linecap="round"><path d="M50 4 L50 24"/><path d="M84 18 L70 32"/><path d="M96 52 L76 52"/><path d="M16 18 L30 32"/><path d="M4 52 L24 52"/></g>
+<g id="f07-action-ink" stroke="#14183A" stroke-width="5" stroke-linecap="round"><path d="M50 4 L50 24"/><path d="M84 18 L70 32"/><path d="M96 52 L76 52"/><path d="M16 18 L30 32"/><path d="M4 52 L24 52"/></g>
+<g id="f07-list-a"><rect x="6" y="6" width="148" height="188" rx="10" fill="#fff" stroke="#14183A" stroke-width="6"/><text x="22" y="44" font-family="Inter" font-weight="800" font-size="20" fill="#2536D6">QUEUE</text><g font-family="Inter" font-weight="600" font-size="19" fill="#14183A"><text x="22" y="82">1 Mike</text><text x="22" y="114">2 Sandra</text><text x="22" y="146">3 Dustin</text><text x="22" y="178">4 Keer</text></g></g>
+<g id="f07-list-b"><rect x="6" y="6" width="148" height="188" rx="10" fill="#fff" stroke="#14183A" stroke-width="6"/><text x="22" y="44" font-family="Inter" font-weight="800" font-size="20" fill="#2536D6">QUEUE</text><g font-family="Inter" font-weight="600" font-size="19" fill="#14183A"><text x="22" y="82">1 Keer</text><text x="22" y="114">2 Mike</text><text x="22" y="146">3 Sandra</text><text x="22" y="178">4 Dustin</text></g></g>
+<g id="f07-magnifier"><circle cx="48" cy="48" r="34" fill="rgba(63,81,242,.18)" stroke="#14183A" stroke-width="9"/><path d="M74 74 L110 110" stroke="#14183A" stroke-width="14" stroke-linecap="round"/></g>
+</defs></svg>
+
+    <div class="f07-stage" id="f07-stage">
+<div class='f07-eyebrow' id='f07-eb'>STEP 3</div>
+<div class='f07-h1' id='f07-h1'><span class='f07-word'>Share</span> <span class='f07-word'>your</span> <span class='f07-word'>list</span></div>
+<div class='f07-phone' id='f07-phone' style='left:5cqw; width:46cqw; top:38cqw; height:80cqw; border-radius:7cqw; padding:1.8cqw'><div class='f07-screen' style='border-radius:5.6cqw'>
+<div class='f07-app' id='f07-app' data-layout-allow-overflow style='transform:scale(1.174); top:-235px'><div class='f07-page'><div style='visibility:hidden'><div class='top'><span class='brand'>dq</span><span class='btn btn-quiet'>Share queue link</span></div><h1 class='title'>Friday Night Hot Seat</h1><p class='meta'><span class='live'>Live</span><span>4 people waiting</span></p><div class='join'><span class='lbl'>Add a name to the queue</span><div class='join-row'><div class='input'></div><span class='btn btn-primary'>Add name</span></div></div></div><div class='summary'>&#9656; Queue settings</div><span class='btn btn-ink'>Mike is done, next person</span><p class='hint'>Drag the grip to reorder, or tap a name for more options.</p><ol class='list'><li class='row first' id='f07-r0' style=''><span class='grip'><svg viewBox='0 0 16 24' fill='currentColor'><circle cx='4' cy='5' r='2'/><circle cx='12' cy='5' r='2'/><circle cx='4' cy='12' r='2'/><circle cx='12' cy='12' r='2'/><circle cx='4' cy='19' r='2'/><circle cx='12' cy='19' r='2'/></svg></span><div class='row-main'><span class='num'>1</span><span class='name'>Mike</span><span class='tag'>Next up</span></div></li><li class='row' id='f07-r1' style=''><span class='grip'><svg viewBox='0 0 16 24' fill='currentColor'><circle cx='4' cy='5' r='2'/><circle cx='12' cy='5' r='2'/><circle cx='4' cy='12' r='2'/><circle cx='12' cy='12' r='2'/><circle cx='4' cy='19' r='2'/><circle cx='12' cy='19' r='2'/></svg></span><div class='row-main'><span class='num'>2</span><span class='name'>Sandra</span></div></li><li class='row' id='f07-r2' style=''><span class='grip'><svg viewBox='0 0 16 24' fill='currentColor'><circle cx='4' cy='5' r='2'/><circle cx='12' cy='5' r='2'/><circle cx='4' cy='12' r='2'/><circle cx='12' cy='12' r='2'/><circle cx='4' cy='19' r='2'/><circle cx='12' cy='19' r='2'/></svg></span><div class='row-main'><span class='num'>3</span><span class='name'>Dustin</span></div></li><li class='row' id='f07-r3' style=''><span class='grip'><svg viewBox='0 0 16 24' fill='currentColor'><circle cx='4' cy='5' r='2'/><circle cx='12' cy='5' r='2'/><circle cx='4' cy='12' r='2'/><circle cx='12' cy='12' r='2'/><circle cx='4' cy='19' r='2'/><circle cx='12' cy='19' r='2'/></svg></span><div class='row-main'><span class='num'>4</span><span class='name'>Keer</span></div></li></ol><p class='list-tools'><span class='btn btn-quiet tap' id='f07-copy'>Copy list<span class='ripple' id='f07-rip' style='opacity:0'></span></span></p></div><div class='toast' id='f07-toast' style='top:214px'>4 names copied.</div></div>
+</div></div>
+<div data-layout-allow-overlap class='f07-bubble f07-blue' id='f07-bl' style='font-size:5cqw;left:30cqw; right:4cqw; top:52cqw'>Mike, Sandra, Dustin, Keer<span class='f07-tail'></span></div>
+<div data-layout-allow-overlap class='f07-bubble' id='f07-bk' style='font-size:4.2cqw;left:30cqw; right:4cqw; top:68cqw; color:#2536D6'><span style='display:block'>dq.withsholz.workers.dev</span><span style='display:block'>/q/5h3bkjqg2y</span><span class='f07-tail'></span></div>
+<div class='f07-char' id='f07-mh' data-layout-allow-overflow data-layout-allow-overlap style='left:56cqw; top:100cqw; width:22cqw'><svg viewBox='0 0 200 262'><use href='#f07-body'/><g class='f07-headg'><use href='#f07-head'/><use href='#f07-hair-mike'/><use href='#f07-happy'/></g></svg></div>
+<div class='f07-char' id='f07-sh' data-layout-allow-overflow data-layout-allow-overlap style='left:76cqw; top:106cqw; width:20cqw'><svg viewBox='0 0 200 262'><use href='#f07-hair-sandra-back'/><use href='#f07-body'/><g class='f07-headg'><use href='#f07-head'/><use href='#f07-hair-sandra-front'/><use href='#f07-happy'/></g></svg></div>
+<div class='f07-bubble' id='f07-ok' style='font-size:4.2cqw;right:6cqw; top:89cqw; padding:1.4cqw 2.6cqw'><span class='f07-emoji'>✅</span> Got it!<span class='f07-tail f07-r'></span></div>
+<div class='f07-char' id='f07-ah' data-layout-allow-overflow data-layout-allow-overlap style='left:6cqw; top:121cqw; width:26cqw'><svg viewBox='0 0 200 262'><use href='#f07-hair-amaka-back'/><use href='#f07-body'/><g class='f07-headg'><use href='#f07-head'/><use href='#f07-happy'/></g></svg></div>
+<div class='f07-chip' id='f07-chip' style='left:34cqw; top:132cqw'>Amaka, you are number 5</div>
+    </div>
+  </div>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <script>
+    (function () {
+      const $ = (s) => document.querySelector('[data-composition-id="07-step-share"] ' + s);
+      const $$ = (s) => Array.from(document.querySelectorAll('[data-composition-id="07-step-share"] ' + s));
+      const tl = gsap.timeline({ paused: true });
+      const pop = (sel, at, origin) => tl.fromTo(sel, { scale: 0.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.32, ease: "back.out(1.6)", transformOrigin: origin || "20% 100%" }, at);
+      const rise = (sel, at, dist, dur) => tl.fromTo(sel, { y: dist || 300, opacity: 0 }, { y: 0, opacity: 1, duration: dur || 0.55, ease: "power3.out" }, at);
+      const shake = (sel, at, amp, n) => { for (let i = 0; i < n; i++) { const a = amp * (1 - i / n); tl.to(sel, { x: (i % 2 ? -a : a), y: (i % 3 - 1) * a * 0.4, duration: 0.045, ease: "none" }, at + i * 0.045); } tl.to(sel, { x: 0, y: 0, duration: 0.05, ease: "none" }, at + n * 0.045); };
+      const jitter = (sel, from, to, amp) => { const n = Math.floor((to - from) / 0.09); for (let i = 0; i < n; i++) tl.to(sel, { rotation: (i % 2 ? -amp : amp), duration: 0.09, ease: "sine.inOut", transformOrigin: "50% 85%" }, from + i * 0.09); tl.to(sel, { rotation: 0, duration: 0.09, transformOrigin: "50% 85%" }, from + n * 0.09); };
+      const type = (chars, from, step) => chars.forEach((c, i) => tl.set(c, { display: "inline" }, from + i * step));
+
+      tl.fromTo($("#f07-eb"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 0.0);
+      tl.fromTo($$("#f07-h1 .f07-word"), { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out", stagger: 0.08 }, 0.05);
+      const copyBtn = $("#f07-copy");
+      tl.fromTo($("#f07-rip"), { scale: 0.2, opacity: 0.9 }, { scale: 1.6, opacity: 0, duration: 0.45, ease: "power2.out" }, 0.6);
+      tl.fromTo(copyBtn, { scale: 1 }, { scale: 0.94, duration: 0.08, ease: "power2.in" }, 0.6);
+      tl.to(copyBtn, { scale: 1, duration: 0.2, ease: "power3.out" }, 0.68);
+      tl.fromTo($("#f07-toast"), { y: -30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power3.out" }, 0.7);
+      const flyOut = (sel, at) => tl.fromTo(sel, { x: -380, y: 140, scale: 0.35, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.45, ease: "expo.out", transformOrigin: "0% 50%" }, at);
+      flyOut($("#f07-bl"), 1.0);
+      flyOut($("#f07-bk"), 1.6);
+      rise([$("#f07-mh"), $("#f07-sh")], 2.2, 160, 0.45);
+      pop($("#f07-ok"), 2.4, "80% 100%");
+      rise($("#f07-ah"), 3.0, 200, 0.45);
+      tl.fromTo($("#f07-chip"), { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: "power3.out", transformOrigin: "0% 50%" }, 3.2);
+
+      window.__timelines["07-step-share"] = tl;
+    })();
+  </script>
+</template>
