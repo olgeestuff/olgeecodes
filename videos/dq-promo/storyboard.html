@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>dq commercial — storyboard v2</title>
+<style>
+@font-face { font-family: "Big Shoulders Display"; font-weight: 800; src: url("assets/fonts/big-shoulders-display-latin-800-normal.woff2") format("woff2"); }
+@font-face { font-family: "Big Shoulders Display"; font-weight: 900; src: url("assets/fonts/big-shoulders-display-latin-900-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 500; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 600; src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 700; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 800; src: url("assets/fonts/inter-latin-800-normal.woff2") format("woff2"); }
+@font-face { font-family: "Noto Color Emoji"; src: url("assets/fonts/noto-emoji-subset.ttf") format("truetype"); }
+
+:root {
+  --white: #FFFFFF; --paper: #F4F5FB; --night: #0D1030; --night-surface: #181C48;
+  --cobalt: #2536D6; --cobalt-bright: #3F51F2; --ink: #14183A; --muted: #555B78;
+  --muted-dark: #A6ABCF; --on-dark: #EEF0FF; --line: #D6D9EA; --live: #17784A;
+  --display: "Big Shoulders Display", "Arial Narrow", sans-serif;
+  --body: "Inter", system-ui, sans-serif;
+  --emoji: "Noto Color Emoji";
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #E9EBF5; color: var(--ink); font-family: var(--body); padding: 40px 32px 64px; }
+header.sheet { max-width: 1400px; margin: 0 auto 28px; display: flex; align-items: end; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+header.sheet h1 { font-family: var(--display); font-weight: 900; font-size: 48px; line-height: .95; }
+header.sheet p { color: var(--muted); font-size: 15px; margin-top: 8px; max-width: 760px; line-height: 1.45; }
+.tag { font-weight: 700; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--cobalt); background: rgba(37,54,214,.08); border-radius: 100px; padding: 8px 14px; white-space: nowrap; }
+.act { max-width: 1400px; margin: 26px auto 12px; font-weight: 700; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 12px; }
+.act::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.grid { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; }
+@media (max-width: 1100px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.card { background: var(--white); border-radius: 14px; padding: 10px; border: 1px solid var(--line); }
+.cell { aspect-ratio: 9 / 16; container-type: inline-size; position: relative; overflow: hidden; border-radius: 8px; }
+.label { display: flex; justify-content: space-between; gap: 8px; margin: 10px 2px 4px; font-size: 12px; }
+.label b { font-weight: 800; letter-spacing: .04em; }
+.label span { color: var(--muted); }
+.note { font-size: 12.5px; line-height: 1.45; color: var(--muted); margin: 0 2px; }
+.note b { color: var(--ink); }
+.chip { display: inline-block; margin: 8px 2px 2px; font-size: 11px; font-weight: 700; color: var(--cobalt); background: rgba(37,54,214,.08); border-radius: 100px; padding: 4px 10px; }
+.emoji { font-family: var(--emoji); font-weight: 400; }
+
+/* shared in-cell atoms (all sizes in cqw of a 1080-wide frame) */
+.night { background: var(--night); color: var(--on-dark); }
+.day { background: var(--white); }
+.blue { background: var(--cobalt); color: var(--white); }
+.abs { position: absolute; }
+.disp { font-family: var(--display); font-weight: 900; line-height: .9; }
+.bubble { position: absolute; background: var(--white); color: var(--ink); border: .55cqw solid var(--ink); border-radius: 3.4cqw; padding: 2.2cqw 3.2cqw; font-weight: 700; font-size: 4.3cqw; line-height: 1.15; }
+.bubble.blue-b { background: var(--cobalt); color: var(--white); }
+.bubble::after { content: ""; position: absolute; width: 3.4cqw; height: 3.4cqw; background: inherit; border-right: .55cqw solid var(--ink); border-bottom: .55cqw solid var(--ink); bottom: -1.95cqw; left: 6cqw; transform: rotate(45deg); }
+.bubble.tail-r::after { left: auto; right: 6cqw; }
+.bubble.tail-none::after { display: none; }
+.panel { position: absolute; background: var(--white); border: .6cqw solid var(--ink); border-radius: 2.4cqw; overflow: hidden; }
+.burst { position: absolute; font-family: var(--display); font-weight: 900; color: var(--white); background: var(--cobalt); padding: 1.4cqw 3cqw; border-radius: 1.6cqw; border: .55cqw solid var(--ink); transform: rotate(-6deg); }
+.eyebrow { position: absolute; left: 8cqw; top: 10cqw; font-weight: 800; font-size: 3.6cqw; letter-spacing: .12em; color: var(--cobalt); background: rgba(37,54,214,.08); border-radius: 100px; padding: 1.4cqw 3.6cqw; }
+.h1 { position: absolute; left: 8cqw; right: 8cqw; top: 20cqw; font-family: var(--display); font-weight: 900; font-size: 12.5cqw; white-space: nowrap; line-height: .9; color: var(--ink); }
+
+/* phone mockup + dq UI (sketch of the rebuild from dq's own CSS) */
+.phone { position: absolute; background: var(--ink); border-radius: 9cqw; padding: 2.2cqw; box-shadow: 0 4cqw 9cqw rgba(20,24,58,.18); }
+.screen { background: var(--paper); border-radius: 7cqw; width: 100%; height: 100%; overflow: hidden; position: relative; padding: 8cqw 5cqw 0; }
+.dq-brand { font-family: var(--display); font-weight: 900; font-size: 7cqw; line-height: 1; }
+.dq-hero { font-family: var(--display); font-weight: 900; font-size: 13.5cqw; line-height: .9; margin-top: 5cqw; }
+.dq-title { font-family: var(--display); font-weight: 900; font-size: 9.5cqw; line-height: .95; margin-top: 4cqw; }
+.dq-label { font-weight: 700; font-size: 3.4cqw; margin-top: 5cqw; }
+.dq-row { display: flex; gap: 2cqw; margin-top: 2cqw; }
+.dq-input { flex: 1; border: .35cqw solid var(--ink); border-radius: 2.4cqw; background: var(--white); font-size: 3.6cqw; padding: 2.6cqw 3cqw; white-space: nowrap; overflow: hidden; }
+.dq-btn { background: var(--cobalt); color: var(--white); font-weight: 700; font-size: 3.6cqw; border-radius: 2.4cqw; padding: 2.6cqw 3.4cqw; white-space: nowrap; }
+.dq-btn.quiet { background: var(--white); color: var(--ink); border: .3cqw solid var(--line); }
+.dq-meta { font-size: 3.4cqw; color: var(--muted); margin-top: 1.6cqw; display: flex; gap: 3cqw; }
+.dq-meta .live { color: var(--live); font-weight: 700; }
+.dq-card { background: var(--white); border: .35cqw solid var(--ink); border-radius: 3cqw; padding: 4cqw; margin-top: 4cqw; }
+.dq-list { list-style: none; margin-top: 3cqw; }
+.dq-list li { display: flex; align-items: center; gap: 4cqw; padding: 3cqw 3cqw; border-bottom: .25cqw solid var(--line); font-size: 4.2cqw; font-weight: 600; }
+.dq-list li .n { font-family: var(--display); font-weight: 900; font-size: 7cqw; width: 5cqw; }
+.dq-list li.first { background: var(--cobalt); color: var(--white); border-radius: 3cqw; border: 0; }
+.dq-list li .pill { margin-left: auto; font-size: 2.6cqw; background: rgba(255,255,255,.18); border-radius: 100px; padding: 1cqw 2.4cqw; }
+.toast { position: absolute; background: var(--ink); color: var(--white); font-weight: 600; font-size: 3.6cqw; padding: 2.6cqw 4cqw; border-radius: 2.6cqw; }
+.cursor-tap { position: absolute; width: 7cqw; height: 7cqw; border-radius: 50%; border: .6cqw solid var(--cobalt); background: rgba(37,54,214,.15); }
+.wordmark { font-family: var(--display); font-weight: 900; line-height: .78; letter-spacing: -.01em; }
+.ghost { opacity: .28; }
+.seam { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px; }
+.seam div { font-size: 11.5px; background: var(--paper); border-radius: 8px; padding: 6px 8px; }
+.tokens { padding: 14px; font-size: 12px; line-height: 1.5; color: var(--muted); }
+.sw { display: flex; gap: 6px; margin: 8px 0 12px; flex-wrap: wrap; }
+.sw span { width: 52px; height: 36px; border-radius: 8px; border: 1px solid var(--line); display: flex; align-items: end; padding: 3px; font-size: 9px; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<!-- Comic cast: two-colour comic art (navy ink, white fills, cobalt shading). Reused by the build. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="body"><path d="M18 262 C18 206 58 184 100 184 C142 184 182 206 182 262 Z" fill="#2536D6" stroke="#14183A" stroke-width="6"/></g>
+    <g id="head"><circle cx="40" cy="118" r="13" fill="#fff" stroke="#14183A" stroke-width="6"/><circle cx="160" cy="118" r="13" fill="#fff" stroke="#14183A" stroke-width="6"/><circle cx="100" cy="112" r="62" fill="#fff" stroke="#14183A" stroke-width="6"/></g>
+    <g id="face-angry" stroke="#14183A" stroke-linecap="round"><path d="M64 92 L92 104" stroke-width="8"/><path d="M136 92 L108 104" stroke-width="8"/><circle cx="80" cy="116" r="6" fill="#14183A" stroke="none"/><circle cx="120" cy="116" r="6" fill="#14183A" stroke="none"/><path d="M78 140 Q100 128 122 140 Q120 170 100 172 Q80 170 78 140 Z" fill="#14183A" stroke-width="2"/><path d="M88 162 Q100 152 112 162 Q106 170 100 170 Q94 170 88 162 Z" fill="#2536D6" stroke="none"/></g>
+    <g id="face-happy" stroke="#14183A" stroke-linecap="round" fill="none"><path d="M66 96 Q78 88 90 96" stroke-width="7"/><path d="M110 96 Q122 88 134 96" stroke-width="7"/><path d="M72 116 Q80 107 88 116" stroke-width="7"/><path d="M112 116 Q120 107 128 116" stroke-width="7"/><path d="M78 138 Q100 168 122 138 Z" fill="#14183A" stroke-width="3"/></g>
+    <g id="face-unsure" stroke="#14183A" stroke-linecap="round"><path d="M66 90 Q78 80 90 88" stroke-width="7" fill="none"/><path d="M110 98 L134 98" stroke-width="7"/><circle cx="80" cy="116" r="6" fill="#14183A" stroke="none"/><circle cx="120" cy="116" r="6" fill="#14183A" stroke="none"/><circle cx="104" cy="148" r="8" fill="#14183A" stroke="none"/></g>
+    <g id="hair-mike"><path d="M40 104 C36 52 68 36 100 36 C134 36 166 54 160 104 C150 80 128 72 100 72 C74 72 52 80 40 104 Z" fill="#14183A"/></g>
+    <g id="hair-sandra-back"><path d="M32 112 C28 54 64 30 100 30 C140 30 174 56 168 112 L174 206 C152 202 140 192 138 182 L62 182 C60 192 48 202 26 206 Z" fill="#14183A"/></g>
+    <g id="hair-sandra-front"><path d="M42 100 C50 58 92 42 136 54 C122 66 98 76 62 82 C52 86 46 92 42 100 Z" fill="#14183A"/></g>
+    <g id="hair-dustin"><path d="M38 96 C38 50 68 36 100 36 C134 36 162 50 162 96 Z" fill="#2536D6" stroke="#14183A" stroke-width="6"/><path d="M100 88 L186 94 C182 104 164 106 152 104 L100 100 Z" fill="#2536D6" stroke="#14183A" stroke-width="6" stroke-linejoin="round"/></g>
+    <g id="hair-keer"><circle cx="100" cy="34" r="22" fill="#14183A"/><path d="M40 106 C38 60 70 46 100 46 C132 46 162 60 160 106 C148 82 126 76 100 76 C74 76 52 82 40 106 Z" fill="#14183A"/></g>
+    <g id="hair-amaka-back"><circle cx="100" cy="72" r="70" fill="#14183A"/><circle cx="46" cy="100" r="36" fill="#14183A"/><circle cx="154" cy="100" r="36" fill="#14183A"/></g>
+    <g id="thumb"><circle cx="100" cy="226" r="19" fill="#fff" stroke="#14183A" stroke-width="6"/><path d="M100 210 L100 186" stroke="#14183A" stroke-width="12" stroke-linecap="round"/><path d="M100 210 L100 188" stroke="#fff" stroke-width="5" stroke-linecap="round"/></g>
+
+    <symbol id="mike-angry" viewBox="0 0 200 262"><use href="#body"/><use href="#head"/><use href="#hair-mike"/><use href="#face-angry"/></symbol>
+    <symbol id="mike-happy" viewBox="0 0 200 262"><use href="#body"/><use href="#head"/><use href="#hair-mike"/><use href="#face-happy"/></symbol>
+    <symbol id="sandra-angry" viewBox="0 0 200 262"><use href="#hair-sandra-back"/><use href="#body"/><use href="#head"/><use href="#hair-sandra-front"/><use href="#face-angry"/></symbol>
+    <symbol id="sandra-happy" viewBox="0 0 200 262"><use href="#hair-sandra-back"/><use href="#body"/><use href="#head"/><use href="#hair-sandra-front"/><use href="#face-happy"/></symbol>
+    <symbol id="dustin-angry" viewBox="0 0 200 262"><use href="#body"/><use href="#head"/><use href="#hair-dustin"/><use href="#face-angry"/></symbol>
+    <symbol id="dustin-happy" viewBox="0 0 200 262"><use href="#body"/><use href="#head"/><use href="#hair-dustin"/><use href="#face-happy"/></symbol>
+    <symbol id="keer-angry" viewBox="0 0 200 262"><use href="#body"/><use href="#head"/><use href="#hair-keer"/><use href="#face-angry"/></symbol>
+    <symbol id="keer-happy" viewBox="0 0 200 262"><use href="#body"/><use href="#head"/><use href="#hair-keer"/><use href="#face-happy"/></symbol>
+    <symbol id="amaka-unsure" viewBox="0 0 200 262"><use href="#hair-amaka-back"/><use href="#body"/><use href="#head"/><use href="#face-unsure"/></symbol>
+    <symbol id="amaka-happy" viewBox="0 0 200 262"><use href="#hair-amaka-back"/><use href="#body"/><use href="#head"/><use href="#face-happy"/></symbol>
+    <symbol id="bald-angry" viewBox="0 0 200 262"><use href="#body"/><use href="#head"/><use href="#face-angry"/></symbol>
+    <symbol id="mike-me" viewBox="0 0 200 262"><use href="#body"/><use href="#head"/><use href="#hair-mike"/><use href="#face-angry"/><use href="#thumb"/></symbol>
+    <symbol id="sandra-me" viewBox="0 0 200 262"><use href="#hair-sandra-back"/><use href="#body"/><use href="#head"/><use href="#hair-sandra-front"/><use href="#face-angry"/><use href="#thumb"/></symbol>
+    <symbol id="dustin-me" viewBox="0 0 200 262"><use href="#body"/><use href="#head"/><use href="#hair-dustin"/><use href="#face-angry"/><use href="#thumb"/></symbol>
+    <symbol id="action" viewBox="0 0 100 100"><g stroke="#EEF0FF" stroke-width="5" stroke-linecap="round"><path d="M50 4 L50 24"/><path d="M84 18 L70 32"/><path d="M96 52 L76 52"/><path d="M16 18 L30 32"/><path d="M4 52 L24 52"/></g></symbol>
+    <symbol id="action-ink" viewBox="0 0 100 100"><g stroke="#14183A" stroke-width="5" stroke-linecap="round"><path d="M50 4 L50 24"/><path d="M84 18 L70 32"/><path d="M96 52 L76 52"/><path d="M16 18 L30 32"/><path d="M4 52 L24 52"/></g></symbol>
+    <symbol id="list-a" viewBox="0 0 160 200"><rect x="6" y="6" width="148" height="188" rx="10" fill="#fff" stroke="#14183A" stroke-width="6"/><text x="22" y="44" font-family="Inter" font-weight="800" font-size="20" fill="#2536D6">QUEUE</text><g font-family="Inter" font-weight="600" font-size="19" fill="#14183A"><text x="22" y="82">1 Mike</text><text x="22" y="114">2 Sandra</text><text x="22" y="146">3 Dustin</text><text x="22" y="178">4 Keer</text></g></symbol>
+    <symbol id="list-b" viewBox="0 0 160 200"><rect x="6" y="6" width="148" height="188" rx="10" fill="#fff" stroke="#14183A" stroke-width="6"/><text x="22" y="44" font-family="Inter" font-weight="800" font-size="20" fill="#2536D6">QUEUE</text><g font-family="Inter" font-weight="600" font-size="19" fill="#14183A"><text x="22" y="82">1 Keer</text><text x="22" y="114">2 Mike</text><text x="22" y="146">3 Sandra</text><text x="22" y="178">4 Dustin</text></g></symbol>
+    <symbol id="magnifier" viewBox="0 0 120 120"><circle cx="48" cy="48" r="34" fill="rgba(63,81,242,.18)" stroke="#14183A" stroke-width="9"/><path d="M74 74 L110 110" stroke="#14183A" stroke-width="14" stroke-linecap="round"/></symbol>
+  </defs>
+</svg>
+
+<header class="sheet">
+  <div>
+    <h1>dq — 30s commercial · storyboard v2</h1>
+    <p>Where is the queue? Comic chaos in the chat (0–13s, AI mob shouting), a silent turn, dq's real app in a phone typing live (3 steps), then "dq is here 🔥" with the URL. Blue &amp; white only. Sketches show each frame's key moment; motion comes in the build.</p>
+  </div>
+  <span class="tag">1080×1920 · 30s · 8 beats · sketch</span>
+</header>
+
+<div class="act">Act 1 — the problem (AI mob shouting)</div>
+<div class="grid">
+
+  <!-- 01 -->
+  <div class="card">
+    <div class="cell night" id="frame-01">
+      <div class="abs disp" style="left:8cqw; top:22cqw; font-size:27cqw; color:var(--on-dark)">WHERE<br>IS THE</div>
+      <div class="abs disp" style="left:6cqw; top:76cqw; font-size:29cqw; color:#fff; background:var(--cobalt); border-radius:3cqw; padding:2cqw 4cqw 0">QUEUE?</div>
+      <svg class="abs" style="left:2cqw; top:44cqw; width:22cqw" viewBox="0 0 100 100"><use href="#action"/></svg>
+      <svg class="abs" style="right:2cqw; top:118cqw; width:18cqw; transform:scaleX(-1)" viewBox="0 0 100 100"><use href="#action"/></svg>
+      <svg class="abs" style="left:-6cqw; bottom:-4cqw; width:42cqw" viewBox="0 0 200 262"><use href="#mike-angry"/></svg>
+      <svg class="abs" style="left:26cqw; bottom:-9cqw; width:40cqw" viewBox="0 0 200 262"><use href="#sandra-angry"/></svg>
+      <svg class="abs" style="left:58cqw; bottom:-5cqw; width:42cqw" viewBox="0 0 200 262"><use href="#dustin-angry"/></svg>
+      <svg class="abs" style="left:14cqw; bottom:18cqw; width:30cqw; opacity:.85" viewBox="0 0 200 262"><use href="#bald-angry"/></svg>
+      <svg class="abs" style="left:56cqw; bottom:20cqw; width:30cqw; opacity:.85" viewBox="0 0 200 262"><use href="#keer-angry"/></svg>
+      <div class="bubble" style="left:8cqw; top:126cqw; font-size:5cqw">Where is the queue?!</div>
+    </div>
+    <div class="label"><b>01 · WHERE IS THE QUEUE?</b><span>0.0–2.0s</span></div>
+    <p class="note"><b>Words slam in by beat</b> (WHERE → IS THE → QUEUE?) as the shouting crowd rises from the bottom. Mob: "Where is the queue?!" Hard cut in; seam out pushes left.</p>
+    <span class="chip">in: cut · out: push-slide left</span>
+  </div>
+
+  <!-- 02 -->
+  <div class="card">
+    <div class="cell night" id="frame-02">
+      <div class="bubble" style="left:7cqw; top:9cqw; font-size:6cqw">Who's next??</div>
+      <div class="panel" style="left:4cqw; right:4cqw; top:34cqw; height:132cqw">
+        <svg class="abs" style="left:-2cqw; bottom:-3cqw; width:36cqw" viewBox="0 0 200 262"><use href="#mike-me"/></svg>
+        <svg class="abs" style="left:30cqw; bottom:-3cqw; width:34cqw" viewBox="0 0 200 262"><use href="#sandra-me"/></svg>
+        <svg class="abs" style="left:60cqw; bottom:-3cqw; width:36cqw" viewBox="0 0 200 262"><use href="#dustin-me"/></svg>
+        <div class="bubble" style="left:3cqw; top:6cqw; font-size:5.2cqw; max-width:58cqw">I'm next on the queue!</div>
+        <div class="bubble" style="left:30cqw; top:30cqw; font-size:5.6cqw">No, it's me!</div>
+        <div class="bubble tail-r" style="right:3cqw; top:52cqw; font-size:5.6cqw; max-width:62cqw">No, I'm next in the queue! <span class="emoji">😤</span></div>
+        <svg class="abs" style="left:40cqw; top:72cqw; width:16cqw" viewBox="0 0 100 100"><use href="#action-ink"/></svg>
+      </div>
+      <div class="abs" style="left:7cqw; bottom:7cqw; font-weight:700; font-size:3.6cqw; color:var(--muted-dark); letter-spacing:.06em">FRIDAY SPACE <span class="emoji">🎙</span> · 248 MEMBERS</div>
+    </div>
+    <div class="label"><b>02 · THE FIGHT</b><span>2.0–7.5s</span></div>
+    <p class="note"><b>"Who's next??" pops first</b>, then Mike, Sandra and Dustin thumb at themselves while their bubbles stack and the panel shakes. Mob shouts each line as its bubble lands.</p>
+    <span class="chip">in: push-slide left · out: push-slide left</span>
+  </div>
+
+  <!-- 03 -->
+  <div class="card">
+    <div class="cell night" id="frame-03">
+      <!-- panel 1: clashing lists -->
+      <div class="panel" style="left:4cqw; top:6cqw; width:44.5cqw; height:82cqw">
+        <svg class="abs" style="left:2cqw; top:6cqw; width:19cqw; transform:rotate(-8deg)" viewBox="0 0 160 200"><use href="#list-a"/></svg>
+        <svg class="abs" style="right:2cqw; top:6cqw; width:19cqw; transform:rotate(8deg)" viewBox="0 0 160 200"><use href="#list-b"/></svg>
+        <svg class="abs" style="left:-3cqw; bottom:-2cqw; width:26cqw" viewBox="0 0 200 262"><use href="#keer-angry"/></svg>
+        <svg class="abs" style="right:-3cqw; bottom:-2cqw; width:26cqw" viewBox="0 0 200 262"><use href="#mike-angry"/></svg>
+      </div>
+      <div class="burst" style="left:8cqw; top:36cqw; font-size:7cqw">WHICH LIST?!</div>
+      <!-- panel 2: add me -->
+      <div class="panel" style="right:4cqw; top:6cqw; width:44.5cqw; height:82cqw">
+        <svg class="abs" style="left:8cqw; bottom:-3cqw; width:28cqw" viewBox="0 0 200 262"><use href="#bald-angry"/></svg>
+        <div class="bubble tail-none" style="left:2cqw; top:4cqw; font-size:4cqw; padding:1.4cqw 2.4cqw">Add me!</div>
+        <div class="bubble tail-none blue-b" style="right:2cqw; top:15cqw; font-size:4cqw; padding:1.4cqw 2.4cqw">Add me too!!</div>
+        <div class="bubble tail-none" style="left:4cqw; top:27cqw; font-size:4cqw; padding:1.4cqw 2.4cqw">Me first!</div>
+        <div class="bubble tail-none" style="right:3cqw; top:38cqw; font-size:4cqw; padding:1.4cqw 2.4cqw">Add me!!</div>
+      </div>
+      <!-- panel 3: lost link -->
+      <div class="panel" style="left:4cqw; top:92cqw; width:44.5cqw; height:82cqw">
+        <svg class="abs" style="left:4cqw; bottom:-3cqw; width:30cqw" viewBox="0 0 200 262"><use href="#dustin-angry"/></svg>
+        <svg class="abs" style="right:2cqw; bottom:16cqw; width:18cqw" viewBox="0 0 120 120"><use href="#magnifier"/></svg>
+        <div class="bubble" style="left:2.5cqw; top:4cqw; font-size:4.2cqw; max-width:40cqw">Send the link again?</div>
+        <div class="bubble blue-b tail-r" style="right:2.5cqw; top:25cqw; font-size:4.2cqw">Which link??</div>
+      </div>
+      <!-- panel 4: newcomer -->
+      <div class="panel" style="right:4cqw; top:92cqw; width:44.5cqw; height:82cqw">
+        <svg class="abs" style="left:7cqw; bottom:-3cqw; width:30cqw" viewBox="0 0 200 262"><use href="#amaka-unsure"/></svg>
+        <div class="bubble" style="left:2.5cqw; top:4cqw; font-size:4cqw; max-width:40cqw">Hi, I'm new <span class="emoji">👋</span> Is there a queue?</div>
+        <div class="abs disp" style="right:3cqw; top:30cqw; font-size:22cqw; color:var(--cobalt)">?</div>
+      </div>
+    </div>
+    <div class="label"><b>03 · THE COMIC PAGE OF PROBLEMS</b><span>7.5–13.0s</span></div>
+    <p class="note"><b>Panels fill one by one</b> (lists → add me → lost link → newcomer, ~1.1s each), then the page shakes and bubbles pile over it. Mob peaks, error buzz at 12.4s.</p>
+    <span class="chip">in: push-slide left · out: cut to silence</span>
+  </div>
+
+  <!-- 04 -->
+  <div class="card">
+    <div class="cell night" id="frame-04">
+      <div class="abs" style="inset:0; opacity:.12; background:repeating-linear-gradient(0deg, transparent 0 40cqw, rgba(238,240,255,.6) 40cqw 41cqw), repeating-linear-gradient(90deg, transparent 0 46cqw, rgba(238,240,255,.6) 46cqw 47cqw)"></div>
+      <div class="abs disp" style="left:8cqw; right:8cqw; top:52cqw; font-size:15cqw; font-weight:800; color:var(--on-dark); line-height:.95">There's a better way.</div>
+      <div class="abs wordmark" style="left:8cqw; top:104cqw; font-size:52cqw; color:#fff">d<span style="color:var(--cobalt-bright)">q</span></div>
+      <div class="abs wordmark ghost" style="left:31cqw; top:84cqw; font-size:52cqw; color:#fff; transform:scaleY(-1)">d</div>
+    </div>
+    <div class="label"><b>04 · THERE'S A BETTER WAY</b><span>13.0–15.0s</span></div>
+    <p class="note"><b>Silence. The comic page freezes and dims</b> to a ghost grid; the line holds still for ~0.9s. Then the "d" drops in and a copy flips top-to-bottom into the "q" (ghost shows the flip).</p>
+    <span class="chip">in: cut · out: zoom-through</span>
+  </div>
+</div>
+
+<div class="act">Act 2 — dq in use (silence → clicks, pops)</div>
+<div class="grid">
+
+  <!-- 05 -->
+  <div class="card">
+    <div class="cell day" id="frame-05">
+      <div class="eyebrow">STEP 1</div>
+      <div class="h1">Create your dq</div>
+      <div class="phone" style="left:14cqw; right:14cqw; top:42cqw; height:118cqw">
+        <div class="screen" style="container-type:inline-size">
+          <div class="dq-brand">dq</div>
+          <div class="dq-hero">One link. Everyone sees the line.</div>
+          <div class="dq-label">Name your queue</div>
+          <div class="dq-row"><div class="dq-input">Friday Night Hot Seat|</div></div>
+          <div class="dq-row"><div class="dq-btn" style="flex:1; text-align:center">Create queue</div></div>
+          <div class="cursor-tap" style="left:44cqw; top:96cqw"></div>
+        </div>
+      </div>
+      <div class="abs" style="left:0; right:0; bottom:6cqw; text-align:center; font-weight:600; font-size:5cqw; color:var(--muted)">No sign-up. No app.</div>
+    </div>
+    <div class="label"><b>05 · STEP 1 — CREATE</b><span>15.0–18.0s</span></div>
+    <p class="note"><b>The title types into dq's real start page</b> ("Friday Night Hot Seat"), Create is tapped, and the screen becomes the new queue with "Your queue is ready". Key ticks, click, pop.</p>
+    <span class="chip">in: zoom-through · out: push-slide left</span>
+  </div>
+
+  <!-- 06 -->
+  <div class="card">
+    <div class="cell day" id="frame-06">
+      <div class="eyebrow">STEP 2</div>
+      <div class="h1">Add to your list</div>
+      <div class="phone" style="left:14cqw; right:14cqw; top:42cqw; height:118cqw">
+        <div class="screen" style="container-type:inline-size">
+          <div class="dq-brand">dq</div>
+          <div class="dq-title">Friday Night Hot Seat</div>
+          <div class="dq-meta"><span class="live">● Live</span><span>4 people waiting</span></div>
+          <div class="dq-label">Add a name to the queue</div>
+          <div class="dq-row"><div class="dq-input">Keer|</div><div class="dq-btn">Add name</div></div>
+          <ol class="dq-list">
+            <li class="first"><span class="n">1</span>Mike<span class="pill">Next up</span></li>
+            <li><span class="n">2</span>Sandra</li>
+            <li><span class="n">3</span>Dustin</li>
+            <li><span class="n">4</span>Keer</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <div class="label"><b>06 · STEP 2 — ADD</b><span>18.0–21.0s</span></div>
+    <p class="note"><b>Names type in and drop into the live list</b> one per beat: Mike (cobalt "Next up" row), Sandra, Dustin, Keer; the count ticks to "4 people waiting". Pop per name.</p>
+    <span class="chip">in: push-slide left · out: push-slide left</span>
+  </div>
+
+  <!-- 07 -->
+  <div class="card">
+    <div class="cell day" id="frame-07">
+      <div class="eyebrow">STEP 3</div>
+      <div class="h1">Share your list</div>
+      <div class="phone" style="left:5cqw; width:46cqw; top:40cqw; height:92cqw; border-radius:7cqw; padding:1.8cqw">
+        <div class="screen" style="container-type:inline-size; border-radius:5.6cqw">
+          <div class="dq-brand">dq</div>
+          <div class="dq-title" style="font-size:11cqw">Friday Night Hot Seat</div>
+          <ol class="dq-list">
+            <li class="first"><span class="n">1</span>Mike</li>
+            <li><span class="n">2</span>Sandra</li>
+            <li><span class="n">3</span>Dustin</li>
+            <li><span class="n">4</span>Keer</li>
+          </ol>
+          <div class="dq-row"><div class="dq-btn quiet">Copy list</div></div>
+          <div class="toast" style="left:10cqw; top:6cqw">4 names copied.</div>
+        </div>
+      </div>
+      <div class="bubble blue-b" style="left:54cqw; right:4cqw; top:40cqw; font-size:4.4cqw">Mike, Sandra, Dustin, Keer</div>
+      <div class="bubble" style="left:54cqw; right:4cqw; top:64cqw; font-size:3.6cqw; color:var(--cobalt); word-break:break-all">dq.withsholz.workers.dev/q/5h3bkjqg2y</div>
+      <svg class="abs" style="left:56cqw; top:100cqw; width:22cqw" viewBox="0 0 200 262"><use href="#mike-happy"/></svg>
+      <svg class="abs" style="left:76cqw; top:106cqw; width:20cqw" viewBox="0 0 200 262"><use href="#sandra-happy"/></svg>
+      <div class="bubble tail-r" style="right:6cqw; top:88cqw; font-size:4cqw; padding:1.4cqw 2.6cqw"><span class="emoji">✅</span> Got it!</div>
+      <svg class="abs" style="left:6cqw; bottom:2cqw; width:28cqw" viewBox="0 0 200 262"><use href="#amaka-happy"/></svg>
+      <div class="abs" style="left:34cqw; bottom:14cqw; background:var(--cobalt); color:#fff; font-weight:700; font-size:4.4cqw; border-radius:100px; padding:2.4cqw 4.4cqw">Amaka, you are number 5</div>
+    </div>
+    <div class="label"><b>07 · STEP 3 — SHARE</b><span>21.0–25.0s</span></div>
+    <p class="note"><b>Copy list → "4 names copied."</b> The list and link pop out of the phone as bubbles; the same cast reappears smiling ("✅ Got it!"); newcomer Amaka taps the link and gets her spot. Click, whoosh, pops, chime.</p>
+    <span class="chip">in: push-slide left · out: zoom-through</span>
+  </div>
+
+  <!-- 08 -->
+  <div class="card">
+    <div class="cell blue" id="frame-08">
+      <div class="abs" style="left:0; right:0; top:22cqw; text-align:center; font-family:var(--display); font-weight:800; font-size:10cqw; color:rgba(255,255,255,.72)">Where is the queue?</div>
+      <div class="abs wordmark" style="left:0; right:0; top:44cqw; text-align:center; font-size:62cqw; color:#fff">dq</div>
+      <div class="abs disp" style="left:0; right:0; top:102cqw; text-align:center; font-size:18cqw; color:#fff">is here <span class="emoji">🔥</span></div>
+      <div class="abs" style="left:6cqw; right:6cqw; top:132cqw; text-align:center; background:#fff; color:var(--cobalt); font-weight:800; font-size:5.3cqw; white-space:nowrap; border-radius:100px; padding:3.4cqw 2cqw">dq.withsholz.workers.dev</div>
+      <div class="abs" style="left:0; right:0; top:152cqw; text-align:center; font-weight:600; font-size:4.6cqw; color:rgba(255,255,255,.85)">Free · No sign-up · No app</div>
+    </div>
+    <div class="label"><b>08 · DQ IS HERE 🔥</b><span>25.0–30.0s</span></div>
+    <p class="note"><b>"Where is the queue?" first</b>, then the wordmark re-builds (d lands, flips into q) and "is here 🔥" slams under it on the bass hit; the URL types into the white pill; holds still for the last 1.5s.</p>
+    <span class="chip">in: zoom-through · end: hold</span>
+  </div>
+
+  <!-- seam map -->
+  <div class="card" style="grid-column: span 2">
+    <div class="label" style="margin-top:2px"><b>SEAM MAP</b><span>direction: leftward</span></div>
+    <div class="seam">
+      <div>01 → 02 · push-slide left</div><div>02 → 03 · push-slide left</div><div>03 → 04 · hard cut to silence</div>
+      <div>04 → 05 · zoom-through (navy → white)</div><div>05 → 06 · push-slide left</div><div>06 → 07 · push-slide left</div>
+      <div>07 → 08 · zoom-through (white → cobalt)</div>
+    </div>
+    <div class="label"><b>SOUND MAP</b><span>no music</span></div>
+    <div class="seam">
+      <div>0–13.0s · AI mob, lines on their bubbles</div><div>13.0–14.1s · silence</div><div>14.15s · whoosh (q flips)</div>
+      <div>15–21s · key ticks, click, pops</div><div>21–25s · click, whooshes, pops, chime</div><div>25–26s · riser → bass hit on "is here 🔥"</div>
+    </div>
+  </div>
+
+  <!-- tokens -->
+  <div class="card" style="grid-column: span 2">
+    <div class="tokens">
+      <b style="color:var(--ink)">TOKENS</b> (from dq's own code)
+      <div class="sw">
+        <span style="background:#FFFFFF">white</span><span style="background:#2536D6; color:#fff">cobalt</span><span style="background:#0D1030; color:#A6ABCF">navy</span><span style="background:#14183A; color:#A6ABCF">ink</span><span style="background:#F4F5FB">paper</span><span style="background:#3F51F2; color:#fff">cobalt·dark</span>
+      </div>
+      <b style="color:var(--ink)">Type</b> — <span style="font-family:var(--display); font-weight:900; font-size:18px; color:var(--ink)">Big Shoulders Display</span> headlines + wordmark · <span style="font-weight:700; color:var(--ink)">Inter</span> chat, labels, app body.<br>
+      <b style="color:var(--ink)">Comics</b> — navy ink outlines, white fills, cobalt shading; cast: Mike, Sandra, Dustin, Keer, Amaka.<br>
+      <b style="color:var(--ink)">Bans</b> — no red, no yellow, no gradients, no glow, no hard shadows, no real chat-app logos, no invented dq features; no slideshow, no screensaver motion.
+    </div>
+  </div>
+</div>
+</body>
+</html>

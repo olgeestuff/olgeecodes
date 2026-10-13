@@ -9,7 +9,7 @@ language: en
 audience: hosts and speakers in chat rooms and audio rooms (X Spaces, Clubhouse, Discord stages, WhatsApp/Telegram groups) who fight over speaking order
 length: 30s
 angle: problem-agitate-solve — chat-room queue chaos, then dq's 3 easy steps, then the tagline
-narration: no
+narration: no — AI "angry mob" voices as sound design (frames 1–3)
 ---
 
 ## Intent
@@ -41,21 +41,44 @@ Closing line, verbatim: "where is the queue? dq is here 🔥"
 
 ## Customizations
 
-- On-screen text + sound effects, no voiceover, no music bed (no music source reachable in this
-  environment). SFX from the bundled media-use library: chat pings, error buzz, whooshes, a big hit
-  on "dq is here".
-- Flat cartoon characters drawn in SVG (no photo caricatures).
+Plan v2, approved by the user ("approved, use the AI mob voices for now"):
+
+- **Colors: "just blue & white, simple."** dq cobalt + white, dq ink text; chaos frames on dq's
+  dark-mode navy with white type. No red, no yellow. Design preset switched from blockframe to
+  blue-professional, hand-mapped to dq tokens.
+- **Comics + cartoons depict every problem** (user: "hopefully there'll be comics", "and cartoons to
+  depict the problems"). Two-colour comic art: navy ink outlines, white fills, cobalt shading,
+  speech bubbles, action lines. One cartoon vignette per problem: shouting crowd ("where is the
+  queue?"); three characters thumbing at themselves (the fight); two characters waving different
+  paper lists (unagreed lists); host buried under "add me" bubbles; character searching with a
+  magnifying glass ("send the link again?"); newcomer peeking in with a "?" (new speakers).
+- **Logo:** dq has no logo — animated wordmark: the "d" lands, a copy flips vertically into the "q".
+  URL "dq.withsholz.workers.dev" types in below it for emphasis.
+- **App shown "while in use":** the dq screens are rebuilt from dq's own markup/CSS in a phone
+  mockup so text types in live: queue title "Friday Night Hot Seat" (from the user's screenshots),
+  Create tapped, names Mike, Sandra, Dustin, Keer typed in and dropping into the list, the
+  "4 names copied." toast; new speaker Amaka (from the user's screenshots) joins by link → "Amaka,
+  you are number 5".
+- **Sound:** AI angry-mob voices (Kokoro, offline) shouting the user's lines under frames 1–3, hard
+  cut to silence on "There's a better way."; SFX from the bundled media-use library (pings, pops,
+  whooshes, bass hit on "dq is here"). No music bed.
 - Chaos montage: six pain points at roughly 2s each, rapid-fire, rather than separate scenes.
 - Step 3 gets extra time: the clean list "Mike, Sandra, Dustin, Keer" and the queue link pop out
   into the same chat windows that were fighting earlier — everyone now agrees.
-- End card: "Where is the queue? dq is here 🔥" + dq wordmark + dq.withsholz.workers.dev +
-  "Free · No sign-up · No app".
+- End card: "Where is the queue?" → "dq is here 🔥" + animated dq wordmark + dq.withsholz.workers.dev
+  below it + "Free · No sign-up · No app".
+
+## Assets
+
+- capture/assets/user-reference/1.webp … 5.webp — the user's own screenshots of the live dq app
+  ("Friday Night Hot Seat", names Tunde Bakare, Amaka Obi, Chidi Nwosu…, light and dark mode).
+  Reference for copy and names; the video rebuilds the UI from dq's source instead.
 
 ## Notes
 
 - Brand truth comes from the dq source repo (`/home/user/dq/public/index.html`): cobalt #2536D6,
-  marigold #FFC233 (text on marigold #14183A), ink #14183A, paper #F4F5FB, surface #FFFFFF, muted
-  #555B78, line #D6D9EA, live green #17784A; display font Big Shoulders Display (embedded subset,
+  ink #14183A, paper #F4F5FB, surface #FFFFFF, muted #555B78, line #D6D9EA, dark-mode paper #0D1030
+  (the user wants blue & white only — marigold/red are not used in the video frames); display font Big Shoulders Display (embedded subset,
   OFL), body system-ui. Real copy: "One link. Everyone sees the line." "Copy list", "Share queue
   link", "Join queue", "Done, next person".
 - The live URL did not resolve (DNS not found) from this environment; the app's real screens are

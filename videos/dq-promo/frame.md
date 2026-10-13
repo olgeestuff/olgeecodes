@@ -1,138 +1,174 @@
 ---
 version: alpha
-name: BlockFrame — Frame (video / frame layer)
+name: Blue Professional — Frame (video / frame layer)
 description: >
-  Video-first companion to BlockFrame's design.md. The unit is the frame (1920×1080). Atoms are
-  identical and sacred — 4px black borders + 8px hard offset shadows, the five-pastel candy palette
-  (pink/blue/green/yellow/cream) plus black/white/off-white, Big Shoulders Display 800–900 uppercase display +
-  Space Grotesk label chrome, square corners, label-pills, tilted decorations, star bursts, stripe
-  blocks, dot grids. Composition + frame scale rewritten. Motion out of scope.
+  dq commercial (1080×1920) on the Blue Professional frame system, hand-mapped to dq's brand: white
+  canvas, dq navy night ground for the chaos frames, dq cobalt (#2536D6) as the only accent, Big
+  Shoulders Display (display/wordmark) + Inter (body, chat, chrome),
+  soft cobalt-tinted cards (4% fill / 20% border / 10–14px radius) with NO shadows, pill chrome, and
+  the cobalt progress bar. Composition + frame scale rewritten. Motion out of scope.
 unit: the frame — 1920×1080 primary; 9:16 and 1:1 documented
 principle: atoms are sacred · composition is free · numbers come from the script
 
 colors:
-  black: "#14183A"     # dq ink — every border, shadow and structural text
-  white: "#FFFFFF"     # dq surface — card and chat-bubble fills
-  offwhite: "#F4F5FB"  # dq paper — default ground
-  pink: "#B3261E"      # dq danger — the conflict accent (chaos scenes); text on it is white
-  blue: "#2536D6"      # dq cobalt — the dq / solution ground; text on it is white
-  green: "#17784A"     # dq live — agreed / live / done; text on it is white
-  yellow: "#FFC233"    # dq marigold — CTA, highlight, close shadow; text on it is black (ink)
-  cream: "#D6D9EA"     # dq line — soft neutral fill; text on it is black (ink)
+  bg: "#FFFFFF"              # white — the solution ground (step and CTA frames)
+  paper: "#F4F5FB"           # dq paper — the app's own page ground (inside the phone)
+  night: "#0D1030"           # dq dark-mode paper — the chaos ground (frames 1–4)
+  night-surface: "#181C48"   # dq dark-mode surface — chat window / bubbles on night
+  primary: "#2536D6"         # dq cobalt — the ONLY accent
+  primary-bright: "#3F51F2"  # dq dark-mode cobalt — cobalt on night grounds
+  text: "#14183A"            # dq ink — headlines and body on white
+  text-muted: "#555B78"      # dq muted
+  text-light: "#A6ABCF"      # dq dark-mode muted — secondary text on night
+  on-dark: "#EEF0FF"         # dq dark-mode ink — text on night
+  line: "#D6D9EA"            # dq line — hairlines and input borders
+  accent-light: "rgba(37, 54, 214, 0.08)"
+  accent-medium: "rgba(37, 54, 214, 0.15)"
+  border: "rgba(37, 54, 214, 0.2)"
+  card-bg: "rgba(37, 54, 214, 0.04)"
+  positive: "#17784A"        # dq live green — ONLY inside the real app UI (the "Live" dot)
 
-borders: { primary: "4px solid black", thin: "3px solid black" }
-shadows: { default: "8px 8px 0 black", small: "4px 4px 0 black", hover: "6px 6px 0 black", close-yellow: "12px 12px 0 yellow", close-white: "6px 6px 0 white" }
+radii:
+  pill: "100px"
+  card-lg: "14px"
+  card-md: "12px"
+  card-sm: "10px"
+  bar: "6px"
+  circle: "50%"
 
 typography:
-  # — reading + chrome ramp —
-  body:    { fontFamily: "Inter", cqw: 0.95, weight: 500, lineHeight: 1.6 }
-  card-title:{ fontFamily: "Inter", cqw: 1.15, weight: 700, upper: true, lineHeight: 1.2 }
-  label:   { fontFamily: "Space Grotesk", px: 13, weight: 600, tracking: "0.08em", upper: true }
-  counter: { fontFamily: "Space Grotesk", px: 14, weight: 700, tracking: "0.1em", upper: true }
-  # — display ramp (Big Shoulders Display 800–900, uppercase, negative tracking) —
-  heading-md:{ fontFamily: "Big Shoulders Display", cqw: 2.1, weight: 800, lineHeight: 1.1, tracking: "-0.01em", upper: true }
-  quote-text:{ fontFamily: "Big Shoulders Display", cqw: 2.7, weight: 900, lineHeight: 1.15, tracking: "-0.02em", upper: true }
-  stat-number:{ fontFamily: "Big Shoulders Display", cqw: 3.3, weight: 800, lineHeight: 1.0 }
-  heading-lg:{ fontFamily: "Big Shoulders Display", cqw: 3.3, weight: 800, lineHeight: 1.0, tracking: "-0.02em", upper: true }
-  close-title:{ fontFamily: "Big Shoulders Display", cqw: 4.2, weight: 900, lineHeight: 0.95, tracking: "-0.03em", upper: true }
-  heading-xl:{ fontFamily: "Big Shoulders Display", cqw: 5.0, weight: 900, lineHeight: 0.95, tracking: "-0.03em", upper: true }
+  # — reading ramp (Inter body + Inter chrome; dq's app body is system-ui, Inter stands in) —
+  body:    { fontFamily: "Inter", cqw: 0.85, weight: 500, lineHeight: 1.5, color: "text-muted" }
+  h4-eyebrow:{ fontFamily: "Inter", cqw: 0.8, weight: 700, tracking: "0.08em", upper: true, color: "primary" }
+  tag:     { fontFamily: "Inter", px: 12, weight: 600, color: "primary" }
+  counter: { fontFamily: "Inter", px: 13, weight: 600, tracking: "0.05em", color: "text-muted" }
+  chat:    { fontFamily: "Inter", cqw: 1.6, weight: 600, lineHeight: 1.25, color: "text" }
+  # — display / numerical ramp (Big Shoulders Display = dq's own headline + wordmark face) —
+  h3:      { fontFamily: "Big Shoulders Display", cqw: 1.25, weight: 800, lineHeight: 1.1, tracking: "-0.01em", color: "text" }
+  stat-num:{ fontFamily: "Big Shoulders Display", cqw: 1.9, weight: 800, lineHeight: 1.0, color: "primary" }
+  blockquote:{ fontFamily: "Big Shoulders Display", cqw: 2.4, weight: 800, lineHeight: 1.1, color: "text" }
+  h2:      { fontFamily: "Big Shoulders Display", cqw: 2.6, weight: 800, lineHeight: 0.98, tracking: "-0.01em", color: "text" }
+  metric-value:{ fontFamily: "Big Shoulders Display", cqw: 3.0, weight: 800, lineHeight: 1.0, color: "primary" }
+  h1:      { fontFamily: "Big Shoulders Display", cqw: 4.2, weight: 900, lineHeight: 0.92, tracking: "-0.01em", color: "text" }
+  wordmark:{ fontFamily: "Big Shoulders Display", weight: 900, lineHeight: 0.8, lowercase: true, color: "text" }
+  quote-mark:{ fontFamily: "Big Shoulders Display", cqw: 8.0, weight: 900, lineHeight: 0.5, color: "primary", opacity: 0.15 }
 
 spacing:
-  slide-pad: "3.1cqw"   # 60px @1920
-  gap-md: "1.7cqw"
+  pad-x: "5cqw"
+  pad-y-top: "5cqw"
+  gap-cards: "1.4cqw"
+  accent-line: "60px × 4px"
 
 components:
-  card-elevated:
-    backgroundColor: "{colors.white}"
-    border: "0.4cqw solid {colors.black}"
-    rounded: "0"
-    shadow: "0.8cqw 0.8cqw 0 {colors.black}"
-    description: "Primary card. Border/shadow coupled: 4px↔8px, 3px↔4px."
-  card-small:
-    backgroundColor: "{colors.white}"
-    border: "0.3cqw solid {colors.black}"
-    rounded: "0"
-    shadow: "0.4cqw 0.4cqw 0 {colors.black}"
-    description: "Stat cards, team cards, timeline steps."
-  label-pill:
-    border: "0.3cqw solid {colors.black}"
-    backgroundColor: "any pastel / {colors.white}"
-    rounded: "9999px"
-    shadow: "0.4cqw 0.4cqw 0 {colors.black}"
-    typography: "{typography.label}"
-    description: "The universal eyebrow — never plain text."
-  button-primary:
-    backgroundColor: "{colors.yellow}"
-    textColor: "{colors.black}"
-    border: "0.3cqw solid {colors.black}"
-    rounded: "0"
-    shadow: "0.4cqw 0.4cqw 0 {colors.black}"
+  card-tinted:
+    backgroundColor: "{colors.card-bg}"
+    border: "1.5px solid {colors.border}"
+    rounded: "{radii.card-lg}"
+    shadow: "none"
+    description: "Universal content card. Never solid-colored, never opaque-bordered, NO shadow."
+  metric-card:
+    backgroundColor: "{colors.card-bg}"
+    border: "1.5px solid {colors.border}"
+    rounded: "{radii.card-lg}"
+    typography: "{typography.metric-value} ({colors.primary}) + {typography.metric-label} + {typography.metric-desc}"
+    description: "+ optional inline ↑/↓ change chip ({colors.positive}/{colors.negative} text, no fill)."
+  tag-pill:
+    backgroundColor: "{colors.accent-light}"
+    textColor: "{colors.primary}"
+    rounded: "{radii.pill}"
+    typography: "{typography.tag}"
+    description: "Top-right of the slide-header."
+  cta-button:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.bg}"
+    rounded: "{radii.pill}"
     typography: "Big Shoulders Display 800"
-    description: "The CTA."
-  star-burst:
-    backgroundColor: "any pastel"
-    border: "0.3cqw solid {colors.black}"
-    clip: "10-point clip-path star"
-    description: "Corner attention-grabber."
-  stripe-block:
-    backgroundImage: "45° {colors.black} + pastel diagonal stripes"
-    border: "0.3cqw solid {colors.black}"
-    description: "Poster decoration."
-  bg-dot-grid:
-    backgroundImage: "radial-dot ~1.2px dots, 24px grid, {colors.black}"
-    description: "Faint corner/ground overlay."
-  tilt-deco:
-    transform: "rotate(±2°–12°)"
-    description: "Rotated rectangle/badge/star. Stat cards alternate −2/+2°. The grid-puncture signature."
-  stat-deco-dot:
-    backgroundColor: "any pastel"
-    border: "2px solid {colors.black}"
+    shadow: "soft cobalt on hover only — the system's only shadow"
+    description: "The one solid element."
+  accent-line:
+    backgroundColor: "{colors.primary}"
+    size: "60×4, 2px radius"
+    description: "Above cover titles / eyebrow separators."
+  bar-track:
+    backgroundColor: "{colors.accent-light}"
+    fill: "{colors.primary} (display:block so width resolves)"
+    rounded: "{radii.bar}"
+    description: "28px track; fill carries the value."
+  step-circle:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.bg}"
     rounded: "50%"
-    size: "12px"
-    description: "The ONLY round shape, pinned to stat cards."
-  close-frame:
-    backgroundColor: "{colors.black}"
-    textColor: "{colors.white}"
-    border: "0.4cqw solid {colors.white}"
-    rounded: "0"
-    shadow: "1.2cqw 1.2cqw 0 {colors.yellow}"
-    description: "Inverted closer — the only colored shadow."
+    size: "56px"
+    description: "Sequential steps fade opacity 1.0→0.85→0.7→0.55."
+  split-highlight:
+    backgroundColor: "{colors.accent-light}"
+    borderLeft: "4px solid {colors.primary}"
+    rounded: "{radii.card-md}"
+    description: "Inline pull-quote callout."
+  slide-header:
+    typography: "{typography.h4-eyebrow} (cobalt) left, tag-pill right; {typography.h2} below"
+    description: "Top band of every content frame."
+  atmosphere:
+    elements: "clipped diagonal cobalt-tint panel, 3×3 cobalt dot grid, concentric closing rings"
+    description: "Cover/closing only. Never on content frames."
+  progress-bar:
+    backgroundColor: "{colors.primary}"
+    size: "3px tall, bottom edge, width grows with index"
+    description: "Persistent progress strip."
 ---
 
-# BlockFrame — Frame (video / frame layer)
+# Blue Professional — Frame (video / frame layer)
 
 ## Brand adaptation (READ FIRST — the frontmatter is the source of truth)
 
-This is the **blockframe** preset remixed onto the captured brand. The YAML frontmatter above (colors · typography · components) is **normative and already correct — use it verbatim.** The prose below is the ORIGINAL preset's intent; read it THROUGH the frontmatter:
+This is the **blue-professional** preset hand-mapped onto dq's real tokens (from the dq repo,
+`public/index.html`). The user asked for **"just blue & white, simple"** — honour that above any
+preset prose below.
 
-- **Fonts** — display **Big Shoulders Display** 800/900 (dq's own wordmark + headline face); body and chat text **Inter** 500–800 (stands in for dq's system-ui body); labels **Space Grotesk** 600/700. All ship as files in `assets/fonts/`: `big-shoulders-display-latin-{800,900}-normal.woff2`, `inter-latin-{500,600,700,800}-normal.woff2`, `space-grotesk-latin-{600,700}-normal.woff2`. Declare `@font-face` to those files; never load fonts from the network.
-- **Colors** — hand-mapped onto dq's real tokens (the auto-remix dropped marigold). Unlike the original preset, the slots carry meaning in this video: **pink = dq danger red (conflict)**, **blue = dq cobalt (dq / the fix)**, **green = dq live green (agreed)**, **yellow = dq marigold (CTA + highlight)**, cream = dq line grey. Text on pink/blue/green is `{colors.white}`; text on yellow/cream/white/offwhite is `{colors.black}`. Preset color names in prose mean these values.
-- **dq wordmark** — the logo is the lowercase word "dq" in Big Shoulders Display 900 (dq's app shows it in ink on paper). It is the one lowercase display element; never redraw it as a symbol.
-- **9:16** — this video is 1080×1920. Thick-border / hard-shadow atoms scale in `cqw` of the 1080 width.
-
+- **Two colors only:** cobalt `{colors.primary}` and white `{colors.bg}`, with dq ink for text. The
+  chaos frames (1–4) sit on dq's own dark-mode navy `{colors.night}` with white text and
+  `{colors.primary-bright}` accents — still blue & white. **No red, no yellow, no green, no
+  gradients, no neon.** The cream canvas in the prose below is replaced by white.
+- **Fonts:** display + wordmark **Big Shoulders Display** 800/900 (dq's headline face); everything
+  else **Inter** 500–800. Files: `assets/fonts/big-shoulders-display-latin-{800,900}-normal.woff2`,
+  `assets/fonts/inter-latin-{500,600,700,800}-normal.woff2`. Space Grotesk is NOT used. Declare
+  `@font-face` to the local files; never load fonts from the network. Emoji come from
+  `assets/fonts/noto-emoji-subset.ttf` (family "Noto Color Emoji").
+- **Display headlines** may be uppercase for the shouting beats (hook, fight) and sentence case
+  elsewhere, matching dq's own "One link. Everyone sees the line." Headlines are ink on white, white
+  on navy — cobalt is for the one accent word or element per frame.
+- **dq wordmark:** the lowercase word "dq" in Big Shoulders Display 900. dq has no logo; the
+  animated wordmark is: the "d" lands, then a copy flips vertically into the "q" (a d flipped
+  top-to-bottom is a q). Never draw a symbol.
+- **The app itself** is rebuilt from dq's own markup/CSS (light theme) inside a phone mockup —
+  rounded cobalt buttons, `{colors.paper}` page, Big Shoulders titles, system-ui → Inter body. Do not
+  restyle the app to the preset; it already is the brand.
+- **Depth:** soft and flat, as the preset says — tinted cards, 10–14px radii, no hard shadows. The
+  only shadow allowed is a soft, low-opacity drop under the phone mockup so it lifts off white.
+- **9:16:** this video is 1080×1920; `cqw` is of the 1080 width. Legibility floor for load-bearing
+  lines ≥ 4cqw at this size (the preset's 1.4cqw floor is for 1920-wide frames).
 
 ## Overview
 
-BlockFrame at frame scale is a **maximalist neobrutalist** system on five laws: every region has a
-4px black border, every elevated element an 8px hard offset shadow, every corner square, every
-accent a saturated pastel, and every layout allowed to be a little crooked. The joy is the
-deliberate collision — bordered cards meeting bordered cards, shadows stacking, tilted decorations
-puncturing the grid.
+Blue Professional at frame scale is a **consulting-grade system: restraint with one strong
+commitment.** A warm cream canvas and a single saturated cobalt that carries every accent —
+eyebrow, metric, CTA, chart fill, progress bar. No secondary brand color, no pastels, just cream,
+cobalt, and a tight ladder of grays. The register is investment-research / McKinsey briefing:
+measured, data-dense without crowding, executive-readable at distance.
 
-The voice is **Big Shoulders Display** at weight 800–900 in tight uppercase with negative tracking (display) +
-weight 500 sentence body, and **Space Grotesk** weight 600 uppercase 0.08em as the label/chrome
-voice. Five candy pastels (pink/blue/green/yellow/cream) cycle as full-bleed grounds across frames
-— the color cycling is the primary rhythm. Depth is **hard offset shadow** (8px/4px, solid black,
-zero blur, bottom-right); the close-frame's 12px yellow shadow is the one colored exception.
+The voice is two faces in fixed roles: **Big Shoulders Display** (display, every numeral, all chrome —
+eyebrows uppercase 0.08em) and **Big Shoulders Display** (body, muted gray, line 1.6). Headlines are near-black;
+cobalt is reserved for accent moments. Depth is **soft and tinted** — 4% cobalt card fills with 20%
+cobalt borders and 10–14px radii — never shadowed. The lack of harsh shadows is the premium signal.
 
 **Key characteristics at frame scale:**
 
-- **4px black borders + 8px hard shadows** on primary cards; 3px + 4px on chrome (weights coupled).
-- **Five-pastel palette** cycled as full-bleed grounds; black/white/off-white structural.
-- **Big Shoulders Display 800–900 uppercase** negative-tracked display; **Space Grotesk** label chrome.
-- **Square corners** everywhere (only the stat-deco dot is round); **tilted decorations** puncture the grid.
-- **Label-pills** open every region; star bursts, stripe blocks, dot grids are reusable attention units.
-- **Comfortably dense** — packed reads as authoritative; empty corners read as broken.
+- **Warm cream ground** on every frame; **single cobalt** as the only accent.
+- **Big Shoulders Display** (display/numerals/chrome) + **Big Shoulders Display** (body) — near-black headlines, cobalt numerals.
+- **Tinted cards** — cobalt 4% fill, cobalt 20% 1.5px border, 10–14px radius, **no shadow**.
+- **Pill chrome** (100px) — tag pills + the one solid cobalt CTA; cobalt **progress bar**.
+- **Soft rounded corners everywhere** (no square corners save the progress bar).
+- **Atmosphere** (diagonal panel, dot grid, concentric rings) on cover/closing only.
 
 ## The Frame
 
@@ -140,146 +176,168 @@ zero blur, bottom-right); the close-frame's 12px yellow shadow is the one colore
 
 Three eyeball tests gate every frame before any structural check:
 
-- **Squint** — one Big Shoulders Display display moment dominates at 3–6× its neighbor; cards read as a system, not rivals.
-- **Silence** — cover/quote/close keep air (decorations, not content); the **feature-card and stat grids are the dense exception**.
-- **Restraint** — the 4px→08px / 3px→4px coupling holds; black borders only (white on close); pastel ground **cycles** one per frame; no sixth pastel.
-- **Reference** — aim at a **zine / 1990s sticker-book / toy-packaging spread** (bordered blocks, tilted decorations); failure looks like a **flat, borderless, blurred-shadow web card grid**.
+- **Squint** — one **near-black headline or cobalt numeral** dominates at 3–6× its neighbor.
+- **Silence** — content frames read **balanced, not crowded**; the **dashboard is the one dense exception**.
+- **Restraint** — a **single cobalt accent** carries everything; headlines stay near-black (never cobalt); no shadows (tinted cards do the lift); positive/negative inline-text only.
+- **Reference** — aim at an **investment-research / McKinsey quarterly briefing**; failure looks like a **heavy-outlined, multi-color dashboard**.
 
 - **Primary:** 1920×1080 (16:9). Display authored in **`cqw`** (`px ÷ 1920 × 100 = cqw`).
 - **Vertical:** 1080×1920 (9:16). **Square:** 1080×1080 (1:1).
-- **Safe area:** `slide-pad` ~3.1cqw; decorations may bleed off edges.
+- **Safe area:** `pad-x` 5cqw; bottom reserves room for the counter + progress bar.
 
 **The container law (load-bearing).** Every frame ground sets `container-type: size`; ALL
-frame-relative units are `cqw`/`cqh` against it — never `vw`. Borders/shadows scale in `cqw` so the
-4px↔8px coupling holds proportionally; corners stay square.
+frame-relative units are `cqw`/`cqh` against it — never `vw`. Card radii stay px (10–14px); the
+pill radius stays 100px; borders stay 1–1.5px.
 
 ## Colors
 
-Tokens identical to the source. `{colors.offwhite}` is the default ground, but frames **cycle**
-through `{colors.cream}`/`blue`/`pink`/`green`/`yellow` grounds — the cycle is the rhythm.
-`{colors.black}` is every border + structural text; `{colors.white}` is card fills. The five pastels
-are interchangeable with **no semantic meaning** — pair by juxtaposition (pink+blue+green trio,
-cream+yellow warm pair). `{colors.yellow}` is the CTA + the one colored (close) shadow;
-`{colors.black}` ground is the close surface. **No sixth pastel.**
+Tokens identical to the source. `{colors.bg}` cream is the universal ground; `{colors.primary}`
+cobalt is the **only** accent — every eyebrow, numeral, CTA, chart fill, progress bar, and the 4px
+highlight left-rule. Headlines are `{colors.text}` near-black (never cobalt); body is
+`{colors.text-muted}`; tertiary is `{colors.text-light}`. Cards fill `{colors.card-bg}` (4%) with
+`{colors.border}` (20%) borders. `{colors.positive}`/`{colors.negative}` appear **only inline** on
+directional change chips — never as fills. **No second accent color.**
 
 ## Typography
 
-Two ramps. The **reading/chrome ramp** (Big Shoulders Display body 0.95cqw weight 500, Space Grotesk labels in px)
-carries copy + chrome; the **display ramp** (Big Shoulders Display `heading-md` 2.1cqw → `heading-xl` 5cqw, weight
-800–900 uppercase) carries every headline + stat.
+Two ramps. The **reading ramp** (Big Shoulders Display body 0.85cqw muted; Big Shoulders Display eyebrow uppercase 0.08em
+cobalt) carries copy + chrome; the **display/numerical ramp** (Big Shoulders Display `h3` 1.25cqw → `h1`
+4.2cqw near-black; numerals `stat-num`/`metric-value` in cobalt) carries headings and figures.
 
-- **Legibility floor:** any load-bearing line ≥ **1.4cqw**; px labels are chrome only.
-- **Fit-to-measure:** size the headline to its length. Cap the block at **≤ 78cqw**; ≤3 words → `heading-xl`; 4–6 → `heading-lg`; 7+ → `heading-md`.
-- **Big Shoulders Display display is uppercase, weight 800–900, negative-tracked** (−0.01..−0.03em); body weight 500 sentence case; **Space Grotesk labels uppercase 0.08em**. No sentence-case display, no untracked display.
+- **Legibility floor:** any load-bearing line ≥ **1.4cqw**; px chrome (tag/counter) is colophon only.
+- **Fit-to-measure:** size the headline to its length. Cap the block at **≤ 78cqw**; ≤3 words → `h1`; 4–6 → `h2`; 7+ → `h3`. Cobalt numerals scale `metric-value`→`stat-num` by card size.
+- **Headlines near-black, −0.02em**; **eyebrows cobalt, uppercase, 0.08em**; **numerals cobalt 600–700**; **body Big Shoulders Display 400 muted, line 1.6**. No italic, no uppercase body, no cobalt headline.
 
 ## Depth & Surface
 
-Hard offset shadow, solid black, zero blur, bottom-right:
+Soft and tinted — never offset. Depth from:
 
-- **0.8cqw (8px)** primary cards; **0.4cqw (4px)** chrome; **0.6cqw (6px)** hover.
-- **Border-based depth** — the 4px/3px borders do much of the lift; shadow makes it "elevated."
-- **Tilt** — ±2°–12° rotation breaks the grid for perceived dimension.
-- **Inverted close** — 12px YELLOW shadow (and 6px white on close-btn) — the only colored shadows.
+- **Tinted cards** — 4% cobalt fill + 20% cobalt 1.5px border + 10–14px radius reads as lifted without offset.
+- **Border-left accent** — the 4px cobalt rule on split-highlight blocks pulls a callout forward.
+- **Rounded corners** — the 10–14px radius is part of the softness; square corners break it.
 
-**Ceiling:** no blurred shadow, no rounded corner (save the stat-deco dot), no gradient depth.
+**Ceiling:** zero box-shadow on content (the only shadow is a soft cobalt CTA _hover_); no opaque cobalt borders; no harsh outlines.
 
 ## Shapes
 
-- **0 radius everywhere** except the 12px stat-deco dot (50%). Square corners are the structural identity.
+- **100px** — tag pills, CTA, nav buttons (pill chrome).
+- **14/12/10px** — cards by size (large metric / standard stat / detail + mini).
+- **6px** — bar tracks + fills. **50%** — step circles, nav circles, dots, closing rings.
+- **0** — only the progress bar. No square-cornered content.
 
 ## Components
 
-- **card-elevated / card-small** — the bordered+shadowed content cards (weight-coupled).
-- **label-pill** — the universal eyebrow (border+shadow+pastel). **button-primary** — yellow CTA.
-- **star-burst / stripe-block / bg-dot-grid / tilt-deco** — the reusable decoration units (one per frame min).
-- **stat-deco-dot** — the lone round shape. **close-frame** — the inverted black+white+yellow-shadow closer.
+- **card-tinted / metric-card** — the universal soft-tint content cards (no shadow).
+- **tag-pill / cta-button / accent-line** — the cobalt pill chrome + the one solid CTA + the 60×4 rule.
+- **bar-track / step-circle / split-highlight** — cobalt data + sequence + callout patterns.
+- **slide-header** (eyebrow + tag pill) — the structural rhythm; **atmosphere** (diagonal/dots/rings) on cover/closing only; **progress-bar** on every frame.
 
 ## Frame Treatments
 
 > Recipe: ground · container · composes · focal · chrome · accent · silence · Fixed/Free · density.
-> Cycle the ground color; add ≥1 decoration per frame; open with a label-pill.
+> Atmosphere only on cover/closing; content frames carry the slide-header rhythm.
 
-### 1 · Cover (identity · move: decorations puncture · left)
+### 1 · Cover (identity · move: diagonal accent · left)
 
-**Ground** `{colors.cream}` (or offwhite) + faint dot-grid. **Composes** label-pill, heading-xl, tilt-deco rect, star-burst, counter. **Focal** a 2–3 line Big Shoulders Display `heading-xl` uppercase, left, under a label-pill; tilted pastel rects + a star burst puncture the right. **Chrome** counter pill. **Accent** the decorations' pastels. **Silence** right third holds decorations. **Fixed** 4px/8px coupling, uppercase display, square. **Free** title, decoration placement/colors. **Density** comfortable.
+**Ground** cream + the clipped diagonal cobalt-tint panel (right ~36%) + a 3×3 cobalt dot grid.
+**Composes** accent-line, meta, h1, body sub. **Focal** a 2-line Big Shoulders Display `h1` near-black, left,
+under a cobalt accent-line + meta. **Chrome** counter + progress bar. **Accent** the cobalt line +
+diagonal panel. **Silence** the diagonal panel holds the right third. **Fixed** near-black h1, cobalt
+accents, atmosphere here only. **Free** title, meta. **Density** low.
 
-### 2 · Feature Cards (catalog · move: 3-up bordered grid · blue ground)
+### 2 · Dashboard (data · move: 3-up metric grid · the dense frame)
 
-**Ground** `{colors.blue}`, `slide-pad`. **Composes** label-pill, heading-lg, 3× card-elevated (icon-square + card-title + body). **Focal** three white bordered+shadowed cards. **Chrome** label-pill eyebrow. **Accent** the pastel icon-squares (pink/green/yellow). **Silence** tight — dense by design. **Fixed** 4px border + 8px shadow, square, uppercase card-titles. **Free** card content, icon hues. **Density** dense-exception.
+**Ground** cream, `pad-x`. **Composes** slide-header (eyebrow + tag-pill), h2, 3× metric/tinted card.
+**Focal** a row of tinted cards — cobalt `metric-value` + Big Shoulders Display label + muted desc + optional
+green/red change chip. **Chrome** eyebrow left, tag-pill right; progress bar. **Accent** the cobalt
+numerals. **Silence** tight — the density exception. **Fixed** 4% tint cards, 20% borders, no shadow,
+cobalt numerals. **Free** figures (from script), labels. **Density** dense-exception.
 
-### 3 · Stat Grid (data · move: tilted stat cards · green ground)
+### 3 · Bar Ranking (data · move: cobalt bars · left)
 
-**Ground** `{colors.green}`, `slide-pad`. **Composes** label-pill, heading-lg, 3× card-small (tilted −2/+2°, stat-deco dot, stat-number + label). **Focal** three tilted bordered stat cards. **Accent** the deco-dots' pastels + black stat numerals. **Silence** moderate. **Fixed** alternating tilt, 3px+4px, round deco-dot only. **Free** figures (from script), dot hues. **Density** dense-exception.
+**Ground** cream, `pad-x`. **Composes** eyebrow, h2, bar-track rows. **Focal** 3–5 labeled
+cobalt-fill bars on cobalt-8% tracks with cobalt percentages. **Chrome** eyebrow; progress bar.
+**Accent** the cobalt fills + figures. **Silence** moderate. **Fixed** 6px tracks, cobalt fills.
+**Free** rows, values (from script). **Density** standard.
 
-### 4 · Closing Plate (closer · move: inverted black · centered)
+### 4 · Pull Quote (quote · move: concentric rings · centered)
 
-**Ground** `{colors.black}`. **Composes** close-frame (4px white border, 12px yellow shadow), label-pill (inverted), close-title, star-burst. **Focal** a white `close-title` inside the white-bordered frame with the yellow offset shadow; a pink star punctures a corner. **Accent** the yellow shadow + pink star. **Silence** ~50%. **Fixed** white-on-black, 12px yellow shadow (only here), square. **Free** sign-off, star placement. **Density** low.
+**Ground** cream, centered, with faint concentric closing-rings behind. **Composes** quote-mark,
+blockquote, cite. **Focal** a Big Shoulders Display `blockquote` near-black under a 15%-opacity cobalt
+quote-mark; an uppercase cobalt-muted cite beneath. **Accent** the faint rings + quote-mark. **Silence**
+~55%. **Fixed** near-black quote, soft rings. **Free** quote, cite. **Density** low.
 
-### 5 · Quote (quote · move: bordered quote frame · pink ground)
+### 5 · Split + Highlight (content · move: asymmetric split · left)
 
-**Ground** `{colors.pink}` (or offwhite). **Composes** label-pill, quote-text in a card-elevated, attribution. **Focal** an Big Shoulders Display `quote-text` (900 uppercase) inside a white bordered+shadowed frame. **Accent** the ground + one decoration. **Silence** moderate. **Fixed** uppercase quote, 4px/8px. **Free** quote, ground. **Density** comfortable.
+**Ground** cream, two columns. **Composes** eyebrow, h2, body, split-highlight block. **Focal** an
+Big Shoulders Display body column beside a cobalt-8% highlight block (4px cobalt left rule) carrying an inline pull
+quote. **Accent** the highlight's left rule. **Silence** generous gutter. **Fixed** tinted highlight,
+4px cobalt rule. **Free** body, callout. **Density** standard.
 
-### 6 · Timeline (process · move: stepped bordered cards · offwhite)
+### 6 · Closing / CTA (closer · move: centered rings + CTA)
 
-**Ground** `{colors.offwhite}`. **Composes** label-pill, heading-lg, 3–4 card-small steps + step-connectors. **Focal** a row of bordered step cards linked by black connector bars, each a pastel + step-num. **Accent** the step pastels. **Silence** moderate. **Fixed** 3px+4px steps, square, connectors. **Free** steps, hues. **Density** standard.
+**Ground** cream + concentric closing-rings. **Composes** accent-line, h1, body, cta-button. **Focal**
+a Big Shoulders Display `h1` near-black, centered, with the one solid cobalt `cta-button` pill below. **Accent**
+the CTA + rings. **Silence** ~60%. **Fixed** one CTA, near-black h1, soft rings. **Free** sign-off, CTA
+label. **Density** low.
 
 ## Composition Rules
 
 ### Do
 
-- Pair **4px borders with 8px shadows**, **3px with 4px** — the coupling is non-negotiable.
-- **Cycle pastel grounds** across frames; keep the deck visually rhythmic.
-- Set Big Shoulders Display display **uppercase, 800–900, negative-tracked**; open every region with a **label-pill**.
-- Render shadows **solid black, zero blur, bottom-right**; add **≥1 decoration** (tilt/star/stripe/dots) per frame.
-- Use **yellow** for CTAs; use the **inverted black + 12px yellow shadow** close-frame for the closer.
-- Tilt decorations ±2°–12°; lean left on most frames.
+- Start every frame on **warm cream**; let **cobalt carry every accent** (eyebrow, numeral, CTA, bar, progress).
+- Set headlines **near-black, −0.02em**; eyebrows **cobalt uppercase 0.08em**; numerals **cobalt 600–700**.
+- Use **tinted cards** (4% fill, 20% border, 10–14px radius, no shadow); body Big Shoulders Display 400 muted, line 1.6.
+- Keep all chrome **pill-shaped (100px)**; one solid cobalt CTA per closing frame.
+- Reserve **atmosphere** (diagonal panel, dots, rings) for cover/closing; content frames keep the slide-header rhythm.
+- Lean left on cover/dashboard/split, centered on quote/closer.
 
 ### Don't
 
-- No rounded corners (save the stat-deco dot); no blurred shadows.
-- No colored borders (black only, save the close-frame white); no sixth pastel.
-- No sentence-case Big Shoulders Display display; no untracked display; no label as plain text.
-- Don't keep everything perfectly aligned (tilt is the signature); don't leave corners empty.
-- Don't blow a headline edge-to-edge — fit to measure.
+- No second accent color; no cobalt headlines.
+- No drop shadows on content (only the soft cobalt CTA hover); no opaque cobalt borders.
+- No square corners (save the progress bar); no font substitutes; no uppercase body.
+- Don't use the green/red change chips as general accents — directional comparisons only.
+- Don't fill space with heavier borders — add substance; don't blow a headline edge-to-edge.
 
 ## Aspect-Ratio Behavior
 
-| Treatment     | 16:9                          | 9:16                         | 1:1                      |
-| ------------- | ----------------------------- | ---------------------------- | ------------------------ |
-| Cover         | title left, decorations right | title top, decorations below | title, fewer decorations |
-| Feature Cards | 3 across                      | 3 stacked                    | 2+1                      |
-| Stat Grid     | 3 tilted across               | 3 tilted stacked             | 2×2                      |
-| Closing       | centered close-frame          | centered, taller             | centered                 |
-| Quote         | quote frame                   | quote stacked                | centered                 |
-| Timeline      | horizontal steps              | vertical (connectors hidden) | 2×2                      |
+| Treatment         | 16:9                       | 9:16                           | 1:1                      |
+| ----------------- | -------------------------- | ------------------------------ | ------------------------ |
+| Cover             | title left, diagonal right | title top, diagonal band below | title upper, dots corner |
+| Dashboard         | 3 cards across             | 3 stacked                      | 2×2                      |
+| Bar Ranking       | 3–5 bars                   | 3–5 bars (tighter)             | 3 bars                   |
+| Pull Quote        | centered, rings behind     | centered, taller               | centered                 |
+| Split + Highlight | side-by-side               | stacked                        | stacked                  |
+| Closing / CTA     | centered + CTA             | centered + CTA                 | centered + CTA           |
 
-`slide-pad` holds on the short edge; re-step display above the 1.4cqw floor. Decoration count drops
-on tighter ratios so the frame stays bordered, not cluttered.
+`pad-x` holds on the short edge; re-step display above the 1.4cqw floor. The diagonal cover panel
+becomes a top/bottom band on 9:16. Numerals stay Latin Arabic digits in CJK builds.
 
 ## Approved Entities
 
 No real customers, logos, or vendors are defined in the source — render any such mark as a
-placeholder. Pastel fills, decorations, and tilts are content-agnostic.
+placeholder. Figures, metrics, and quotes are content; the system supplies cream + cobalt + grays.
 
 ## Numerals & Claims (hard rule)
 
-Never invent figures, stats, or counts at frame scale. Render slots as `— figure —`, `{metric}`,
-`N×`. Stat cards and charts carry placeholders until the script supplies values. Slide counters and
-list numbers are decorative.
+Never invent figures, financials, percentages, or dates at frame scale. Render slots as `— figure —`,
+`{metric}`, `+NN%`, `↑ —`. Metric cards, bar values, and stat cells especially carry placeholders
+until the script supplies them. Directional chips require a real comparison from the script.
 
 ## Pre-Render Self-Audit
 
-- **Squint** — one Big Shoulders Display display moment dominates; cards read as a system.
-- **Silence** — only feature/stat grids run dense; cover/quote/close keep air with decorations.
-- **Borders/shadows** — 4px↔8px / 3px↔4px coupling holds; solid black, zero blur.
-- **Color** — pastel ground cycles; black borders only (white on close); no sixth pastel.
-- **Type** — Big Shoulders Display uppercase 800–900 negative-tracked, fit-to-measure; Space Grotesk labels 0.08em; ≥1.4cqw floor.
-- **Shape** — square corners (only stat-deco dot round); ≥1 tilt/decoration per frame.
+- **Squint** — one near-black headline or cobalt numeral dominates per frame.
+- **Silence** — content frames balanced, not crowded; only the dashboard runs dense.
+- **Single accent** — cobalt only; headlines near-black; positive/negative inline only.
+- **Type** — Big Shoulders Display headings −0.02em near-black, cobalt eyebrows 0.08em + numerals; Big Shoulders Display body muted line 1.6; ≥1.4cqw floor.
+- **Depth** — tinted cards (no shadow), soft rounded corners, 20% cobalt borders; no square content corners.
+- **Anchor** — left on cover/dashboard/split, centered on quote/closer; atmosphere on cover/closing only.
 - **Fabrication** — every numeral traces to the script, else placeholder.
 
 ## Known Gaps
 
-- **Motion intentionally out of scope.** frame.md specifies composition only; the source toggles slides via display, no transition.
-- **Big Shoulders Display + Space Grotesk via Google Fonts.** CJK: Noto Sans SC 900 (sentence case — the uppercase signal drops); lean harder on borders/shadows/decoration to carry the brutalist identity.
-- **9:16 / 1:1 are guidance**; verify the floor and that decoration count scales down.
-- Star bursts (clip-path), stripe blocks, dot grids, and tilts are CSS-only; no external imagery is required.
+- **Motion intentionally out of scope.** frame.md specifies composition only; the source's 500ms translateX transitions + bar-fill animations are deck mechanics.
+- **Big Shoulders Display + Big Shoulders Display via Google Fonts.** CJK pairing (Noto Sans SC 700 display / Noto Serif SC 400 body) carries over; the eyebrow's uppercase+tracking signal weakens in CJK — pair it with the accent-line.
+- **9:16 / 1:1 are guidance**; verify the floor and that the diagonal panel reflows to a band.
+- Diagonal panel (clip-path), dot grid, concentric rings, and bars are CSS-only; no external imagery is required.
