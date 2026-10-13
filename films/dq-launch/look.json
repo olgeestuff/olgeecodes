@@ -1,0 +1,19 @@
+{
+  "from": "dq app screenshots (dq.withsholz.workers.dev)",
+  "mood": "dq's own light theme: pale blue-white ground, deep navy type, one royal blue - blue and white only",
+  "color": {
+    "ground": "#f4f5fc",
+    "deep": "#e8eaf8",
+    "card": "#ffffff",
+    "line": "#d5d8e5",
+    "mute": "#505469",
+    "ink": "#121637",
+    "accent": "#2536d7",
+    "accent2": "#525fe1"
+  },
+  "type": {
+    "display": { "face": "Archivo Condensed", "weight": 800, "tracking": 0 },
+    "text": { "face": "Inter", "weight": 500, "tracking": -0.01 },
+    "mono": { "face": "Geist Mono", "weight": 400, "tracking": 0.02 }
+  }
+}

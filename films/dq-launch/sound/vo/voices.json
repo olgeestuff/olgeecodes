@@ -1,0 +1,210 @@
+{
+ "fg": [
+  {
+   "file": "sound/vo/fg0.wav",
+   "text": "I'm next!",
+   "voice": "am_fenrir",
+   "dur": 0.5773333333333334
+  },
+  {
+   "file": "sound/vo/fg1.wav",
+   "text": "No! I'm next!",
+   "voice": "af_nicole",
+   "dur": 1.0032083333333333
+  },
+  {
+   "file": "sound/vo/fg2.wav",
+   "text": "I was here first!",
+   "voice": "am_onyx",
+   "dur": 0.9001041666666667
+  },
+  {
+   "file": "sound/vo/fg3.wav",
+   "text": "Where's the queue?!",
+   "voice": "af_bella",
+   "dur": 0.6884583333333333
+  }
+ ],
+ "bed": [
+  {
+   "file": "sound/vo/bed00.wav",
+   "text": "I'm next!",
+   "voice": "am_adam",
+   "dur": 0.6892916666666666
+  },
+  {
+   "file": "sound/vo/bed01.wav",
+   "text": "No, I'm next!",
+   "voice": "bm_george",
+   "dur": 1.1102916666666667
+  },
+  {
+   "file": "sound/vo/bed02.wav",
+   "text": "Hey!",
+   "voice": "af_jessica",
+   "dur": 0.455875
+  },
+  {
+   "file": "sound/vo/bed03.wav",
+   "text": "Move!",
+   "voice": "af_kore",
+   "dur": 0.4326875
+  },
+  {
+   "file": "sound/vo/bed04.wav",
+   "text": "Excuse me!",
+   "voice": "am_puck",
+   "dur": 0.7423958333333334
+  },
+  {
+   "file": "sound/vo/bed05.wav",
+   "text": "It's my turn!",
+   "voice": "af_sky",
+   "dur": 0.7707291666666667
+  },
+  {
+   "file": "sound/vo/bed06.wav",
+   "text": "I was here first!",
+   "voice": "bf_lily",
+   "dur": 1.4328958333333333
+  },
+  {
+   "file": "sound/vo/bed07.wav",
+   "text": "Who's next?",
+   "voice": "am_liam",
+   "dur": 0.8728333333333333
+  },
+  {
+   "file": "sound/vo/bed08.wav",
+   "text": "Where's the queue?",
+   "voice": "af_sarah",
+   "dur": 0.5868125
+  },
+  {
+   "file": "sound/vo/bed09.wav",
+   "text": "Stop pushing!",
+   "voice": "bf_isabella",
+   "dur": 0.8615
+  },
+  {
+   "file": "sound/vo/bed10.wav",
+   "text": "Me! Me!",
+   "voice": "am_eric",
+   "dur": 0.5832708333333333
+  },
+  {
+   "file": "sound/vo/bed11.wav",
+   "text": "Wait!",
+   "voice": "bm_daniel",
+   "dur": 0.5407708333333333
+  },
+  {
+   "file": "sound/vo/bed12.wav",
+   "text": "Come on!",
+   "voice": "bf_emma",
+   "dur": 0.5554166666666667
+  },
+  {
+   "file": "sound/vo/bed13.wav",
+   "text": "Oya, I'm next!",
+   "voice": "am_michael",
+   "dur": 0.9149583333333333
+  },
+  {
+   "file": "sound/vo/bed14.wav",
+   "text": "Abeg, I'm next!",
+   "voice": "bm_lewis",
+   "dur": 1.15925
+  },
+  {
+   "file": "sound/vo/bed15.wav",
+   "text": "Get in line!",
+   "voice": "af_river",
+   "dur": 0.7661458333333333
+  },
+  {
+   "file": "sound/vo/bed16.wav",
+   "text": "I'm next!",
+   "voice": "am_adam",
+   "dur": 0.6138958333333333
+  },
+  {
+   "file": "sound/vo/bed17.wav",
+   "text": "No, I'm next!",
+   "voice": "bm_george",
+   "dur": 1.1102916666666667
+  },
+  {
+   "file": "sound/vo/bed18.wav",
+   "text": "Hey!",
+   "voice": "af_jessica",
+   "dur": 0.4363125
+  },
+  {
+   "file": "sound/vo/bed19.wav",
+   "text": "Move!",
+   "voice": "af_kore",
+   "dur": 0.4091458333333333
+  },
+  {
+   "file": "sound/vo/bed20.wav",
+   "text": "Excuse me!",
+   "voice": "am_puck",
+   "dur": 0.5729375
+  },
+  {
+   "file": "sound/vo/bed21.wav",
+   "text": "It's my turn!",
+   "voice": "af_sky",
+   "dur": 0.9190208333333333
+  },
+  {
+   "file": "sound/vo/bed22.wav",
+   "text": "I was here first!",
+   "voice": "bf_lily",
+   "dur": 1.2865416666666667
+  },
+  {
+   "file": "sound/vo/bed23.wav",
+   "text": "Who's next?",
+   "voice": "am_liam",
+   "dur": 0.7772291666666666
+  },
+  {
+   "file": "sound/vo/bed24.wav",
+   "text": "Where's the queue?",
+   "voice": "af_sarah",
+   "dur": 0.6969166666666666
+  },
+  {
+   "file": "sound/vo/bed25.wav",
+   "text": "Stop pushing!",
+   "voice": "bf_isabella",
+   "dur": 0.8615
+  },
+  {
+   "file": "sound/vo/bed26.wav",
+   "text": "Me! Me!",
+   "voice": "am_eric",
+   "dur": 0.5984375
+  },
+  {
+   "file": "sound/vo/bed27.wav",
+   "text": "Wait!",
+   "voice": "bm_daniel",
+   "dur": 0.536375
+  },
+  {
+   "file": "sound/vo/bed28.wav",
+   "text": "Come on!",
+   "voice": "bf_emma",
+   "dur": 0.7564583333333333
+  },
+  {
+   "file": "sound/vo/bed29.wav",
+   "text": "Oya, I'm next!",
+   "voice": "am_michael",
+   "dur": 0.94
+  }
+ ]
+}

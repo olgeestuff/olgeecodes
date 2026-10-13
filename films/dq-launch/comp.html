@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<!-- dq launch film · 15 s · built on onetake (PolyForm Noncommercial 1.0.0) · concept: chaos → one line -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>dq · launch film</title>
+<style>
+html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:#f4f5fc}
+body{font-family:var(--text),Inter,system-ui,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+#stage{position:absolute;inset:0;overflow:hidden;background:var(--ground)}
+canvas.full{position:absolute;left:0;top:0;width:1920px;height:1080px}
+#world{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;will-change:transform}
+.a{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform,opacity;white-space:nowrap}
+.shout{font-family:var(--display);font-weight:800;color:var(--ink);line-height:1;transform-origin:50% 50%;letter-spacing:.005em}
+/* the device: outer = bezel, inner = screen; content stays put in the world while the clip opens around it */
+#dev{position:absolute;left:0;top:0;overflow:hidden;transform-origin:50% 50%;will-change:transform,width,height;
+  box-shadow:0 34px 80px -30px rgba(18,22,55,.38),0 2px 8px rgba(18,22,55,.07)}
+#scr{position:absolute;overflow:hidden}
+#content{position:absolute;left:0;top:0;width:462px;height:1000px}
+.ui{position:absolute;white-space:nowrap}
+.btn{border-radius:13px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px}
+.roll{position:absolute;overflow:hidden}
+.roll>span{position:absolute;left:0;top:0;white-space:nowrap;will-change:transform}
+.row{position:absolute;left:19px;width:424px;height:70px;will-change:transform}
+.row .div{position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--line)}
+.grip{position:absolute;left:18px;width:14px;height:24px}
+.grip i{position:absolute;width:5px;height:5px;border-radius:50%;background:currentColor}
+.num{position:absolute;left:58px;width:46px;height:64px;font-family:var(--display);font-weight:800;text-align:center;line-height:64px}
+/* names that travel: anchor = left edge of the text, vertical centre */
+.nm{position:absolute;left:0;top:0;width:0;height:0;transform-origin:0 0;will-change:transform,opacity}
+.nm .pill{position:absolute;background:#fff;border:1px solid var(--line);border-radius:999px;
+  box-shadow:0 12px 26px -10px rgba(18,22,55,.30),0 1px 3px rgba(18,22,55,.06)}
+.nm .tx{position:absolute;left:0;top:-14px;height:28px;line-height:28px;font-size:20px;font-weight:500;white-space:nowrap}
+.nm .car{display:inline-block;width:2px;height:22px;background:var(--ink);vertical-align:-4px;margin-left:2px}
+/* end card */
+#end{position:absolute;inset:0;background:var(--accent);display:none}
+#qline{position:absolute;left:0;top:0;width:1920px;text-align:center;font-size:64px;font-weight:600;color:#fff;letter-spacing:-.015em;line-height:1}
+#qline span{display:inline-block;margin:0 .13em;will-change:transform,opacity}
+#url{position:absolute;left:0;top:0;background:#fff;overflow:hidden;will-change:transform,width,height}
+#url .ut{position:absolute;left:0;top:0;white-space:nowrap;font-size:44px;font-weight:600;color:var(--accent);letter-spacing:-.01em;line-height:1}
+#url .uc{display:inline-block;width:3px;height:44px;background:var(--accent);vertical-align:-7px;margin-left:3px}
+#free{position:absolute;left:0;top:0;width:1920px;text-align:center;font-size:30px;font-weight:500;color:rgba(255,255,255,.82);line-height:1;will-change:transform,opacity}
+/* the hand: a fingertip */
+#hand{position:absolute;left:0;top:0;width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:50%;background:rgba(18,22,55,.20);
+  border:3px solid rgba(255,255,255,.96);box-shadow:0 8px 22px rgba(18,22,55,.28);will-change:transform,opacity;box-sizing:border-box}
+#ripple{position:absolute;left:0;top:0;border-radius:50%;border:3px solid var(--accent);will-change:transform,opacity;box-sizing:border-box}
+#hud{position:absolute;right:14px;bottom:10px;font:13px monospace;color:#c00;display:none}
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="bg" class="full"></canvas>
+  <div id="world">
+    <div id="shouts"></div>
+    <div id="dev"><div id="scr"><div id="content"></div></div></div>
+    <div id="names"></div>
+  </div>
+  <div id="end">
+    <canvas id="endcv" class="full"></canvas>
+    <div id="qline"></div>
+    <div id="url"><div class="ut"><span id="utx"></span><i class="uc" id="ucar"></i></div></div>
+    <div id="free">Free to use</div>
+  </div>
+  <div id="ripple"></div>
+  <div id="hand"></div>
+  <div id="hud"></div>
+</div>
+<script src="look.js"></script>
+<script src="motion.js"></script>
+<script>
+// ══════════════════════════════════════════════════════════════════════════════════════════════
+// dq launch film. Concept: chaos → one line. A crowd of names shoves for the front while voices shout;
+// dq's input rises out of the noise, a name is typed, Add name is tapped — everything freezes — and the
+// names snap one by one into dq's numbered list. "Next person" moves the line on. The camera dives into
+// the blue Next-up row; the blue is the end card: "Where's the queue?" → dq (the q is the d, flipped) → URL.
+// Contract: __seek(t) pure, __ready, __meta, __track (screen boxes), __motion (shutter), __events (sound).
+// ══════════════════════════════════════════════════════════════════════════════════════════════
+const {clamp, lerp, sstep, ssstep, spring: spr, ring, seg, ease} = OM;
+const W = 1920, H = 1080, DUR = 15;
+
+// ─────────────────────────────── beats (s) ───────────────────────────────
+const SHOUTS = [[-0.06, "I'M NEXT!"], [0.70, "NO, I'M NEXT!!"], [1.42, "I WAS HERE FIRST!"], [1.98, "WHERE'S THE QUEUE?!"]];
+const SHOUT_END = 2.62;
+const BAR_IN = 2.42;                    // dq's input card rises out of the scrum
+const TYPE0 = 2.66, TYPE_CPS = 36;      // "Tunde Bakare" typed
+const TAP1 = 3.10;                      // Add name — the freeze
+const SNAP = 3.58;                      // the line forms
+const DEV0 = 3.58, DEV1 = 4.20;         // the card opens into the phone
+const T1_0 = 3.60, T1_1 = 4.02;         // the typed name drops into row 1
+const SLOT_IN = 3.82;                   // the blue Next-up slot grows under it
+const CH_T0 = 4.16, CH_DT = 0.19, CH_DUR = 0.52;   // the crowd hops into rows 2–8
+const HOLD0 = 6.25, HOLD1 = 7.95;       // the rest: one calm line
+const TAP2 = 8.52, SHIFT = 8.62;        // "Tunde Bakare is done, next person"
+const DIVE0 = 9.85, DIVE1 = 10.60;      // into the blue
+const END_T = DIVE1;
+const QW = [10.72, 10.88, 11.04];       // Where's · the · queue?
+const D_IN = 11.42, FLIP0 = 11.84, FLIP1 = 12.30;
+const URL_IN = 12.62, URL_TYPE = 12.92, URL_CPS = 30, FREE_IN = 13.98;
+const URL_TEXT = 'dq.withsholz.workers.dev';
+window.__meta = { dur: DUR, fps: 30, w: W, h: H,
+  cuts: [0.70, 1.42, 1.98, SHOUT_END, END_T],       // shout hits (a burst) and the dive landing in the blue
+  inFrame: { dev: [HOLD0, HOLD1, 'whole'], mark: [FLIP1, DUR, 'whole'], url: [URL_IN + 0.5, DUR, 'whole'] } };
+
+// ─────────────────────────────── the phone, in world px ───────────────────────────────
+// screen 462 × 1000 css px (the app's own mobile layout), bezel 12; the input row sits at world y 640
+const SX = 729, SY = 368, BEZ = 12;
+const DEV = { x: SX - BEZ, y: SY - BEZ, w: 462 + 2 * BEZ, h: 1000 + 2 * BEZ, r: 54 };
+const CARD = { x: SX + 5, y: SY + 208, w: 452, h: 104, r: 18 };
+const ROW1 = { top: 390, h: 90 }, ROWH = 70;
+const slotTop = n => n === 1 ? ROW1.top : 480 + (n - 2) * ROWH;
+const slotMid = n => n === 1 ? ROW1.top + ROW1.h / 2 : slotTop(n) + ROWH / 2;
+const NAMES = ['Tunde Bakare', 'Amaka Obi', 'Chidi Nwosu', 'Sarah Mitchell', 'Kemi Adeyemi', 'David Okafor', 'Fatima Bello', 'James Carter'];
+const ADD_BTN = { x: SX + 305 + 69, y: SY + 246 + 26 };
+const NEXT_BTN = { x: SX + 19 + 378, y: SY + 318 + 26 };
+const CHIP_S = 2.1, PADX = 18, PADY = 11;
+
+// ─────────────────────────────── DOM ───────────────────────────────
+const $ = id => document.getElementById(id);
+function el(tag, cls, css, text, parent) { const e = document.createElement(tag); if (cls) e.className = cls; if (css) e.style.cssText = css; if (text != null) e.textContent = text; (parent || $('content')).appendChild(e); return e; }
+const C = $('content');
+// status bar
+el('div', 'ui', 'left:30px;top:13px;font-size:15px;font-weight:600', '9:41');
+el('div', 'ui', 'left:181px;top:10px;width:100px;height:26px;border-radius:13px;background:var(--ink)');
+[0, 1, 2, 3].forEach(i => el('div', 'ui', `left:${372 + i * 5}px;top:${24 - i * 3}px;width:3px;height:${4 + i * 3}px;border-radius:1px;background:var(--ink)`));
+el('div', 'ui', 'left:398px;top:15px;width:25px;height:12px;border-radius:3.5px;border:1.5px solid var(--ink);box-sizing:border-box;padding:1.5px', null)
+  .appendChild(Object.assign(document.createElement('div'), { style: 'width:70%;height:100%;border-radius:1.5px;background:var(--ink)' }));
+// header
+el('div', 'ui', 'left:19px;top:56px;font-family:var(--display);font-weight:800;font-size:34px;line-height:1', 'dq');
+el('div', 'ui btn', 'left:244px;top:52px;width:199px;height:46px;border:1px solid var(--line);box-sizing:border-box;font-size:16.5px', 'Share queue link');
+const titleEl = el('div', 'ui', 'left:19px;top:112px;font-family:var(--display);font-weight:800;font-size:48px;line-height:1', 'Friday Night Hot Seat');
+el('div', 'ui', 'left:19px;top:183px;width:9px;height:9px;border-radius:50%;background:var(--accent)');
+el('div', 'ui', 'left:35px;top:177px;font-size:16px;font-weight:600;color:var(--accent);line-height:20px', 'Live');
+const countRoll = el('div', 'roll', 'left:83px;top:177px;width:220px;height:20px;font-size:16px;font-weight:500;color:var(--mute);line-height:20px');
+const countA = el('span', null, null, '', countRoll), countB = el('span', null, null, '', countRoll);
+el('div', 'ui', 'left:19px;top:222px;font-size:15px;font-weight:700', 'Add a name to the queue');
+const inputEl = el('div', 'ui', 'left:19px;top:246px;width:276px;height:52px;border-radius:13px;border:1.5px solid var(--ink);box-sizing:border-box;background:#fff');
+const addBtn = el('div', 'ui btn', 'left:305px;top:246px;width:138px;height:52px;background:var(--accent);color:#fff;transform-origin:50% 50%', 'Add name');
+const nextBtn = el('div', 'ui btn', 'left:19px;top:318px;width:424px;height:52px;background:var(--ink);color:#fff;transform-origin:50% 50%;overflow:hidden');
+const nextRoll = el('div', 'roll', 'left:0;top:0;width:424px;height:52px;font-size:16.5px;font-weight:700;line-height:52px', null, nextBtn);
+const nextA = el('span', null, 'width:424px;text-align:center', 'Tunde Bakare is done, next person', nextRoll);
+const nextB = el('span', null, 'width:424px;text-align:center', 'Amaka Obi is done, next person', nextRoll);
+// the blue Next-up slot and its pill
+const slotEl = el('div', 'ui', 'left:0;top:0;background:var(--accent);border-radius:16px;transform-origin:0 0');
+const pillEl = el('div', 'ui', 'left:0;top:0;height:28px;padding:0 12px;border-radius:14px;background:var(--accent2);color:#fff;font-size:14px;font-weight:700;line-height:28px;transform-origin:50% 50%', 'Next up');
+// rows: grip · number · divider (names travel separately, above the screen)
+const rows = NAMES.map((n, i) => {
+  const r = el('div', 'row', `top:0`);
+  const g = el('div', 'grip', null, null, r); [0, 1, 2].forEach(y => [0, 1].forEach(x => el('i', null, `left:${x * 9}px;top:${y * 9.5}px`, null, g)));
+  const num = el('div', 'roll num', null, null, r); const nA = el('span', null, 'width:46px', '', num), nB = el('span', null, 'width:46px', '', num);
+  const dv = i === 0 ? null : el('div', 'div', null, null, r);
+  return { r, g, num, nA, nB, dv };
+});
+// shouts
+const shoutEls = SHOUTS.map(([t, w]) => el('div', 'a shout', null, w, $('shouts')));
+// names: Tunde is typed; the other seven are the crowd
+const nameEls = NAMES.map((n, i) => {
+  const d = el('div', 'nm', null, null, $('names'));
+  const p = i === 0 ? null : el('div', 'pill', null, null, d);
+  const tx = el('div', 'tx', null, i === 0 ? '' : n, d);
+  const tt = i === 0 ? el('span', null, null, '', tx) : null, car = i === 0 ? el('i', 'car', null, null, tx) : null;
+  return { d, p, tx, tt, car, w: 0 };
+});
+const qWords = ["Where's", 'the', 'queue?'].map(w => el('span', null, null, w, $('qline')));
+
+// ─────────────────────────────── measured in __ready ───────────────────────────────
+let M = {};
+function measure() {
+  // title fits the app's width
+  const tw = titleEl.getBoundingClientRect().width; titleEl.style.fontSize = (48 * Math.min(1, 380 / tw)).toFixed(2) + 'px';
+  nameEls.forEach((n, i) => { n.tx.style.fontWeight = 500; n.w = measureText(NAMES[i], 20, 500); });
+  nameEls.forEach((n, i) => { if (!n.p) return; Object.assign(n.p.style, { left: -PADX + 'px', top: -(14 + PADY) + 'px', width: (n.w + 2 * PADX) + 'px', height: (28 + 2 * PADY) + 'px' }); });
+  shoutEls.forEach(e => { e.style.fontSize = '200px'; const w = e.getBoundingClientRect().width; const fs = 200 * Math.min(1, 1180 / w); e.style.fontSize = fs.toFixed(1) + 'px'; });
+  M.shout = shoutEls.map(e => { const r = e.getBoundingClientRect(); return { w: r.width, h: r.height }; });
+  M.pillW = pillEl.getBoundingClientRect().width;
+  M.amakaW = measureText('Amaka Obi', 23, 700);
+  // the dive lands in the blue between Amaka's name and the pill
+  M.gapMid = ((144 + M.amakaW) + (443 - 12 - M.pillW)) / 2;
+  M.A = { x: SX + M.gapMid, y: SY + slotMid(1) };
+  // end card type
+  const cv = $('endcv').getContext('2d'); cv.font = LOOK.font('display', MARK_PX); const md = cv.measureText('d');
+  M.dW = md.width; M.dAsc = md.actualBoundingBoxAscent; M.dL = md.actualBoundingBoxLeft; M.dR = md.actualBoundingBoxRight; M.xh = cv.measureText('x').actualBoundingBoxAscent;
+  M.qlineW = measureText("Where's the queue?", 64, 600) + 2 * 0.13 * 64 * 3;
+  M.urlTW = measureText(URL_TEXT, 44, 600) + 3 + 3; M.urlW = M.urlTW + 2 * 44; M.urlH = 92;
+  layoutEnd();
+}
+function measureText(s, px, wt) { const c = document.createElement('canvas').getContext('2d'); c.font = `${wt} ${px}px ${getComputedStyle(document.body).getPropertyValue('--text') || 'Inter'}`; return c.measureText(s).width; }
+// end card layout: question · dq · url · free, centred as a stack; before the URL arrives the first two sit lower
+const MARK_PX = 300;
+function layoutEnd() {
+  const qH = 64, g1 = 62, markH = 2 * M.dAsc - M.xh, g2 = 52, g3 = 30;
+  const total = qH + g1 + markH + g2 + M.urlH + g3 + 30;
+  const top = (H - total) / 2;
+  M.qY = top;                                     // top of the question line
+  M.base = top + qH + g1 + M.dAsc;               // the baseline: d above it, the flipped d (q) below
+  M.axis = M.base - M.xh / 2;                    // the q is the d mirrored about the middle of its x-height
+  M.urlY = M.base - M.xh + M.dAsc + g2;
+  M.freeY = M.urlY + M.urlH + g3;
+  M.lift = 58;                                    // how far the question + mark sit lower before the URL
+  M.dX = W / 2 - M.dW;                            // d's pen position; the q's is dX + dW
+}
+
+// ─────────────────────────────── the crowd: shoving, precomputed once at 240 Hz ───────────────────────────────
+const SDT = 1 / 240; let CROWD = null;
+function simulate() {
+  const r = OM.rng(20261013), N = 7, st = [];
+  const B = nameEls.slice(1).map(n => ({ hw: (n.w + 2 * PADX) * CHIP_S / 2, hh: (28 + 2 * PADY) * CHIP_S / 2 }));
+  // start: a loose ring, everyone rushing the middle
+  const start = [[-420, -90], [400, -120], [-190, 190], [300, 170], [-560, 110], [560, 40], [20, -160]];
+  const P = start.map(([x, y]) => ({ x: 960 + x, y: 700 + y, vx: -x * (0.9 + 0.4 * r()), vy: -y * (0.9 + 0.4 * r()), th: (r() - 0.5) * 0.3 }));
+  const goal = P.map(() => ({ x: 960 + (r() - 0.5) * 160, y: 730 + (r() - 0.5) * 90 }));
+  const base = P.map(() => (r() - 0.5) * 0.16);
+  const shoves = P.map(() => { const s = []; let t = 0.12 + r() * 0.3; while (t < TAP1) { s.push([t, (r() - 0.5) * 2.2, 520 + r() * 520]); t += 0.32 + r() * 0.42; } return s; });
+  const si = P.map(() => 0); let barKick = false;
+  for (let t = 0; t <= TAP1 + 1e-9; t += SDT) {
+    for (let i = 0; i < N; i++) {
+      const p = P[i];
+      // everyone wants the front
+      p.vx += (goal[i].x - p.x) * 6.5 * SDT; p.vy += (goal[i].y - p.y) * 6.5 * SDT;
+      // shoves: a kick toward the middle, thrown off by a random angle
+      while (si[i] < shoves[i].length && shoves[i][si[i]][0] <= t) {
+        const [, da, mag] = shoves[i][si[i]++]; const a = Math.atan2(700 - p.y, 960 - p.x) + da; p.vx += Math.cos(a) * mag; p.vy += Math.sin(a) * mag * 0.7;
+      }
+    }
+    // the input card lands in the scrum and knocks it back
+    if (!barKick && t >= BAR_IN) { barKick = true; P.forEach(p => { const dx = p.x - 960, dy = p.y - 640, d = Math.hypot(dx, dy) + 1; const f = 1100 * Math.max(0, 1 - d / 700); p.vx += dx / d * f; p.vy += dy / d * f + 120; }); }
+    // the card is solid once it has landed: the crowd presses against it, never over it
+    if (t >= BAR_IN) for (let i = 0; i < N; i++) { const p = P[i], b = B[i], dx = p.x - 960, dy = p.y - 640;
+      const ox = b.hw + CARD.w / 2 + 14 - Math.abs(dx), oy = b.hh + CARD.h / 2 + 14 - Math.abs(dy);
+      if (ox > 0 && oy > 0) { if (ox < oy * 1.4) { p.x += Math.sign(dx || 1) * ox * 0.5; p.vx += Math.sign(dx || 1) * ox * 40 * SDT * 60; } else { p.y += Math.sign(dy || 1) * oy * 0.5; p.vy += Math.sign(dy || 1) * oy * 40 * SDT * 60; } } }
+    // bodies: boxes that may overlap a little before they push
+    for (let i = 0; i < N; i++) for (let j = i + 1; j < N; j++) {
+      const a = P[i], b = P[j], dx = b.x - a.x, dy = b.y - a.y;
+      const ox = (B[i].hw + B[j].hw) * 0.74 - Math.abs(dx), oy = (B[i].hh + B[j].hh) * 0.74 - Math.abs(dy);
+      if (ox > 0 && oy > 0) {
+        if (ox * 0.55 < oy) { const f = 95 * ox * Math.sign(dx || 1) * SDT; a.vx -= f; b.vx += f; }
+        else { const f = 95 * oy * Math.sign(dy || 1) * SDT; a.vy -= f; b.vy += f; }
+      }
+    }
+    for (let i = 0; i < N; i++) {
+      const p = P[i], b = B[i];
+      // soft walls keep the crowd in the frame, below the shouts
+      const x0 = 250 + b.hw, x1 = 1670 - b.hw, y0 = 470 + b.hh, y1 = 1010 - b.hh;
+      if (p.x < x0) p.vx += (x0 - p.x) * 60 * SDT; if (p.x > x1) p.vx -= (p.x - x1) * 60 * SDT;
+      if (p.y < y0) p.vy += (y0 - p.y) * 60 * SDT; if (p.y > y1) p.vy -= (p.y - y1) * 60 * SDT;
+      const D = Math.exp(-2.4 * SDT); p.vx *= D; p.vy *= D; p.x += p.vx * SDT; p.y += p.vy * SDT;
+      const tgt = clamp(base[i] + p.vx * 0.00032, -0.26, 0.26); p.th += (tgt - p.th) * Math.min(1, 9 * SDT);
+    }
+    st.push(P.map(p => [p.x, p.y, p.th]));
+  }
+  CROWD = { st, B, at: t => st[clamp(Math.floor(t / SDT), 0, st.length - 1)] };
+}
+
+// ─────────────────────────────── camera ───────────────────────────────
+const KEYS = [
+  { t: 0.00, x: 960, y: 606, zoom: 1.34, rot: -0.010 },
+  { t: BAR_IN, x: 960, y: 626, zoom: 1.24, rot: 0.008, curve: ease.sineInOut },
+  { t: 2.90, x: 960, y: 640, zoom: 1.75, rot: 0, curve: ease.expoInOut },       // whip onto the card before the tap
+  { t: SNAP, x: 960, y: 640, zoom: 1.75 },
+  { t: 4.48, x: 960, y: 868, zoom: 0.98, curve: ease.cubicInOut },              // pull back as the line forms
+  { t: HOLD1, x: 960, y: 868, zoom: 0.98 },
+  { t: 8.40, x: 960, y: 760, zoom: 1.50, curve: ease.quintInOut },              // in on the button and the top of the line
+  { t: DIVE0, x: 960, y: 760, zoom: 1.50 },
+];
+const HITS = [[-0.06, 15, 8], [0.70, 17, 8], [1.42, 17, 8], [1.98, 19, 7], [BAR_IN + 0.06, 9, 10]];
+const handEnv = t => (1 - sstep(2.2, 2.6, t)) * 6 + sstep(4.4, 4.7, t) * (1 - sstep(5.75, 6.2, t)) * 2.2;
+const Z = v => Math.abs(v) < 0.004 ? 0 : v;
+function camAt(t) {
+  if (t >= DIVE0) return diveCam(t);
+  const c = OM.camera(t, KEYS), e = handEnv(t);
+  let x = c.x + e * (Math.sin(1.7 * t) + 0.6 * Math.sin(2.9 * t + 1)) / c.zoom, y = c.y + e * (Math.sin(1.3 * t + 2) + 0.5 * Math.sin(3.3 * t)) / c.zoom, rot = c.rot;
+  for (const [th, amp, decay] of HITS) { if (t - th > 0.7) continue; const s = OM.shake(t, th, { amp, decay, seed: Math.round(th * 100) + 3 }); x += s.x / c.zoom; y += s.y / c.zoom; rot += s.rot; }
+  return { x, y, zoom: c.zoom, rot };
+}
+// the dive: key where the landing point sits on screen and the log of the zoom; recover the camera from that
+function diveCam(t) {
+  const c0 = OM.camera(DIVE0 - 1e-6, KEYS), A = M.A, z0 = c0.zoom, z1 = 38;
+  const s0 = OM.project(OM.view(c0), A.x, A.y);
+  const k = ease.cubicInOut(seg(t, DIVE0, DIVE1)), kp = ease.quintInOut(seg(t, DIVE0, DIVE1 - 0.12));
+  const z = Math.exp(lerp(Math.log(z0), Math.log(z1), k)), sx = lerp(s0[0], W / 2, kp), sy = lerp(s0[1], H / 2, kp);
+  return { x: A.x + (W / 2 - sx) / z, y: A.y + (H / 2 - sy) / z, zoom: z, rot: 0 };
+}
+
+// ─────────────────────────────── the hand (world knots, drawn on screen) ───────────────────────────────
+// segments: [t0, t1, from, to, curve]; between segments it holds dead still
+const HANDSEG = [
+  [2.50, 2.98, { x: 1440, y: 1000 }, { x: ADD_BTN.x + 4, y: ADD_BTN.y + 3 }, ease.quintOut],
+  [SNAP, 3.98, { x: ADD_BTN.x + 4, y: ADD_BTN.y + 3 }, { x: 1520, y: 1150 }, ease.cubicInOut],
+  [7.90, 8.42, { x: 1520, y: 1180 }, { x: NEXT_BTN.x, y: NEXT_BTN.y + 2 }, ease.quintOut],
+  [8.74, 9.18, { x: NEXT_BTN.x, y: NEXT_BTN.y + 2 }, { x: 1560, y: 1180 }, ease.cubicInOut],
+];
+const HAND_VIS = [[2.50, 3.98], [7.90, 9.18]], TAPS = [TAP1, TAP2];
+function handAt(t) {
+  let p = HANDSEG[0][2];
+  for (const [t0, t1, a, b, cv] of HANDSEG) { if (t >= t0) { const k = cv(seg(t, t0, t1)); p = { x: lerp(a.x, b.x, k), y: lerp(a.y, b.y, k) }; } }
+  const vis = HAND_VIS.some(([a, b]) => t >= a && t < b);
+  return { ...p, vis };
+}
+
+// ─────────────────────────────── state at t (pure; seek, __track and __motion all read it) ───────────────────────────────
+function state(t) {
+  const S = { t, cam: camAt(t) };
+  S.view = OM.view(S.cam);
+  S.world = t < END_T;
+  // shouts: hard cuts, each one slams in
+  const sh = OM.staccato(t, SHOUTS); S.shout = null;
+  if (sh.i >= 0 && t < SHOUT_END) {
+    const t0 = SHOUTS[sh.i][0], k = spr(t - t0, 0.42, 24), im = OM.impact(t, t0 + 0.06, { decay: 9, omega: 30, sqx: 0.06, sqy: 0.08 });
+    const rot = [-0.035, 0.03, -0.022, 0.018][sh.i];
+    S.shout = { i: sh.i, s: lerp(1.42, 1, k), sx: im.sx, sy: im.sy, rot, x: 960, y: 322 };
+  }
+  // the device: a card pops up, then opens into the phone
+  S.dev = null;
+  if (t >= BAR_IN - 0.02) {
+    const pi = OM.popIn(t, BAR_IN, { zeta: 0.55, omega: 17, rise: 90, s0: 0.82, ds: 0.18 });
+    const m = OM.morphRect(t, DEV0, DEV1, CARD, DEV, { curve: ease.expoOut }), k = m.k;
+    S.dev = { x: m.x, y: m.y, w: m.w, h: m.h, r: m.r, bw: lerp(1, BEZ, k), k, s: pi.s, dy: pi.dy, op: pi.op };
+  }
+  // typed name → row 1 → leaves when Tunde is done
+  const ty = OM.typeOn(t, TYPE0, NAMES[0], { cps: TYPE_CPS });
+  {
+    const from = { x: SX + 33, y: SY + 272 }, to = { x: SX + 144, y: SY + slotMid(1) };
+    const h = OM.hop(t, T1_0, T1_1, from, to, { height: 70, curve: ease.cubicInOut });
+    const k = h.k, lo = OM.liftOut(t, TAP2 + 0.05, { dur: 0.22, dist: 44, blur: 0, grow: 0 });
+    const im = OM.impact(t, T1_1, { decay: 9, omega: 30, sqx: 0.08, sqy: 0.12 });
+    S.tunde = { x: h.x + lo.dy * 1.6, y: h.y + lo.dy, s: lerp(0.85, 1.15, k), sx: t > T1_1 ? im.sx : 1, sy: t > T1_1 ? im.sy : 1, wt: lerp(500, 700, k),
+      col: k, op: (t >= TYPE0 ? 1 : 0) * lo.op, str: ty.str, caret: t >= TYPE0 && t < TAP1 ? ty.caret : 0 };
+  }
+  // the crowd: shoving until the tap, frozen, then each hops into its row
+  S.chips = nameEls.slice(1).map((n, j) => {
+    const i = j + 1, P = CROWD.at(Math.min(t, TAP1)), [cx, cy, th] = P[j];
+    const fx = cx - n.w * CHIP_S / 2, fy = cy;                        // text-left anchor from the box centre
+    const t0 = CH_T0 + j * CH_DT, t1 = t0 + CH_DUR;
+    const h = OM.hop(t, t0, t1, { x: fx, y: fy }, { x: SX + 140, y: SY + slotMid(i + 1) }, { height: 140, curve: ease.cubicInOut });
+    const k = h.k, im = OM.impact(t, t1, { decay: 9, omega: 30, sqx: 0.08, sqy: 0.12 });
+    return { x: h.x, y: h.y, s: lerp(CHIP_S, 1, k), rot: lerp(th, 0, k), pill: 1 - sstep(0.5, 0.92, k), sx: t > t1 && t - t1 < 1 ? im.sx : 1, sy: t > t1 && t - t1 < 1 ? im.sy : 1, land: t1, k };
+  });
+  // the next-person shift: Amaka rises into the blue slot, everyone moves up a place
+  const sk = t < SHIFT ? 0 : spr(t - SHIFT, 0.74, 17), sk1 = Math.min(1, sk);
+  S.shift = sk; S.shiftC = sk1;
+  S.rowY = n => n === 1 ? slotMid(1) : (n === 2 ? lerp(slotMid(2), slotMid(1), sk) : lerp(slotMid(n), slotMid(n - 1), sk));
+  S.chips.forEach((c, j) => {
+    const n = j + 2; if (t < SHIFT) return;
+    c.y = SY + S.rowY(n);
+    if (n === 2) { c.x = SX + lerp(140, 144, sk1); c.s = lerp(1, 1.15, sk1); c.wt = lerp(500, 700, sk1); c.col = sk1; }
+  });
+  S.chips.forEach(c => { if (c.wt == null) c.wt = 500; if (c.col == null) c.col = 0; });
+  // the blue slot
+  {
+    const A = { x: 136, y: slotMid(1) - 17, w: 170, h: 34, r: 17 }, B = { x: 19, y: ROW1.top, w: 424, h: ROW1.h, r: 16 };
+    const m = OM.morphRect(t, SLOT_IN, SLOT_IN + 0.6, A, B, { spring: { zeta: 0.68, omega: 17 } });
+    S.slot = { ...m, op: sstep(SLOT_IN, SLOT_IN + 0.06, t) };
+    const pp = OM.popIn(t, 4.06, { zeta: 0.5, omega: 22, rise: 10, s0: 0.6, ds: 0.4 });
+    S.pill = { s: pp.s, op: pp.op };
+  }
+  // the dive: everything off the frame is culled
+  S.end = t >= END_T;
+  return S;
+}
+
+// ─────────────────────────────── drawing ───────────────────────────────
+const bg = $('bg'), g = bg.getContext('2d'), DPR = window.devicePixelRatio || 1;
+const ecv = $('endcv'), eg = ecv.getContext('2d');
+[bg, ecv].forEach(c => { c.width = W * DPR; c.height = H * DPR; });
+const mat = m => `matrix(${m.map(v => v.toFixed(5)).join(',')})`;
+const hexMix = (a, b, k) => { const pa = [1, 3, 5].map(i => parseInt(a.slice(i, i + 2), 16)), pb = [1, 3, 5].map(i => parseInt(b.slice(i, i + 2), 16)); return `rgb(${pa.map((v, i) => Math.round(lerp(v, pb[i], k))).join(',')})`; };
+const INK = '#121637', MUTE = '#51546c', LINE = '#d5d8e5', GROUND = '#f4f5fc';
+function rollSet(a, b, oldT, newT, k, h) { a.textContent = oldT; b.textContent = newT; a.style.transform = `translateY(${(-k * h).toFixed(2)}px)`; b.style.transform = `translateY(${((1 - k) * h).toFixed(2)}px)`; b.style.display = k > 0 ? '' : 'none'; a.style.display = k < 1 ? '' : 'none'; }
+function countAt(t) {
+  const ch = [[T1_1, 1]]; for (let j = 0; j < 7; j++) ch.push([CH_T0 + j * CH_DT + CH_DUR, j + 2]); ch.push([SHIFT, 7]);
+  let v0 = 0, v1 = 0, tc = -1; for (const [tt, v] of ch) if (t >= tt) { v0 = v1; v1 = v; tc = tt; }
+  return { v0, v1, k: tc < 0 ? 1 : ssstep(tc, tc + 0.2, t) };
+}
+const plural = v => `${v} ${v === 1 ? 'person' : 'people'} waiting`;
+
+function drawGround(S) {
+  g.setTransform(DPR, 0, 0, DPR, 0, 0); g.fillStyle = GROUND; g.fillRect(0, 0, W, H);
+  const L = OM.lattice(S.cam, { depth: 1.2, spacing: 48, px: 1.5 });
+  g.setTransform(...L.matrix.map((v, i) => v * DPR)); g.fillStyle = '#dde0ee';
+  for (let x = L.x0; x <= L.x1; x += L.spacing) for (let y = L.y0; y <= L.y1; y += L.spacing) { g.beginPath(); g.arc(x, y, L.r, 0, 6.2832); g.fill(); }
+}
+
+function seek(t) {
+  const S = state(t);
+  // world
+  $('world').style.display = S.world ? '' : 'none'; bg.style.display = S.world ? '' : 'none';
+  if (S.world) {
+    drawGround(S);
+    $('world').style.transform = mat(S.view);
+    // shouts
+    shoutEls.forEach((e, i) => { const on = S.shout && S.shout.i === i; e.style.display = on ? '' : 'none'; if (!on) return; const s = S.shout, m = M.shout[i];
+      e.style.transform = `translate(${(s.x - m.w / 2).toFixed(1)}px,${(s.y - m.h / 2).toFixed(1)}px) rotate(${s.rot}rad) scale(${(s.s * s.sx).toFixed(4)},${(s.s * s.sy).toFixed(4)})`; });
+    // device
+    const dv = $('dev'), D = S.dev; dv.style.display = D ? '' : 'none';
+    if (D) {
+      Object.assign(dv.style, { left: D.x + 'px', top: D.y + 'px', width: D.w + 'px', height: D.h + 'px', borderRadius: D.r + 'px', opacity: D.op,
+        background: hexMix(LINE, INK, D.k), transform: `translateY(${D.dy.toFixed(2)}px) scale(${D.s.toFixed(4)})` });
+      const sc = $('scr'); Object.assign(sc.style, { left: D.bw + 'px', top: D.bw + 'px', width: (D.w - 2 * D.bw) + 'px', height: (D.h - 2 * D.bw) + 'px',
+        borderRadius: Math.max(4, D.r - D.bw) + 'px', background: hexMix('#ffffff', GROUND, D.k) });
+      C.style.transform = `translate(${(SX - D.x - D.bw).toFixed(2)}px,${(SY - D.y - D.bw).toFixed(2)}px)`;
+    }
+    // count
+    { const c = countAt(t); rollSet(countA, countB, plural(c.v0), plural(c.v1), c.k, 20); }
+    // buttons
+    { const p = OM.press(t, TAP1, { depth: 0.10, decay: 12, omega: 32 }); addBtn.style.transform = `scale(${(t - TAP1 < 0.6 ? p.s : 1).toFixed(4)})`; addBtn.style.background = p.active ? '#1a28a8' : 'var(--accent)'; }
+    { const p = OM.press(t, TAP2, { depth: 0.05, decay: 12, omega: 32 }); nextBtn.style.transform = `scale(${(t - TAP2 < 0.6 ? p.s : 1).toFixed(4)})`; nextBtn.style.background = p.active ? '#2a3070' : 'var(--ink)';
+      rollSet(nextA, nextB, 'Tunde Bakare is done, next person', 'Amaka Obi is done, next person', t < SHIFT ? 0 : ssstep(SHIFT, SHIFT + 0.26, t), 52); }
+    // slot + pill
+    { const s = S.slot; Object.assign(slotEl.style, { opacity: s.op, transform: `translate(${s.x.toFixed(2)}px,${s.y.toFixed(2)}px)`, width: s.w.toFixed(2) + 'px', height: s.h.toFixed(2) + 'px', borderRadius: s.r.toFixed(2) + 'px' });
+      const pw = M.pillW || 80; pillEl.style.opacity = S.pill.op; pillEl.style.transform = `translate(${(443 - 12 - pw).toFixed(1)}px,${(slotMid(1) - 14).toFixed(1)}px) scale(${S.pill.s.toFixed(4)})`; }
+    // rows: grip, number, divider — row 1 is Tunde's until he is done
+    rows.forEach((R, i) => {
+      const n = i + 1, landT = i === 0 ? T1_1 : CH_T0 + (i - 1) * CH_DT + CH_DUR;
+      const pop = OM.popIn(t, landT - 0.02, { zeta: 0.5, omega: 24, rise: 8, s0: 0.5, ds: 0.5 });
+      let mid = S.rowY(n), op = pop.op, numOld = String(n), numNew = String(n), nk = 0, white = n === 1 ? 1 : 0, big = n === 1 ? 1 : 0, dx = 0;
+      if (n === 1) { const lo = OM.liftOut(t, TAP2 + 0.05, { dur: 0.22, dist: 44, blur: 0, grow: 0 }); dx = lo.dy * 1.6; mid += lo.dy; op *= lo.op; }
+      else if (t >= SHIFT) { numNew = String(n - 1); nk = ssstep(SHIFT, SHIFT + 0.24, t); if (n === 2) { white = S.shiftC; big = S.shiftC; } }
+      R.r.style.display = op > 0.001 || (n > 1 && t > 3.5) ? '' : 'none';
+      const h = n === 1 ? ROW1.h : ROWH;
+      R.r.style.height = h + 'px';
+      R.r.style.transform = `translate(${dx.toFixed(2)}px,${(mid - h / 2).toFixed(2)}px)`;
+      R.g.style.top = (h / 2 - 12) + 'px'; R.g.style.color = hexMix(MUTE, '#ffffff', white); R.g.style.opacity = op * (white ? 0.9 : 1);
+      R.g.style.transform = `scale(${pop.s.toFixed(3)})`;
+      const fs = lerp(40, 58, big); R.num.style.top = (h / 2 - 32) + 'px'; R.num.style.fontSize = fs.toFixed(1) + 'px'; R.num.style.color = hexMix(INK, '#ffffff', white);
+      R.num.style.opacity = op; R.num.style.transform = `scale(${pop.s.toFixed(3)})`; rollSet(R.nA, R.nB, numOld, numNew, nk, 64);
+      if (R.dv) R.dv.style.opacity = n === 2 ? 1 - S.shiftC : 1;
+    });
+    // names (above the screen)
+    { const T = S.tunde, n = nameEls[0]; n.d.style.display = T.op > 0.001 ? '' : 'none';
+      n.d.style.opacity = T.op; n.d.style.transform = `translate(${T.x.toFixed(2)}px,${T.y.toFixed(2)}px) scale(${(T.s * T.sx).toFixed(4)},${(T.s * T.sy).toFixed(4)})`;
+      n.tt.textContent = T.str; n.car.style.opacity = T.caret; n.car.style.display = t < TAP1 ? '' : 'none';
+      n.tx.style.fontWeight = Math.round(T.wt); n.tx.style.color = hexMix(INK, '#ffffff', ssstep(0.55, 1, T.col)); }
+    S.chips.forEach((c, j) => { const n = nameEls[j + 1];
+      n.d.style.transform = `translate(${c.x.toFixed(2)}px,${c.y.toFixed(2)}px) rotate(${c.rot.toFixed(4)}rad) scale(${(c.s * c.sx).toFixed(4)},${(c.s * c.sy).toFixed(4)})`;
+      n.p.style.opacity = c.pill; n.p.style.display = c.pill > 0.001 ? '' : 'none';
+      n.tx.style.fontWeight = Math.round(c.wt); n.tx.style.color = hexMix(INK, '#ffffff', c.col); });
+  }
+  // end card
+  $('end').style.display = S.end ? 'block' : 'none';
+  if (S.end) drawEnd(t);
+  // hand
+  { const h = handAt(t), on = h.vis && S.world, el = $('hand'), rp = $('ripple'); el.style.display = on ? '' : 'none'; rp.style.display = 'none';
+    if (on) { const p = OM.project(S.view, h.x, h.y); let s = 1; for (const c of TAPS) if (t >= c && t < c + 0.14) s = 0.84;
+      const ent = sstep(0, 0.12, t - HAND_VIS.find(([a, b]) => t >= a && t < b)[0]);
+      el.style.opacity = ent; el.style.transform = `translate(${p[0].toFixed(1)}px,${p[1].toFixed(1)}px) scale(${s})`;
+      for (const c of TAPS) { const u = (t - c) / 0.42; if (u > 0 && u < 1) { const r = lerp(30, 84, ease.cubicOut(u)); rp.style.display = ''; rp.style.width = rp.style.height = (2 * r) + 'px';
+        rp.style.transform = `translate(${(p[0] - r).toFixed(1)}px,${(p[1] - r).toFixed(1)}px)`; rp.style.opacity = (1 - u) * 0.7; } } } }
+  $('hud').textContent = 't=' + t.toFixed(3);
+  return S;
+}
+
+// ─────────────────────────────── the end card: Where's the queue? → dq → URL ───────────────────────────────
+function endState(t) {
+  const lift = M.lift * (1 - spr(t - URL_IN, 0.72, 15));
+  const E = { lift };
+  E.q = QW.map(t0 => OM.wordRise(t, t0, { dist: 34 }));
+  E.d = OM.letterDrop(t, D_IN, 0, { dist: 150, squash: 0.0042, max: 0.26 });
+  E.fk = ease.cubicInOut(seg(t, FLIP0, FLIP1));
+  E.fim = OM.impact(t, FLIP1, { decay: 8, omega: 26, sqx: 0.10, sqy: 0.14 });
+  E.shake = t - FLIP1 < 0.55 ? OM.shake(t, FLIP1, { amp: 9, decay: 10, seed: 7 }) : { x: 0, y: 0, rot: 0 };
+  // the URL pill grows out of the q's tail
+  const tail = { x: M.dX + M.dW + M.dR - 0.065 * MARK_PX, y: M.base - M.xh + M.dAsc - 16 };
+  const A = { x: tail.x, y: tail.y, w: 26, h: 26, r: 13 }, B = { x: W / 2 - M.urlW / 2, y: M.urlY, w: M.urlW, h: M.urlH, r: M.urlH / 2 };
+  E.url = OM.morphRect(t, URL_IN, URL_IN + 0.6, A, B, { spring: { zeta: 0.72, omega: 15 } }); E.urlOp = sstep(URL_IN, URL_IN + 0.05, t);
+  E.ty = OM.typeOn(t, URL_TYPE, URL_TEXT, { cps: URL_CPS });
+  E.free = OM.wordRise(t, FREE_IN, { dist: 22 });
+  return E;
+}
+function drawEnd(t) {
+  const E = endState(t);
+  eg.setTransform(DPR, 0, 0, DPR, 0, 0); eg.fillStyle = '#2536d7'; eg.fillRect(0, 0, W, H);
+  // question
+  const ql = $('qline'); ql.style.transform = `translate(${E.shake.x.toFixed(2)}px,${(M.qY + E.lift + E.shake.y).toFixed(2)}px)`;
+  qWords.forEach((w, i) => { const r = E.q[i]; w.style.opacity = r.op; w.style.transform = `translateY(${r.y.toFixed(2)}px) scale(${r.s.toFixed(4)})`; });
+  // dq: the d drops; a copy tips over its own baseline and lands as the q
+  eg.save(); eg.translate(E.shake.x, E.shake.y + E.lift); eg.fillStyle = '#ffffff'; eg.font = LOOK.font('display', MARK_PX); eg.textBaseline = 'alphabetic';
+  if (t >= D_IN) {
+    const d = E.d, cx = M.dX + M.dW / 2; eg.globalAlpha = d.op;
+    eg.save(); eg.translate(cx, M.base - d.y); eg.scale(d.sx * (t > FLIP1 ? 1 + E.fim.r * 0.03 : 1), d.sy); eg.fillText('d', -M.dW / 2, 0); eg.restore();
+  }
+  if (t >= FLIP0) {
+    const k = E.fk, cx = M.dX + M.dW / 2 + M.dW * k, sy = Math.cos(Math.PI * k), arc = Math.sin(Math.PI * k) * 46;
+    const land = t > FLIP1 ? E.fim : { sx: 1, sy: 1 };
+    eg.globalAlpha = 1; eg.save(); eg.translate(cx, M.axis - arc); eg.scale((1 + 0.12 * Math.sin(Math.PI * k)) * land.sx, sy * land.sy); eg.fillText('d', -M.dW / 2, M.xh / 2); eg.restore();
+  }
+  eg.restore();
+  // url pill + typing
+  const u = $('url'), U = E.url; u.style.display = t >= URL_IN ? '' : 'none';
+  Object.assign(u.style, { opacity: E.urlOp, width: U.w.toFixed(2) + 'px', height: U.h.toFixed(2) + 'px', borderRadius: U.r.toFixed(2) + 'px', transform: `translate(${U.x.toFixed(2)}px,${U.y.toFixed(2)}px)` });
+  const ut = u.querySelector('.ut'); ut.style.transform = `translate(${(44 + (U.w - M.urlW) / 2).toFixed(2)}px,${((U.h - 44) / 2).toFixed(2)}px)`;
+  $('utx').textContent = E.ty.str; $('ucar').style.opacity = t >= URL_TYPE && t < URL_TYPE + URL_TEXT.length / URL_CPS + 0.16 ? 1 : 0;
+  const f = $('free'); f.style.opacity = E.free.op; f.style.transform = `translateY(${(M.freeY + E.free.y).toFixed(2)}px) scale(${E.free.s.toFixed(4)})`;
+  f.style.transformOrigin = '50% 50%';
+}
+
+// ─────────────────────────────── probe / shutter / sound ───────────────────────────────
+function track(t) {
+  const S = state(t), V = S.view, out = {};
+  const pb = b => OM.projectBox(V, b);
+  if (S.world) {
+    const h = handAt(t); if (h.vis) out.hand = OM.project(V, h.x, h.y);
+    if (S.shout) { const m = M.shout[S.shout.i], s = S.shout.s; out.shout = pb({ x: S.shout.x - m.w * s / 2, y: S.shout.y - m.h * s / 2, w: m.w * s, h: m.h * s, op: 1 }); }
+    if (S.dev) { const D = S.dev; out.dev = pb({ x: D.x + D.w / 2 - D.w * D.s / 2, y: D.y + D.dy + D.h / 2 - D.h * D.s / 2, w: D.w * D.s, h: D.h * D.s, op: D.op }); }
+    if (S.tunde.op > 0.01) { const T = S.tunde, w = nameEls[0].w * T.s; out.tunde = pb({ x: T.x, y: T.y - 14 * T.s, w: Math.max(w * T.str.length / NAMES[0].length, 4), h: 28 * T.s, op: T.op }); }
+    S.chips.forEach((c, j) => { const w = (nameEls[j + 1].w + 2 * PADX * c.pill) * c.s, h = (28 + 2 * PADY * c.pill) * c.s;
+      out['c' + j] = pb({ x: c.x - PADX * c.pill * c.s, y: c.y - h / 2, w, h, op: 1 }); });
+    if (S.slot.op > 0.01) out.slot = pb({ x: SX + S.slot.x, y: SY + S.slot.y, w: S.slot.w, h: S.slot.h, op: S.slot.op });
+  } else {
+    const E = endState(t);
+    out.qline = { x: W / 2 - M.qlineW / 2, y: M.qY + E.lift, w: M.qlineW, h: 64, op: Math.max(...E.q.map(q => q.op)) };
+    if (t >= D_IN) out.mark = { x: M.dX + E.shake.x, y: M.base - M.dAsc + E.lift - E.d.y, w: M.dW * (t >= FLIP0 ? 1 + E.fk : 1), h: M.dAsc + (t >= FLIP0 ? Math.max(0, -Math.cos(Math.PI * E.fk)) * (M.dAsc - M.xh) : 0), op: E.d.op };
+    if (t >= URL_IN) out.url = { x: E.url.x, y: E.url.y, w: E.url.w, h: E.url.h, op: E.urlOp };
+    if (t >= FREE_IN) out.free = { x: W / 2 - 90, y: M.freeY + E.free.y, w: 180, h: 32, op: E.free.op };
+  }
+  return out;
+}
+window.__track = track;
+window.__motion = (t0, t1) => {
+  let d = 0;
+  if (t0 < END_T && t1 < END_T) { const tm = (t0 + t1) / 2; d = OM.screenTravel(camAt(t0), camAt(t1), camAt(tm)); }
+  const A = track(t0), B = track(t1);
+  for (const k in A) { if (!(k in B)) continue; const a = A[k], b = B[k];
+    if (Array.isArray(a)) { d = Math.max(d, Math.hypot(a[0] - b[0], a[1] - b[1])); continue; }
+    d = Math.max(d, Math.abs(a.x - b.x), Math.abs(a.y - b.y), Math.abs(a.x + a.w - b.x - b.w), Math.abs(a.y + a.h - b.y - b.h)); }
+  return d;
+};
+// events for the score: [t, kind, pan (-1..1), strength]
+window.__events = () => {
+  const ev = [], panAt = (t, x, y) => { const S = state(t); const p = S.world ? OM.project(S.view, x, y) : [x, y]; return clamp((p[0] - W / 2) / (W / 2), -1, 1); };
+  SHOUTS.forEach(([t], i) => ev.push({ t, kind: 'shout', i, pan: [-0.25, 0.3, -0.15, 0.1][i], v: 1 }));
+  ev.push({ t: SHOUT_END, kind: 'shout_end', pan: 0, v: 1 });
+  ev.push({ t: BAR_IN, kind: 'bar_in', pan: 0, v: 1 });
+  for (let i = 0; i < NAMES[0].length; i++) ev.push({ t: TYPE0 + i / TYPE_CPS, kind: 'key', pan: panAt(TYPE0, SX + 33 + i * 10, SY + 272), v: 0.6 + 0.4 * ((i * 7) % 5) / 4 });
+  ev.push({ t: TAP1, kind: 'tap_freeze', pan: panAt(TAP1, ADD_BTN.x, ADD_BTN.y), v: 1 });
+  ev.push({ t: T1_0, kind: 'lift', pan: 0, v: 0.6 });
+  ev.push({ t: T1_1, kind: 'land', i: 0, pan: panAt(T1_1, SX + 144, SY + slotMid(1)), v: 1 });
+  ev.push({ t: DEV0, kind: 'open', pan: 0, v: 1 });
+  for (let j = 0; j < 7; j++) { const t0 = CH_T0 + j * CH_DT, t1 = t0 + CH_DUR; const c = state(t0).chips[j];
+    ev.push({ t: t0, kind: 'hop', i: j + 1, pan: panAt(t0, c.x, c.y), v: 0.7 }); ev.push({ t: t1, kind: 'land', i: j + 1, pan: panAt(t1, SX + 160, SY + slotMid(j + 2)), v: 0.9 }); }
+  ev.push({ t: 4.06, kind: 'pill', pan: 0.2, v: 0.8 });
+  ev.push({ t: 7.95, kind: 'push', pan: 0, v: 0.6 });
+  ev.push({ t: TAP2, kind: 'tap', pan: panAt(TAP2, NEXT_BTN.x, NEXT_BTN.y), v: 1 });
+  ev.push({ t: TAP2 + 0.06, kind: 'out', pan: -0.4, v: 0.8 });
+  ev.push({ t: SHIFT, kind: 'shift', pan: 0, v: 0.8 });
+  ev.push({ t: DIVE0, kind: 'dive', pan: 0, v: 1, dur: DIVE1 - DIVE0 });
+  ev.push({ t: END_T, kind: 'blue', pan: 0, v: 1 });
+  QW.forEach((t, i) => ev.push({ t, kind: 'word', i, pan: [-0.2, 0, 0.2][i], v: 0.7 }));
+  ev.push({ t: D_IN, kind: 'd_drop', pan: -0.1, v: 1 });
+  ev.push({ t: FLIP0, kind: 'flip', pan: 0.05, v: 0.8, dur: FLIP1 - FLIP0 });
+  ev.push({ t: FLIP1, kind: 'q_land', pan: 0.12, v: 1 });
+  ev.push({ t: URL_IN, kind: 'url_in', pan: 0, v: 0.8 });
+  for (let i = 0; i < URL_TEXT.length; i++) ev.push({ t: URL_TYPE + i / URL_CPS, kind: 'key', pan: -0.35 + 0.7 * i / URL_TEXT.length, v: 0.5 + 0.5 * ((i * 3) % 4) / 3 });
+  ev.push({ t: FREE_IN, kind: 'free', pan: 0, v: 0.6 });
+  return { T: DUR, events: ev.sort((a, b) => a.t - b.t) };
+};
+
+window.__seek = async t => { seek(t); return true; };
+window.__ready = LOOK.ready.then(() => document.fonts.ready).then(() => { measure(); simulate(); seek(0); return true; });
+const q = new URLSearchParams(location.search);
+if (q.has('t')) __ready.then(() => seek(parseFloat(q.get('t'))));
+if (q.has('hud')) $('hud').style.display = 'block';
+if (q.has('play')) __ready.then(() => { const t0 = performance.now(); (function loop() { seek(((performance.now() - t0) / 1000) % DUR); requestAnimationFrame(loop); })(); });
+</script>
+</body>
+</html>
