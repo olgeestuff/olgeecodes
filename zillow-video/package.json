@@ -5,8 +5,8 @@
   "description": "My Failed Attempt at Making Zillow Without AI — Automation With Sholz (Remotion)",
   "scripts": {
     "studio": "remotion studio",
-    "render:vertical": "remotion render Vertical out/zillow-vertical-9x16.mp4",
-    "render:square": "remotion render Square out/zillow-linkedin-1x1.mp4"
+    "render:vertical": "remotion render src/index.ts Vertical out/zillow-vertical-9x16.mp4",
+    "render:square": "remotion render src/index.ts Square out/zillow-linkedin-1x1.mp4"
   },
   "dependencies": {
     "@fontsource/anton": "5.2.6",

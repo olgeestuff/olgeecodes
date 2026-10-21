@@ -14,10 +14,11 @@ import { Phone } from "../components/Phone";
 import { BODY, C, HEAD, useLayout } from "../theme";
 import { Punch, SceneProps, cueAt } from "./shared";
 
+// In the order they're spoken.
 const TILES = [
+  { key: "nonlanded", label: "Non-landed", group: "Residential", Icon: NonLandedIcon },
   { key: "hdb", label: "HDB", group: "Residential", Icon: HdbIcon },
   { key: "landed", label: "Landed", group: "Residential", Icon: LandedIcon },
-  { key: "nonlanded", label: "Non-landed", group: "Residential", Icon: NonLandedIcon },
   { key: "retail", label: "Retail", group: "Commercial", Icon: RetailIcon },
   { key: "office", label: "Office", group: "Commercial", Icon: OfficeIcon },
   { key: "industrial", label: "Industrial", group: "Commercial", Icon: IndustrialIcon },
@@ -33,7 +34,7 @@ export const Wrong: React.FC<SceneProps> = (p) => {
   const len = p.sec.e - p.sec.s;
 
   const tRes = cueAt(p, "residential", 0.05);
-  const tCom = cueAt(p, "commercial", 0.12);
+  const tCom = Math.max(cueAt(p, "commercial", 0.12), tRes + 0.2);
   const tWrong = cueAt(p, "wrong", 0.25);
   const tileAt = TILES.map((tile, i) => cueAt(p, tile.key, 0.4 + i * 0.045));
   const tBurst = Math.min(...tileAt);
@@ -89,6 +90,24 @@ export const Wrong: React.FC<SceneProps> = (p) => {
 
   return (
     <Punch>
+      {wordsOut > 0 && (
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            top: L.square ? 150 : 520,
+            textAlign: "center",
+            fontFamily: HEAD,
+            fontSize: L.square ? 60 : 72,
+            color: C.gray,
+            textTransform: "uppercase",
+            opacity: wordsOut * interpolate(t, [0, 0.25], [0, 1], { extrapolateRight: "clamp" }),
+          }}
+        >
+          All I knew:
+        </div>
+      )}
       {wordsOut > 0 && (
         <AbsoluteFill
           style={{

@@ -11,7 +11,8 @@ export const Twist: React.FC<SceneProps> = (p) => {
   const L = useLayout();
   const t = frame / fps;
   const len = p.sec.e - p.sec.s;
-  const tFailed = cueAt(p, "failure", 0.03);
+  // "So that's the quick story of my failure..." — FAILED? lands straight away so the strike has something to hit.
+  const tFailed = Math.min(cueAt(p, "failure", 0.03), 0.25);
   const tCross = cueAt(p, "notfailure", 0.3);
   const tTeam = cueAt(p, "team", 0.5);
   // After the reveal, lift the text to the top and bring the app in underneath.
@@ -24,9 +25,9 @@ export const Twist: React.FC<SceneProps> = (p) => {
   const used = spring({ frame: frame - Math.round(tTeam * fps), fps, config: { damping: 10, mass: 0.6 } });
 
   const bigY = L.square ? 260 : 620;
-  const topY = L.square ? 130 : 150;
+  const topY = L.square ? 300 : 150;
   const y = liftOn ? interpolate(lift, [0, 1], [bigY, topY]) : bigY;
-  const scale = liftOn ? interpolate(lift, [0, 1], [1, L.square ? 0.62 : 0.55]) : 1;
+  const scale = liftOn ? interpolate(lift, [0, 1], [1, 0.55]) : 1;
   const failSize = L.square ? 210 : 250;
 
   return (
@@ -34,7 +35,8 @@ export const Twist: React.FC<SceneProps> = (p) => {
       <div
         style={{
           position: "absolute",
-          left: L.square && liftOn ? interpolate(lift, [0, 1], [0, -230]) : 0,
+          // Square: slide into the left column (centre x = head column centre) so the phone has the right side.
+          left: L.square && liftOn ? interpolate(lift, [0, 1], [0, 2 * (L.head.x + L.head.w / 2) - L.W]) : 0,
           right: 0,
           top: y,
           display: "flex",

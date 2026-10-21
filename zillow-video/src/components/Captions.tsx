@@ -64,7 +64,7 @@ export const Captions: React.FC<{ words: Word[]; until: number }> = ({ words, un
           display: "flex",
           flexWrap: "wrap",
           justifyContent: "center",
-          gap: `0 ${L.capSize * 0.34}px`,
+          gap: `0 ${L.capSize * 0.42}px`,
           fontFamily: BODY,
           fontWeight: 900,
           fontSize: L.capSize,
@@ -82,7 +82,7 @@ export const Captions: React.FC<{ words: Word[]; until: number }> = ({ words, un
               key={i}
               style={{
                 color: active ? C.accent : spoken ? C.white : "rgba(246,245,241,0.55)",
-                transform: active ? `scale(${interpolate(pop, [0, 1], [1.14, 1.04])})` : "scale(1)",
+                transform: active ? `scale(${interpolate(pop, [0, 1], [1.06, 1.02])})` : "scale(1)",
                 display: "inline-block",
               }}
             >

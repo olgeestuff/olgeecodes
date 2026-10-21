@@ -1,12 +1,13 @@
 import React from "react";
-import { useVideoConfig } from "remotion";
+import { useCurrentFrame, useVideoConfig } from "remotion";
 import { Chip, Slam } from "../components/Kinetic";
 import { Phone } from "../components/Phone";
 import { useLayout } from "../theme";
 import { Punch, SceneProps, cueAt } from "./shared";
 
 const FILTERS = [
-  { key: "rent", label: "Rent / Buy" },
+  { key: "rent", label: "Rent / Sale" },
+  { key: "buildingname", label: "Building name" },
   { key: "district", label: "District" },
   { key: "price", label: "Price" },
   { key: "area", label: "Area" },
@@ -15,9 +16,12 @@ const FILTERS = [
 
 // Search filters: chips pop in as each filter is named, over the real Search Pro screen recording.
 export const Search: React.FC<SceneProps> = (p) => {
+  const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const L = useLayout();
-  const at = FILTERS.map((f, i) => cueAt(p, f.key, 0.15 + i * 0.15));
+  const at = FILTERS.map((f, i) => cueAt(p, f.key, 0.15 + i * 0.12));
+  // The most recently named filter is highlighted.
+  const hot = at.reduce((h, a, i) => (frame / fps >= a ? i : h), -1);
   return (
     <Punch>
       <Slam
@@ -40,7 +44,7 @@ export const Search: React.FC<SceneProps> = (p) => {
         }}
       >
         {FILTERS.map((f, i) => (
-          <Chip key={f.key} label={f.label} at={at[i]} hot={i === FILTERS.length - 1} size={L.square ? 40 : 44} />
+          <Chip key={f.key} label={f.label} at={at[i]} hot={i === hot} size={L.square ? 34 : 40} />
         ))}
       </div>
       <Phone media={{ kind: "clip", src: "app/clip_search.mp4", startFrom: Math.round(0.6 * fps), playbackRate: 1 }} />

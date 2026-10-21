@@ -21,7 +21,14 @@ export const Today: React.FC<SceneProps> = (p) => {
   const rowY = L.square ? 380 : 700;
   return (
     <Punch>
-      <Slam lines={[{ text: "Today", at: cueAt(p, "today", 0.0), size: 1.5, color: C.accent }]} box={L.square ? { x: 0, y: 90, w: L.W, h: 220 } : undefined} align="center" />
+      <Slam
+        lines={[
+          { text: "Today", at: cueAt(p, "today", 0.0), size: 1.5, color: C.accent },
+          { text: "it's not an issue", at: cueAt(p, "notissue", 0.12), size: 0.6 },
+        ]}
+        box={L.square ? { x: 0, y: 70, w: L.W, h: 260 } : undefined}
+        align="center"
+      />
       <div
         style={{
           position: "absolute",

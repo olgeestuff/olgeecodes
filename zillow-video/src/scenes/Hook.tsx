@@ -1,17 +1,17 @@
 import React from "react";
 import { interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { Slam } from "../components/Kinetic";
-import { Phone } from "../components/Phone";
 import { BODY, C, useLayout } from "../theme";
 import { Punch, SceneProps, cueAt } from "./shared";
 
-// "2023. A client reached out ... a Zillow alternative for Singapore."
+// "Making a Zillow alternative for a Singaporean client. Back in 2023, somebody reached out..."
 export const Hook: React.FC<SceneProps> = (p) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const L = useLayout();
-  const tZillow = cueAt(p, "zillow", 0.5);
-  const tSg = cueAt(p, "singapore", 0.7);
+  const tZillow = cueAt(p, "zillow", 0.08);
+  const tSg = cueAt(p, "singapore", 0.35);
+  const tBack = cueAt(p, "back", 0.55);
   const t = frame / fps;
   const tag = spring({ frame, fps, config: { damping: 15 } });
   return (
@@ -44,27 +44,30 @@ export const Hook: React.FC<SceneProps> = (p) => {
           My failed attempt at Zillow <span style={{ color: C.accent }}>— without AI</span>
         </div>
       </div>
-      {t < tZillow ? (
+      {t < tBack ? (
         <Slam
           box={L.stage}
           align="center"
-          base={L.square ? 120 : 150}
+          base={L.square ? 110 : 140}
           lines={[
-            { text: "2023", at: cueAt(p, "2023", 0.02), size: 2.1, color: C.accent },
-            { text: "A client", at: cueAt(p, "client", 0.15) },
-            { text: "reached out", at: cueAt(p, "reached", 0.22) },
+            { text: "Making a", at: 0.05, size: 0.55, color: C.gray },
+            { text: "Zillow", at: tZillow, size: 2.0 },
+            { text: "alternative", at: cueAt(p, "alternative", 0.15), size: 0.9 },
+            { text: "for Singapore", at: tSg, accent: true, size: 0.9 },
           ]}
         />
       ) : (
-        <>
-          <Slam
-            lines={[
-              { text: "A Zillow alternative", at: tZillow },
-              { text: "for Singapore", at: tSg, accent: true },
-            ]}
-          />
-          <Phone media={{ kind: "img", src: "app/modules.png" }} enterDelay={Math.round(tZillow * fps)} />
-        </>
+        <Slam
+          box={L.stage}
+          align="center"
+          base={L.square ? 110 : 140}
+          lines={[
+            { text: "Back in", at: tBack, size: 0.55, color: C.gray },
+            { text: "2023", at: cueAt(p, "2023", 0.65), size: 2.1, color: C.accent },
+            { text: "a client", at: cueAt(p, "client", 0.75) },
+            { text: "reached out", at: cueAt(p, "client", 0.75) + 0.25 },
+          ]}
+        />
       )}
     </Punch>
   );
