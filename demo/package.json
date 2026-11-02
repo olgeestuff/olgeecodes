@@ -1,0 +1,13 @@
+{
+  "name": "ai-video-demos",
+  "private": true,
+  "description": "Records phone-shaped AppSheet demos with Playwright for the AI video editor.",
+  "scripts": {
+    "login": "node save-login.js",
+    "record": "node record-demo.js"
+  },
+  "dependencies": {
+    "playwright": "1.48.2",
+    "yaml": "2.6.0"
+  }
+}

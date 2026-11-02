@@ -1,0 +1,31 @@
+# Demo script for the "Let me show you" part of the VSL (Retail Property CRM).
+# Copy this file to e.g. video5.demo.yaml, change app_url and the steps, then:
+#   node record-demo.js scripts/video5.demo.yaml
+# Tip: to find the exact names of buttons, run
+#   npx playwright codegen --channel chrome --viewport-size=390,844 <app_url>
+# and click around; it prints what to put in tap / tap_selector.
+
+output: video 5 demo            # file name in "AI video editors/raw footage" (pairs with "video 5 narration")
+settings:
+  app_url: https://www.appsheet.com/start/YOUR-APP-ID
+  hold: 1.2                     # default pause after each step (seconds)
+  start_hold: 1.5
+  end_hold: 1.5
+  target_seconds: 35            # length of the matching narration (for reference)
+
+steps:
+  - say: "Every property..."     # optional note: the line of narration this step matches
+    tap: Properties
+    hold: 2
+  - scroll: 400
+    hold: 1.5
+  - say: "...every tenant and their status"
+    tap: Tenants
+    hold: 2
+  - tap: Overdue                 # tap a row/filter showing this text
+    hold: 2.5
+  - say: "Finds any unit in seconds"
+    tap_selector: 'role=button[name="Search"]'
+  - type: {into: Search, text: "Unit 4B"}
+    hold: 2.5
+  - wait: 1

@@ -1,0 +1,93 @@
+# AI Video Editor — style settings.
+# Values follow "AI video editors/references/style_guide.md". Change them here, not in code.
+
+output:
+  width: 1080
+  height: 1920
+  fps: 30
+  crf: 20            # lower = better quality, bigger file
+  preset: medium
+
+layout:
+  split_ratio: 0.5          # share of the frame height for B-roll on top
+  aroll_face_bias: 0.35     # 0 = crop from top of the A-roll frame, 0.5 = centre (faces sit high)
+  hook_fullscreen: true     # hook is always A-roll full screen
+  popout:                   # A-roll pops to full screen during the body
+    enabled: true
+    every_seconds: 11       # aim for one pop-out roughly this often
+    duration: 2.6
+    max_count: 3
+    fade: 0.12              # in/out animation length (seconds)
+    cta_fullscreen: true    # last sentence (CTA) is full screen A-roll
+
+silence_trim:
+  enabled: true
+  noise_db: -32             # quieter than this counts as silence
+  min_silence: 0.35         # seconds of silence before it gets cut
+  keep_padding: 0.12        # breath left on each side of a cut
+
+zoom:
+  enabled: true
+  punch_every: 4.5          # seconds between zoom toggles (jump-cut punch-in)
+  amount: 1.12
+
+captions:
+  model: small              # faster-whisper model: tiny | base | small | medium
+  language: en
+  font: Inter Black
+  font_file: references/fonts/Inter-Black.otf
+  size: 78                  # px at 1080 wide
+  words_per_line: 3
+  uppercase: false
+  color: "#FFFFFF"
+  highlight_color: "#FFD60A"   # current spoken word
+  outline_color: "#000000"
+  outline: 6
+  shadow: 2
+  position: split           # split = on the split line | lower = lower third (full screen)
+  lower_margin: 520         # px from bottom when position is lower / full screen
+  pop_scale: 115            # word pop-in scale %
+
+graphics:
+  enabled: true
+  min_gap: 3.5              # seconds between pop-ins
+  duration: 1.6
+  max_count: 8
+  badge_color: "#FFFFFF"
+  badge_text_color: "#111111"
+  accent_color: "#FFD60A"
+  # keyword (lowercase, matched against spoken words) -> badge text / optional icon file in references/icons
+  keywords:
+    spreadsheet:   {text: "Spreadsheet", icon: spreadsheet.png}
+    spreadsheets:  {text: "Spreadsheets", icon: spreadsheet.png}
+    invoice:       {text: "Invoice", icon: invoice.png}
+    invoices:      {text: "Invoices", icon: invoice.png}
+    receipts:      {text: "Receipts", icon: receipt.png}
+    rent:          {text: "Rent", icon: money.png}
+    phone:         {text: "On your phone", icon: phone.png}
+    whatsapp:      {text: "WhatsApp", icon: chat.png}
+    tenants:       {text: "Tenants", icon: users.png}
+    repairs:       {text: "Repairs", icon: wrench.png}
+    searchable:    {text: "Searchable", icon: search.png}
+    seconds:       {text: "In seconds", icon: clock.png}
+    afternoon:     {text: "One afternoon", icon: clock.png}
+    sorted:        {text: "SORTED ✓", icon: check.png}
+    google:        {text: "Google Workspace", icon: google.png}
+    appsheet:      {text: "AppSheet", icon: app.png}
+  auto_numbers: true        # show a badge for spoken numbers / money / percentages
+
+audio:
+  voice_lufs: -14
+  music_file: ""            # path in references/music, empty = no music (add trending sound in TikTok app)
+  music_db: -20             # music level under voice
+  duck: true
+  sfx:
+    enabled: true
+    whoosh: references/sfx/whoosh.wav   # on layout changes
+    pop: references/sfx/pop.wav         # on graphic pop-ins
+    volume_db: -8
+
+broll:
+  fit: stretch              # stretch = speed demo to fill the body | loop | freeze
+  max_speed: 2.0            # never speed demo past this; freeze/loop the rest
+  placeholder_color: "#1E1E2E"

@@ -1,0 +1,19 @@
+# media stays out of git (lives in Drive / on disk)
+AI video editors/raw footage/*
+!AI video editors/raw footage/README.md
+AI video editors/exports/*
+!AI video editors/exports/.gitkeep
+AI video editors/.work/
+AI video editors/references/analysis/
+AI video editors/references/*.mp4
+AI video editors/references/music/*
+!AI video editors/references/music/README.md
+
+# demo recorder
+demo/node_modules/
+demo/.chrome-profile/
+demo/.videos/
+
+__pycache__/
+*.pyc
+.env
