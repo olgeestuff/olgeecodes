@@ -108,3 +108,46 @@ def ensure_sfx(cfg: dict) -> dict:
              "aevalsrc='0.8*sin(2*PI*(500+900*exp(-t*40))*t)*exp(-t*28)':d=0.18:s=48000",
              "-ac", "2", paths["pop"]])
     return paths
+
+
+def make_mask(w: int, h: int, radius: int) -> Path:
+    """White rounded rectangle on black: alpha mask for rounded cards."""
+    WORK.mkdir(parents=True, exist_ok=True)
+    out = WORK / f"mask_{w}x{h}_{radius}.png"
+    if not out.exists():
+        s = 3
+        img = Image.new("L", (w * s, h * s), 0)
+        ImageDraw.Draw(img).rounded_rectangle((0, 0, w * s - 1, h * s - 1), radius=radius * s, fill=255)
+        img.resize((w, h), Image.LANCZOS).save(out)
+    return out
+
+
+def make_title(title: str, subtitle: str, cfg: dict, width: int) -> Path:
+    """Reference-style header: bold white line + white text on a red bar."""
+    t = cfg["layout"]["title"]
+    WORK.mkdir(parents=True, exist_ok=True)
+    safe = re.sub(r"[^a-zA-Z0-9]+", "_", title + "_" + subtitle).strip("_")[:60]
+    out = WORK / f"title_{safe}.png"
+    f1, f2 = _font(cfg, t["size"]), _font(cfg, t["sub_size"])
+    lines = []
+    if title:
+        lines.append((title, f1, None))
+    if subtitle:
+        lines.append((subtitle, f2, t["sub_bg"]))
+    pad_x, pad_y, gap = 22, 8, 10
+    heights = [f.getbbox(s)[3] - f.getbbox(s)[1] + (2 * pad_y if bg else 0) for s, f, bg in lines]
+    img = Image.new("RGBA", (width, sum(heights) + gap * (len(lines) - 1) + 20), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    y = 0
+    for (s, f, bg), h in zip(lines, heights):
+        x0, y0, x1, y1 = f.getbbox(s)
+        tw = x1 - x0
+        x = (width - tw) // 2
+        if bg:
+            d.rectangle((x - pad_x, y, x + tw + pad_x, y + h), fill=bg)
+            d.text((x - x0, y + pad_y - y0), s, font=f, fill=t["color"])
+        else:
+            d.text((x - x0, y - y0), s, font=f, fill=t["color"], stroke_width=2, stroke_fill="#000000")
+        y += h + gap
+    img.save(out)
+    return out

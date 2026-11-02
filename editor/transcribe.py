@@ -38,7 +38,9 @@ def transcribe(media: Path, cache: bool = True, prompt: str | None = None) -> li
     """Return [{word, start, end}] for the media file. Cached by file name + mtime."""
     cfg = load_config()["captions"]
     WORK.mkdir(parents=True, exist_ok=True)
-    key = f"{media.stem}.{int(media.stat().st_mtime)}.words.json"
+    import hashlib
+    tag = hashlib.md5((prompt or "").encode()).hexdigest()[:6]
+    key = f"{media.stem}.{int(media.stat().st_mtime)}.{tag}.words.json"
     out = WORK / key
     if cache and out.exists():
         return json.loads(out.read_text(encoding="utf-8"))

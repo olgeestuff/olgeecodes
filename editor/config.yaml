@@ -9,16 +9,32 @@ output:
   preset: medium
 
 layout:
-  split_ratio: 0.5          # share of the frame height for B-roll on top
-  aroll_face_bias: 0.35     # 0 = crop from top of the A-roll frame, 0.5 = centre (faces sit high)
+  # Measured from the kallaway reference (references/analysis): black canvas, demo / graphics
+  # in the top ~68%, A-roll as a rounded card at the bottom, 1-2 word captions above the card.
+  split_ratio: 0.62         # share of the frame height for the top (demo) area
+  aroll_face_bias: 0.36     # 0 = crop from top of the A-roll frame, 0.5 = centre (faces sit high)
+  aroll_card:
+    width: 0.90             # share of frame width
+    top_gap: 64             # px between top area and card (captions sit here)
+    bottom_margin: 34
+    radius: 34
+  broll_card:
+    width: 0.90             # demo card width (share of frame width)
+    aspect: 1.26            # demo card width / height; crops in the demo plan should match
+    radius: 26
+  title:                    # header at the top of the split screen (set with --title / plan)
+    size: 60
+    sub_size: 50
+    color: "#FFFFFF"
+    sub_bg: "#E1251B"
   hook_fullscreen: true     # hook is always A-roll full screen
   popout:                   # A-roll pops to full screen during the body
     enabled: true
-    every_seconds: 11       # aim for one pop-out roughly this often
-    duration: 2.6
-    max_count: 3
+    every_seconds: 9        # aim for one full-screen stretch roughly this often
+    duration: 5.0           # reference holds full screen 5-7 s
+    max_count: 2
     fade: 0.12              # in/out animation length (seconds)
-    cta_fullscreen: true    # last sentence (CTA) is full screen A-roll
+    cta_fullscreen: false   # reference ends the CTA in split screen
 
 silence_trim:
   enabled: true
@@ -36,26 +52,26 @@ captions:
   language: en
   font: Inter Black
   font_file: references/fonts/Inter-Black.otf
-  size: 78                  # px at 1080 wide
-  words_per_line: 3
+  size: 66                  # px at 1080 wide
+  words_per_line: 2         # reference shows 1-2 words at a time
   uppercase: false
   color: "#FFFFFF"
-  highlight_color: "#FFD60A"   # current spoken word
+  highlight_color: "#FFFFFF"   # current spoken word (reference uses no highlight; e.g. "#FFD60A" to add one)
   outline_color: "#000000"
-  outline: 6
-  shadow: 2
-  position: split           # split = on the split line | lower = lower third (full screen)
-  lower_margin: 520         # px from bottom when position is lower / full screen
-  pop_scale: 115            # word pop-in scale %
+  outline: 3
+  shadow: 4
+  position: split           # split = just above the A-roll card | lower = always lower third
+  lower_margin: 640         # px from bottom when A-roll is full screen
+  pop_scale: 108            # word pop-in scale %
 
 graphics:
   enabled: true
   min_gap: 3.5              # seconds between pop-ins
   duration: 1.6
-  max_count: 8
-  badge_color: "#FFFFFF"
-  badge_text_color: "#111111"
-  accent_color: "#FFD60A"
+  max_count: 6
+  badge_color: "#26262B"    # reference style: dark tab with a red edge, white text
+  badge_text_color: "#FFFFFF"
+  accent_color: "#E1251B"
   # keyword (lowercase, matched against spoken words) -> badge text / optional icon file in references/icons
   keywords:
     spreadsheet:   {text: "Spreadsheet", icon: spreadsheet.png}

@@ -7,6 +7,7 @@ Normally called through run.py. Direct use:
 from __future__ import annotations
 
 import argparse
+import re
 import shutil
 import subprocess
 from pathlib import Path
@@ -14,7 +15,10 @@ from pathlib import Path
 from captions import SENTENCE_END, build_ass
 from common import (EXPORTS, WORK, duration, ffmpeg_bin, has_audio, load_config, ref_path, run,
                     video_size)
-from graphics import ensure_sfx, pick_graphics
+import yaml
+from PIL import Image
+
+from graphics import ensure_sfx, make_mask, make_title, pick_graphics
 from transcribe import transcribe
 
 
@@ -129,12 +133,43 @@ def _zoom(w: int, h: int, cfg: dict) -> str:
             f"x='iw/2-(iw/zoom/2)':y='ih*0.35-(ih*0.35/zoom)':s={w}x{h}:fps={cfg['output']['fps']}")
 
 
+def _norm_word(w: str) -> str:
+    return re.sub(r"[^a-z0-9']", "", w.lower().replace("’", "'"))
+
+
+def find_word(words: list[dict], target: str, after: float = 0.0) -> float | None:
+    """Start time of the first spoken word (or phrase) matching `target` at/after `after`."""
+    toks = [_norm_word(t) for t in target.split() if _norm_word(t)]
+    for i, w in enumerate(words):
+        if w["start"] < after - 0.01:
+            continue
+        if all(i + j < len(words) and _norm_word(words[i + j]["word"]).startswith(t)
+               for j, t in enumerate(toks)):
+            return w["start"]
+    return None
+
+
+def load_plan(path: Path | None) -> dict:
+    if path and path.exists():
+        with open(path, encoding="utf-8") as fh:
+            return yaml.safe_load(fh) or {}
+    return {}
+
+
 def render(hook: Path | None, body: list[Path], demo: Path | None, out: Path,
-           cfg: dict | None = None) -> Path:
+           cfg: dict | None = None, plan: dict | None = None) -> Path:
     cfg = cfg or load_config()
+    plan = plan or {}
+    lay = cfg["layout"]
     W, H, fps = cfg["output"]["width"], cfg["output"]["height"], cfg["output"]["fps"]
-    top_h = int(H * cfg["layout"]["split_ratio"]) // 2 * 2
-    bot_h = H - top_h
+    top_h = int(H * lay["split_ratio"]) // 2 * 2
+    ac = lay["aroll_card"]
+    card_w = int(W * ac["width"]) // 2 * 2
+    card_h = (H - top_h - ac["top_gap"] - ac["bottom_margin"]) // 2 * 2
+    card_x, card_y = (W - card_w) // 2, top_h + ac["top_gap"]
+    bc = lay["broll_card"]
+    bw = int(W * bc["width"]) // 2 * 2
+    bh = int(bw / bc["aspect"]) // 2 * 2
     WORK.mkdir(parents=True, exist_ok=True)
     tag = out.stem.replace(" ", "_")
 
@@ -146,13 +181,22 @@ def render(hook: Path | None, body: list[Path], demo: Path | None, out: Path,
     total = hook_dur + body_dur
 
     print("2/5 transcribing (captions)...")
-    w_hook = transcribe(hook_t) if hook_t else []
+    prompt = plan.get("prompt")
+    w_hook = transcribe(hook_t, prompt=prompt) if hook_t else []
     w_body = [{**w, "start": w["start"] + hook_dur, "end": w["end"] + hook_dur}
-              for w in transcribe(body_t)]
+              for w in transcribe(body_t, prompt=prompt)]
     words = w_hook + w_body
 
     print("3/5 planning layout + graphics...")
-    full = plan_fullscreen(w_body, hook_dur, total, cfg)
+    # Single-take videos: the plan says which spoken word ends the full-screen hook.
+    split_start = hook_dur
+    if not hook_t and plan.get("hook_until"):
+        t = find_word(w_body, plan["hook_until"])
+        if t is None:
+            print(f'   warning: hook_until word "{plan["hook_until"]}" not found; no hook window')
+        else:
+            split_start = max(0.0, t - 0.05)
+    full = plan_fullscreen([w for w in w_body if w["start"] >= split_start], split_start, total, cfg)
 
     def layout_at(t: float) -> str:
         return "full" if any(a <= t < b for a, b in full) else "split"
@@ -162,13 +206,23 @@ def render(hook: Path | None, body: list[Path], demo: Path | None, out: Path,
     font_src = ref_path(cfg["captions"]["font_file"])
     if font_src.exists():
         shutil.copy(font_src, fonts_dir / font_src.name)
-    ass = build_ass(words, WORK / f"{tag}.ass", cfg, W, H, layout_at, split_y=top_h)
-    graphics = [g for g in pick_graphics(words, cfg, 0.5, total)
-                if not any(a - 0.3 <= g["start"] < a + 0.5 for a, _ in full)]
+    ass = build_ass(words, WORK / f"{tag}.ass", cfg, W, H, layout_at,
+                    split_y=top_h + ac["top_gap"] // 2 - 6)
+    graphics = [g for g in pick_graphics(words, cfg, split_start + 0.3, total)
+                if layout_at(g["start"]) == "split" and layout_at(g["end"] - 0.01) == "split"]
     sfx = ensure_sfx(cfg)
     transitions = sorted({t for a, b in full for t in (a, b) if 0.05 < t < total - 0.05})
 
-    print(f"   hook {hook_dur:.1f}s | body {body_dur:.1f}s | full-screen windows {len(full)} | "
+    title_png = None
+    if plan.get("title") or plan.get("subtitle"):
+        title_png = make_title(plan.get("title", ""), plan.get("subtitle", ""), cfg, W)
+    title_h = Image.open(title_png).height if title_png else 0
+    title_y = 70
+    area_top = title_y + title_h + 30 if title_png else 60
+    bx = (W - bw) // 2
+    by = area_top + max(0, (top_h - area_top - bh) // 2)
+
+    print(f"   split from {split_start:.1f}s | total {total:.1f}s | full-screen windows {len(full)} | "
           f"graphics {len(graphics)}")
 
     # ---- inputs
@@ -179,13 +233,19 @@ def render(hook: Path | None, body: list[Path], demo: Path | None, out: Path,
 
     i_hook = add("-i", hook_t) if hook_t else None
     i_body = add("-i", body_t)
-    i_demo = add("-i", demo) if demo else None
+    # demo audio is never used (muted); with a plan each segment gets its own fast-seek input
+    i_demo = add("-i", demo) if demo and not plan.get("segments") else None
     i_whoosh = add("-i", sfx["whoosh"])
     i_pop = add("-i", sfx["pop"])
     music = ref_path(cfg["audio"]["music_file"]) if cfg["audio"].get("music_file") else None
     i_music = add("-stream_loop", "-1", "-i", music) if music and music.exists() else None
     i_gfx = [add("-loop", "1", "-framerate", str(fps), "-t", f"{g['end'] - g['start']:.2f}", "-i", g["png"])
              for g in graphics]
+    i_amask = add("-loop", "1", "-framerate", str(fps), "-t", f"{total:.3f}", "-i",
+                  make_mask(card_w, card_h, ac["radius"]))
+    i_bmask = add("-loop", "1", "-framerate", str(fps), "-t", f"{total:.3f}", "-i",
+                  make_mask(bw, bh, bc["radius"])) if demo else None
+    i_title = add("-loop", "1", "-framerate", str(fps), "-t", f"{total:.3f}", "-i", title_png) if title_png else None
 
     f: list[str] = []
     # A-roll timeline (hook + body)
@@ -193,33 +253,67 @@ def render(hook: Path | None, body: list[Path], demo: Path | None, out: Path,
         f.append(f"[{i_hook}:v][{i_hook}:a][{i_body}:v][{i_body}:a]concat=n=2:v=1:a=1[av][aa]")
     else:
         f.append(f"[{i_body}:v]null[av];[{i_body}:a]anull[aa]")
-    bias = cfg["layout"]["aroll_face_bias"]
+    bias = lay["aroll_face_bias"]
+    nfull = max(1, len(full))
     f.append("[av]split=2[av1][av2]")
-    f.append(f"[av1]{_cover(W, bot_h, bias)},{_zoom(W, bot_h, cfg)},setsar=1[half]")
+    f.append(f"[av1]{_cover(card_w, card_h, bias)},setsar=1,format=yuva420p[ac0]")
+    f.append(f"[{i_amask}:v]format=gray,setsar=1[am]")
+    f.append("[ac0][am]alphamerge[acard]")
     f.append(f"[av2]{_cover(W, H, 0.5)},{_zoom(W, H, cfg)},setsar=1,format=yuva420p,"
-             f"split={max(1, len(full))}" + "".join(f"[fs{k}]" for k in range(max(1, len(full)))))
+             f"split={nfull}" + "".join(f"[fs{k}]" for k in range(nfull)))
 
-    # B-roll (top), fitted to the body length
-    if i_demo is not None:
-        d = duration(demo)
-        speed = max(0.6, min(cfg["broll"]["max_speed"], d / max(body_dur, 0.1)))
-        f.append(f"[{i_demo}:v]{_cover(W, top_h, 0.0)},fps={fps},setpts=PTS/{speed:.4f},"
-                 f"tpad=stop_mode=clone:stop_duration={body_dur:.2f},trim=duration={body_dur:.3f},"
-                 f"setpts=PTS-STARTPTS+{hook_dur:.3f}/TB,setsar=1[broll]")
-    else:
-        col = cfg["broll"]["placeholder_color"].lstrip("#")
-        f.append(f"color=c=0x{col}:s={W}x{top_h}:r={fps}:d={body_dur:.3f},"
-                 f"drawtext=text='DEMO GOES HERE':fontcolor=white@0.5:fontsize=64:"
-                 f"x=(w-tw)/2:y=(h-th)/2,setpts=PTS-STARTPTS+{hook_dur:.3f}/TB[broll]")
-
-    # Base canvas + split screen
+    # Base canvas
     f.append(f"color=c=black:s={W}x{H}:r={fps}:d={total:.3f}[base]")
-    f.append("[base][broll]overlay=0:0:eof_action=pass[b1]")
-    f.append(f"[b1][half]overlay=0:{top_h}:eof_action=pass:shortest=1[b2]")
+    last = "base"
+    if i_title is not None:
+        f.append(f"[{last}][{i_title}:v]overlay=0:{title_y}:shortest=1[tt]")
+        last = "tt"
+
+    # B-roll card (top), muted
+    body_len = total - split_start
+    if demo is not None:
+        segs = plan.get("segments") or []
+        parts = []
+        if segs:
+            anchors, cur = [], split_start
+            for s in segs:
+                t = find_word(w_body, s["at"], cur) if s.get("at") else cur
+                if t is None:
+                    print(f'   warning: segment word "{s.get("at")}" not found; appended after previous')
+                    t = cur
+                t = max(t, split_start)
+                anchors.append(t)
+                cur = t
+            anchors[0] = split_start
+            for k, s in enumerate(segs):
+                seg_end = anchors[k + 1] if k + 1 < len(segs) else total
+                d = max(0.2, seg_end - anchors[k])
+                sp = float(s.get("speed", 1.0))
+                x, y, cw, ch = s.get("crop", [0, 0, 0, 0])
+                crop = f"crop={cw}:{ch}:{x}:{y}," if cw and ch else ""
+                # seek on the input (fast) instead of trimming from the start of a long demo
+                i_seg = add("-ss", f"{float(s['src']):.3f}", "-t", f"{d * sp + 0.5:.3f}", "-i", demo)
+                f.append(f"[{i_seg}:v]setpts=(PTS-STARTPTS)/{sp},fps={fps},{crop}{_cover(bw, bh)},setsar=1,"
+                         f"tpad=stop_mode=clone:stop_duration={d:.3f},trim=duration={d:.3f}[bs{k}]")
+                parts.append(f"[bs{k}]")
+            f.append(f"{''.join(parts)}concat=n={len(parts)}:v=1:a=0[braw]")
+        else:
+            dd = duration(demo)
+            speed = max(0.6, min(cfg["broll"]["max_speed"], dd / max(body_len, 0.1)))
+            f.append(f"[{i_demo}:v]fps={fps},setpts=PTS/{speed:.4f},{_cover(bw, bh, 0.0)},setsar=1,"
+                     f"tpad=stop_mode=clone:stop_duration={body_len:.2f},trim=duration={body_len:.3f}[braw]")
+        f.append(f"[braw]format=yuva420p,setpts=PTS-STARTPTS+{split_start:.3f}/TB[bc0]")
+        f.append(f"[{i_bmask}:v]format=gray,trim=duration={body_len:.3f},"
+                 f"setpts=PTS-STARTPTS+{split_start:.3f}/TB[bm]")
+        f.append("[bc0][bm]alphamerge[bcard]")
+        f.append(f"[{last}][bcard]overlay={bx}:{by}:eof_action=pass[b1]")
+        last = "b1"
+
+    f.append(f"[{last}][acard]overlay={card_x}:{card_y}:eof_action=pass[b2]")
     last = "b2"
 
     # Full-screen windows with fade + slide-up animation
-    fd = cfg["layout"]["popout"]["fade"]
+    fd = lay["popout"]["fade"]
     for k, (a, b) in enumerate(full):
         fin = "" if a < 0.05 else f",fade=t=in:st=0:d={fd}:alpha=1"
         f.append(f"[fs{k}]trim=start={a:.3f}:end={b:.3f},setpts=PTS-STARTPTS{fin},"
@@ -230,13 +324,14 @@ def render(hook: Path | None, body: list[Path], demo: Path | None, out: Path,
     if not full:
         f.append("[fs0]nullsink")
 
-    # Keyword graphics: fade + drop-in near the top of the frame
+    # Keyword graphics: drop in over the bottom edge of the demo card (or centre of top area)
+    gy = (by + bh - 50) if demo else (area_top + (top_h - area_top) // 2 - 60)
     for k, (g, gi) in enumerate(zip(graphics, i_gfx)):
         dur = g["end"] - g["start"]
         st = g["start"]
         f.append(f"[{gi}:v]format=rgba,fade=t=in:st=0:d=0.15:alpha=1,"
                  f"fade=t=out:st={dur - 0.2:.2f}:d=0.2:alpha=1,setpts=PTS+{st:.3f}/TB[g{k}]")
-        f.append(f"[{last}][g{k}]overlay=(W-w)/2:'110-40*max(0,1-(t-{st:.3f})/0.18)':"
+        f.append(f"[{last}][g{k}]overlay=(W-w)/2:'{gy}-40*max(0,1-(t-{st:.3f})/0.18)':"
                  f"eof_action=pass:eval=frame[gx{k}]")
         last = f"gx{k}"
 
@@ -303,6 +398,7 @@ if __name__ == "__main__":
     ap.add_argument("--hook", type=Path)
     ap.add_argument("--body", type=Path, action="append", required=True)
     ap.add_argument("--demo", type=Path)
+    ap.add_argument("--plan", type=Path, help="demo plan YAML (title, hook_until, segments)")
     ap.add_argument("--out", type=Path, default=EXPORTS / "test.mp4")
     a = ap.parse_args()
-    render(a.hook, a.body, a.demo, a.out)
+    render(a.hook, a.body, a.demo, a.out, plan=load_plan(a.plan))
