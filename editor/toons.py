@@ -32,6 +32,8 @@ BOSS = dict(skin="#8D5524", hair="#D9D9D9", bald=True, beard="#E6E6E6", glasses=
             shirt="#2E5AAC", pants="#2B2B33", tie="#E1251B")
 MUM = dict(skin="#C68642", hair="#2B1B12", bald=False, beard=None, glasses=False,
            shirt="#E1251B", pants="#3B3B45", tie=None, long_hair=True)
+AUDITOR = dict(skin="#E0AC69", hair="#3E2723", bald=False, beard=None, glasses=True,
+               shirt="#37474F", pants="#263238", tie="#1565C0")
 SON = dict(skin="#A0662F", hair="#1B1B1B", bald=False, beard=None, glasses=False,
            shirt="#2E7D32", pants="#2B2B33", tie=None)
 
@@ -178,6 +180,7 @@ _FONT_CACHE: dict = {}
 
 
 def _font_px(px: int):
+    px = max(4, int(px))   # animated sizes can start near zero
     if px not in _FONT_CACHE:
         from common import load_config
         _FONT_CACHE[px] = _font(load_config(), px)
@@ -315,6 +318,88 @@ def render_story(scenes: list[dict], dur: float, w: int, h: int, cfg: dict, out:
                     icon(d, it.get("icon", "doc"), bx + sx * 210 * SS, by + sy * 210 * SS, 74 * SS * k)
             if latest:
                 label(img, latest.get("label", ""), t - (latest["t"] - 0.1), accent, w, h)
+        elif kind == "tax_season":
+            # big calendar with the deadline circled, then a red stamp slams down
+            g = _ease(st / 0.4)
+            cx, cy, cw = W * 0.5, H * 0.42, 300 * SS * g
+            d.rounded_rectangle((cx - cw, cy - cw * 0.85, cx + cw, cy + cw * 0.95), 24 * SS, fill="#FFFFFF")
+            d.rounded_rectangle((cx - cw, cy - cw * 0.85, cx + cw, cy - cw * 0.40), 24 * SS, fill="#E1251B")
+            d.rectangle((cx - cw, cy - cw * 0.55, cx + cw, cy - cw * 0.40), fill="#E1251B")
+            if g > 0.3:
+                d.text((cx, cy - cw * 0.62), cur.get("month", "APRIL"), font=_font_px(int(54 * SS * g)), fill="white", anchor="mm")
+                d.text((cx, cy + cw * 0.28), cur.get("day", "15"), font=_font_px(int(190 * SS * g)), fill="#1C1C22", anchor="mm")
+                rr = cw * 0.55 * _lin((st - 0.4) / 0.4)
+                if rr > 0:
+                    d.arc((cx - rr * 1.15, cy + cw * 0.28 - rr, cx + rr * 1.15, cy + cw * 0.28 + rr), 0,
+                          360 * _lin((st - 0.4) / 0.4), fill="#E1251B", width=int(10 * SS))
+            ss_ = _lin((st - 1.1) / 0.18)
+            if ss_ > 0:     # stamp
+                sc_ = 1.8 - 0.8 * ss_
+                stamp = Image.new("RGBA", (int(620 * SS), int(150 * SS)), (0, 0, 0, 0))
+                sd = ImageDraw.Draw(stamp)
+                sd.rounded_rectangle((6 * SS, 6 * SS, 614 * SS, 144 * SS), 14 * SS, outline="#E1251B", width=int(10 * SS))
+                sd.text((310 * SS, 75 * SS), cur.get("stamp", "SANCTIONS"), font=_font_px(int(84 * SS)), fill="#E1251B", anchor="mm")
+                stamp = stamp.resize((int(stamp.width * sc_), int(stamp.height * sc_))).rotate(-12, expand=True, resample=Image.BICUBIC)
+                if ss_ < 1:
+                    stamp.putalpha(stamp.getchannel("A").point(lambda v: int(v * ss_)))
+                img.alpha_composite(stamp, (int(cx - stamp.width / 2), int(cy + 40 * SS - stamp.height / 2)))
+                d = ImageDraw.Draw(img)
+            if cur.get("label"):
+                label(img, cur["label"], st, accent, w, h)
+        elif kind == "auditor":
+            gy = H * 0.80
+            d.rectangle((0, gy, W, H), fill="#22222B")
+            # boss behind a desk on the left, auditor walks in from the right
+            person(d, W * 0.28, gy, 1.05, BOSS, t, mood="worried" if st > 1.0 else "smile", face_dir=1)
+            d.rounded_rectangle((W * 0.08, gy - 120 * SS, W * 0.48, gy - 40 * SS), 10 * SS, fill="#8D6E63")
+            d.rectangle((W * 0.10, gy - 40 * SS, W * 0.13, gy), fill="#6D4C41")
+            d.rectangle((W * 0.43, gy - 40 * SS, W * 0.46, gy), fill="#6D4C41")
+            walk_k = _lin(st / 1.0)
+            ax = W * (1.15 - 0.42 * walk_k)
+            person(d, ax, gy, 1.05, AUDITOR, t, walk=(st * 1.6) % 1 if walk_k < 1 else -1,
+                   talk=walk_k >= 1 and st < 3.0, face_dir=-1)
+            # clipboard
+            d.rounded_rectangle((ax - 95 * SS, gy - 190 * SS, ax - 45 * SS, gy - 120 * SS), 6 * SS, fill="#D7A86E")
+            d.rectangle((ax - 88 * SS, gy - 180 * SS, ax - 52 * SS, gy - 128 * SS), fill="#FFFFFF")
+            if walk_k >= 1:   # speech bubble
+                b = _ease((st - 1.0) / 0.3)
+                bx0, by0 = W * 0.42, H * 0.06
+                bw_, bh_ = W * 0.54 * b, H * 0.24 * b
+                d.rounded_rectangle((bx0, by0, bx0 + bw_, by0 + bh_), 24 * SS, fill="#FFFFFF")
+                d.polygon([(bx0 + bw_ * 0.72, by0 + bh_), (bx0 + bw_ * 0.86, by0 + bh_), (ax, gy - 330 * SS)], fill="#FFFFFF")
+                if b > 0.8:
+                    txt = cur.get("says", "Last year's\nmaintenance costs?")
+                    d.multiline_text((bx0 + bw_ / 2, by0 + bh_ / 2), txt, font=_font_px(int(38 * SS)),
+                                     fill="#1C1C22", anchor="mm", align="center", spacing=6 * SS)
+            if cur.get("label"):
+                label(img, cur["label"], st, accent, w, h)
+        elif kind == "box_tower":
+            gy = H * 0.80
+            d.rectangle((0, gy, W, H), fill="#22222B")
+            boxes = [(0.58, 0), (0.72, 0), (0.86, 0), (0.65, 1), (0.79, 1), (0.72, 2)]
+            bs = 120 * SS
+            for i, (bxk, row) in enumerate(boxes):
+                k = _ease((st - i * 0.18) / 0.35)
+                if k <= 0:
+                    continue
+                x = W * bxk
+                y_final = gy - bs * (row + 1)
+                y = -bs + (y_final + bs) * k
+                wob = 3 * SS * math.sin(t * 5 + i)
+                d.rectangle((x - bs / 2 + wob, y, x + bs / 2 + wob, y + bs - 4 * SS), fill="#C99358", outline="#8D6E63", width=int(4 * SS))
+                d.rectangle((x - 14 * SS + wob, y, x + 14 * SS + wob, y + bs - 4 * SS), fill="#E0C08E")
+                d.text((x + wob, y + bs * 0.62), "2025", font=_font_px(int(22 * SS)), fill="#5D4037", anchor="mm")
+            person(d, W * 0.25, gy, 1.1, BOSS, t, mood="worried", face_dir=1)
+            # sweat drop + question marks
+            d.ellipse((W * 0.25 + 46 * SS, gy - 330 * SS, W * 0.25 + 62 * SS, gy - 306 * SS), fill="#81D4FA")
+            for i in range(3):
+                qk = _ease((st - 0.6 - i * 0.25) / 0.3)
+                if qk > 0:
+                    qx = W * (0.14 + i * 0.11)
+                    qy = gy - 420 * SS - 20 * SS * math.sin(t * 3 + i)
+                    d.text((qx, qy), "?", font=_font_px(int(70 * SS * qk)), fill="#FFD60A", anchor="mm")
+            if cur.get("label"):
+                label(img, cur["label"], st, accent, w, h)
         elif kind == "walk_out":
             gy = H * 0.86
             d.rectangle((0, gy, W, H), fill="#22222B")

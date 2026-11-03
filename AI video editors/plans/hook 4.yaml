@@ -1,0 +1,28 @@
+# Edit plan: "hook 4 office full.mp4" (A-roll, script "Hook 4 - File Tower") + "demo 2 source.mp4" (muted)
+# Toon story: tax season stamp → auditor asks → box tower; quick face cut on "or you've got this"; demo proof.
+title: "Tax Season: The Auditor Is Here"
+subtitle: "Find Any Invoice In 3 Seconds"
+prompt: "To avoid regulatory sanctions. The auditor asks for last year's maintenance costs. You've got four boxes and a guess. Or you've got this. Every invoice, every property, every lease, every rent, every quote. Found in three seconds. Comment SORTED and I'll show you what this looks like with your paperwork."
+end_after: "your paperwork"
+fix: {zero: ""}                  # "every zero quote" -> drop the stray word
+segments:
+  - at: "to avoid"
+    graphic: story
+    scenes:
+      - {at: "to avoid", scene: tax_season, month: "APRIL", day: "15", stamp: "SANCTIONS", label: "Avoid regulatory sanctions"}
+      - {at: "the auditor", scene: auditor, says: "Last year's\nmaintenance costs?", label: "The auditor asks…"}
+      - {at: "couple", scene: box_tower, label: "A couple boxes and a guess"}
+  - at: "or you've got"          # quick cut to the face for the turn
+    full: true
+  - at: "every invoice"          # messy PDFs landing in the Drive Inbox
+    src: 15
+    crop: [300, 200, 1100, 873]
+  - at: "rent"                   # rows appearing in the sheet
+    src: 25
+    crop: [0, 330, 900, 714]
+  - at: "three seconds"          # full, structured sheet
+    src: 52
+    crop: [0, 330, 900, 714]
+  - at: "comment"
+    src: 68
+    crop: [0, 330, 900, 714]
