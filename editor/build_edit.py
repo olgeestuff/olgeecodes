@@ -20,6 +20,7 @@ from PIL import Image
 
 from denoise import denoise
 from graphics import ensure_sfx, make_mask, make_title, pick_graphics
+from motion import render_paperwork
 from transcribe import transcribe
 
 
@@ -209,7 +210,28 @@ def render(hook: Path | None, body: list[Path], demo: Path | None, out: Path,
             print(f'   warning: hook_until word "{plan["hook_until"]}" not found; no hook window')
         else:
             split_start = max(0.0, t - 0.05)
-    full = plan_fullscreen([w for w in w_body if w["start"] >= split_start], split_start, total, cfg)
+    # Resolve plan segments to times (each starts on its spoken word, ends where the next starts)
+    segs = plan.get("segments") or []
+    seg_times: list[tuple[float, float]] = []
+    if segs:
+        anchors, cur = [], split_start
+        for s in segs:
+            t = find_word(w_body, s["at"], cur) if s.get("at") else cur
+            if t is None:
+                print(f'   warning: segment word "{s.get("at")}" not found; appended after previous')
+                t = cur
+            t = max(t - 0.05, split_start)
+            anchors.append(t)
+            cur = t
+        anchors[0] = split_start
+        seg_times = [(anchors[k], anchors[k + 1] if k + 1 < len(segs) else total) for k in range(len(segs))]
+    plan_full = [(a, b) for s, (a, b) in zip(segs, seg_times) if s.get("full")]
+    auto = plan_fullscreen([w for w in w_body if w["start"] >= split_start], split_start, total, cfg)
+    if plan_full:   # keep automatic pop-outs only well away from the plan's own full-screen cuts
+        gap = cfg["layout"]["popout"]["every_seconds"] / 2
+        auto = [(a, b) for a, b in auto
+                if a < split_start + 0.05 or all(b + gap <= pa or a >= pb + gap for pa, pb in plan_full)]
+    full = sorted(auto + plan_full)
 
     def layout_at(t: float) -> str:
         return "full" if any(a <= t < b for a, b in full) else "split"
@@ -222,7 +244,8 @@ def render(hook: Path | None, body: list[Path], demo: Path | None, out: Path,
     ass = build_ass(words, WORK / f"{tag}.ass", cfg, W, H, layout_at,
                     split_y=top_h + ac["top_gap"] // 2 - 6)
     graphics = [g for g in pick_graphics(words, cfg, split_start + 0.3, total)
-                if layout_at(g["start"]) == "split" and layout_at(g["end"] - 0.01) == "split"]
+                if layout_at(g["start"]) == "split" and layout_at(g["end"] - 0.01) == "split"
+                and not any(s.get("graphic") and a <= g["start"] < b for s, (a, b) in zip(segs, seg_times))]
     sfx = ensure_sfx(cfg)
     transitions = sorted({t for a, b in full for t in (a, b) if 0.05 < t < total - 0.05})
 
@@ -237,6 +260,8 @@ def render(hook: Path | None, body: list[Path], demo: Path | None, out: Path,
 
     print(f"   split from {split_start:.1f}s | total {total:.1f}s | full-screen windows {len(full)} | "
           f"graphics {len(graphics)}")
+
+    extra_pops: list[float] = []     # pop SFX times for motion-graphic items
 
     # ---- inputs
     inputs: list = []
@@ -285,22 +310,27 @@ def render(hook: Path | None, body: list[Path], demo: Path | None, out: Path,
     # B-roll card (top), muted
     body_len = total - split_start
     if demo is not None:
-        segs = plan.get("segments") or []
         parts = []
         if segs:
-            anchors, cur = [], split_start
-            for s in segs:
-                t = find_word(w_body, s["at"], cur) if s.get("at") else cur
-                if t is None:
-                    print(f'   warning: segment word "{s.get("at")}" not found; appended after previous')
-                    t = cur
-                t = max(t, split_start)
-                anchors.append(t)
-                cur = t
-            anchors[0] = split_start
-            for k, s in enumerate(segs):
-                seg_end = anchors[k + 1] if k + 1 < len(segs) else total
-                d = max(0.2, seg_end - anchors[k])
+            for k, (s, (a0, a1)) in enumerate(zip(segs, seg_times)):
+                d = max(0.2, a1 - a0)
+                if s.get("full"):            # A-roll full screen covers this; keep the card black
+                    f.append(f"color=c=black:s={bw}x{bh}:r={fps}:d={d:.3f},setsar=1[bs{k}]")
+                    parts.append(f"[bs{k}]")
+                    continue
+                if s.get("graphic") == "paperwork":
+                    items = []
+                    for it in s.get("items", []):
+                        ti = find_word(w_body, it["at"], a0) if it.get("at") else None
+                        if ti is None or ti >= a1:
+                            continue
+                        items.append({**it, "t": ti - a0})
+                        extra_pops.append(ti)
+                    clip = render_paperwork(items, d + 0.1, bw, bh, cfg, WORK / f"{tag}_paper{k}.mp4", fps)
+                    i_seg = add("-i", clip)
+                    f.append(f"[{i_seg}:v]fps={fps},setsar=1,trim=duration={d:.3f}[bs{k}]")
+                    parts.append(f"[bs{k}]")
+                    continue
                 sp = float(s.get("speed", 1.0))
                 x, y, cw, ch = s.get("crop", [0, 0, 0, 0])
                 crop = f"crop={cw}:{ch}:{x}:{y}," if cw and ch else ""
@@ -359,7 +389,8 @@ def render(hook: Path | None, body: list[Path], demo: Path | None, out: Path,
     f.append("[voice0]asplit=2[voice][vkey]" if ducking else "[voice0]anull[voice]")
     mix = ["[voice]"]
     sfx_cfg = a["sfx"]
-    if sfx_cfg["enabled"] and (transitions or graphics):
+    pop_times = sorted([g["start"] for g in graphics] + extra_pops)
+    if sfx_cfg["enabled"] and (transitions or pop_times):
         parts = []
         if transitions:
             f.append(f"[{i_whoosh}:a]asplit={len(transitions)}" + "".join(f"[w{k}]" for k in range(len(transitions))))
@@ -367,10 +398,10 @@ def render(hook: Path | None, body: list[Path], demo: Path | None, out: Path,
                 ms = int(max(0, t - 0.2) * 1000)
                 f.append(f"[w{k}]adelay={ms}|{ms}[wd{k}]")
                 parts.append(f"[wd{k}]")
-        if graphics:
-            f.append(f"[{i_pop}:a]asplit={len(graphics)}" + "".join(f"[p{k}]" for k in range(len(graphics))))
-            for k, g in enumerate(graphics):
-                ms = int(g["start"] * 1000)
+        if pop_times:
+            f.append(f"[{i_pop}:a]asplit={len(pop_times)}" + "".join(f"[p{k}]" for k in range(len(pop_times))))
+            for k, pt in enumerate(pop_times):
+                ms = int(max(0, pt - 0.05) * 1000)
                 f.append(f"[p{k}]adelay={ms}|{ms}[pd{k}]")
                 parts.append(f"[pd{k}]")
         f.append(f"{''.join(parts)}amix=inputs={len(parts)}:normalize=0,volume={sfx_cfg['volume_db']}dB[sfx]")

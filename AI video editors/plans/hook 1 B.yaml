@@ -1,0 +1,35 @@
+# Edit plan: "hook 1 video.mp4" (A-roll, single take) + "demo source 5min.mp4" (B-roll, muted)
+# segments[].at = spoken word where that demo clip starts; src = seconds into the demo;
+# crop = [x, y, w, h] in demo pixels (1920x1080), aspect ~1.26 to match the card.
+title: "Paper Invoices → Google Sheets"
+subtitle: "Every Box Sorted In One Afternoon"
+# Version B: no long full-screen intro. Paperwork animation on top from the first word,
+# quick cut to full frame on "no system", back to split + demo on "watch this".
+# words Whisper should expect (fixes mishearing, e.g. "lease" not "visa")
+prompt: "Receipts, invoices, lease agreements, rental agreements, quotes. No system, just paper. I snap one invoice and it's in the spreadsheet: date, supplier, amount, time entered, entered by, contact info. No tokens, no AI credit per document scanned. Comment SORTED."
+segments:
+  - at: "receipts"              # opening: documents fly in as each one is named
+    graphic: paperwork
+    items:
+      - {at: "receipts", label: "Receipts", kind: receipt}
+      - {at: "invoices", label: "Invoices", kind: invoice}
+      - {at: "lease", label: "Lease agreements", kind: lease}
+      - {at: "rental", label: "Rental agreements", kind: rental}
+      - {at: "quotes", label: "Quotes", kind: quote}
+  - at: "no system"             # quick cut to full frame
+    full: true
+  - at: "watch this"            # Drive Inbox: files upload, invoice lands in the folder
+    src: 217
+    crop: [150, 100, 1100, 873]
+  - at: "spreadsheet"           # new row appears in the Invoice Log sheet
+    src: 240
+    crop: [0, 120, 800, 635]
+  - at: "every column"          # Italian quotes sheet filling with structured rows
+    src: 246
+    crop: [0, 120, 1000, 794]
+  - at: "afternoon"             # 7 uploads complete, PDFs in the inbox
+    src: 266
+    crop: [150, 100, 1100, 873]
+  - at: "no tokens"             # finished sheet
+    src: 288
+    crop: [0, 120, 800, 635]
