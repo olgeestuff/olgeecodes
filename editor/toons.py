@@ -400,6 +400,122 @@ def render_story(scenes: list[dict], dur: float, w: int, h: int, cfg: dict, out:
                     d.text((qx, qy), "?", font=_font_px(int(70 * SS * qk)), fill="#FFD60A", anchor="mm")
             if cur.get("label"):
                 label(img, cur["label"], st, accent, w, h)
+        elif kind == "cant_claim":
+            # document cards pop in one by one; a red CAN'T CLAIM stamp slams across them
+            from motion import _doc
+            items = cur.get("items", [])
+            if "_docs" not in cur:
+                cur["_docs"] = {i: _doc(it.get("kind", "receipt"), cfg) for i, it in enumerate(items)}
+            spots = [(0.22, 0.40, -10), (0.42, 0.36, 6), (0.62, 0.40, -5), (0.80, 0.37, 9), (0.50, 0.44, -3)]
+            latest = None
+            for i, it in enumerate(items):
+                if it.get("stamp"):
+                    continue
+                ia = t - (it["t"] - 0.1)
+                if ia < 0:
+                    continue
+                latest = it
+                k = _ease(ia / 0.4)
+                sx, sy, rot = spots[i % len(spots)]
+                im = cur["_docs"][i]
+                im = im.resize((int(im.width * SS * 0.8 * k) or 1, int(im.height * SS * 0.8 * k) or 1)).rotate(rot, expand=True, resample=Image.BICUBIC)
+                img.alpha_composite(im, (int(W * sx - im.width / 2), int(H * sy - im.height / 2)))
+            d = ImageDraw.Draw(img)
+            stamp_it = next((it for it in items if it.get("stamp")), None)
+            if stamp_it and t >= stamp_it["t"] - 0.1:
+                ss_ = _lin((t - stamp_it["t"] + 0.1) / 0.18)
+                sc_ = 1.8 - 0.8 * ss_
+                stamp = Image.new("RGBA", (int(760 * SS), int(170 * SS)), (0, 0, 0, 0))
+                sd = ImageDraw.Draw(stamp)
+                sd.rounded_rectangle((6 * SS, 6 * SS, 754 * SS, 164 * SS), 16 * SS, fill=(255, 255, 255, 230), outline="#E1251B", width=int(12 * SS))
+                sd.text((380 * SS, 85 * SS), stamp_it.get("text", "CAN'T CLAIM"), font=_font_px(int(92 * SS)), fill="#E1251B", anchor="mm")
+                stamp = stamp.resize((int(stamp.width * sc_), int(stamp.height * sc_))).rotate(-10, expand=True, resample=Image.BICUBIC)
+                if ss_ < 1:
+                    stamp.putalpha(stamp.getchannel("A").point(lambda v: int(v * ss_)))
+                img.alpha_composite(stamp, (int(W / 2 - stamp.width / 2), int(H * 0.40 - stamp.height / 2)))
+                d = ImageDraw.Draw(img)
+                latest = stamp_it
+            if latest and latest.get("label"):
+                label(img, latest["label"], t - (latest["t"] - 0.1), accent, w, h)
+        elif kind == "money_leak":
+            # a container with holes drips coins into a growing puddle; the boss watches, worried
+            gy = H * 0.84
+            d.rectangle((0, gy, W, H), fill="#22222B")
+            items = cur.get("items", [])
+            latest = None
+            for it in items:
+                if t >= it["t"] - 0.1:
+                    latest = it
+            box = (latest or {}).get("icon", "shoebox")
+            bx0, bx1, by0, by1 = W * 0.42, W * 0.82, H * 0.22, H * 0.52
+            if box == "folder":
+                d.polygon([(bx0, by0 + 30 * SS), (bx0 + 120 * SS, by0 + 30 * SS), (bx0 + 150 * SS, by0), (bx1, by0), (bx1, by1), (bx0, by1)], fill="#F2B544")
+                d.rectangle((bx0, by0 + 60 * SS, bx1, by1), fill="#F7C65C")
+            elif box == "cabinet":
+                d.rounded_rectangle((bx0 + 60 * SS, by0 - 40 * SS, bx1 - 60 * SS, by1), 10 * SS, fill="#90A4AE")
+                for r in range(3):
+                    y0 = by0 - 30 * SS + r * (by1 - by0 + 30 * SS) / 3
+                    d.rounded_rectangle((bx0 + 75 * SS, y0, bx1 - 75 * SS, y0 + (by1 - by0) / 3 - 10 * SS), 8 * SS, fill="#B0BEC5")
+                    d.rounded_rectangle(((bx0 + bx1) / 2 - 30 * SS, y0 + 30 * SS, (bx0 + bx1) / 2 + 30 * SS, y0 + 44 * SS), 6 * SS, fill="#546E7A")
+            else:
+                d.rectangle((bx0, by0 + 40 * SS, bx1, by1), fill="#C99358", outline="#8D6E63", width=int(5 * SS))
+                d.rectangle((bx0 - 14 * SS, by0, bx1 + 14 * SS, by0 + 48 * SS), fill="#B8834A")
+                d.text(((bx0 + bx1) / 2, (by0 + by1) / 2 + 30 * SS), "RECEIPTS", font=_font_px(int(40 * SS)), fill="#5D4037", anchor="mm")
+            # holes + dripping coins
+            puddle = 60 * SS + 70 * SS * _lin(st / 4)
+            d.ellipse(((bx0 + bx1) / 2 - puddle * 1.8, gy - 18 * SS, (bx0 + bx1) / 2 + puddle * 1.8, gy + 18 * SS), fill="#2E7D32")
+            for j in range(6):
+                hx = bx0 + (j + 0.5) * (bx1 - bx0) / 6
+                d.ellipse((hx - 9 * SS, by1 - 10 * SS, hx + 9 * SS, by1 + 6 * SS), fill="#3E2723")
+                ph = ((t * 1.3 + j * 0.37) % 1.0)
+                cy = by1 + (gy - by1) * ph * ph
+                d.ellipse((hx - 16 * SS, cy - 16 * SS, hx + 16 * SS, cy + 16 * SS), fill="#FFD60A", outline="#C9A400", width=int(3 * SS))
+                d.text((hx, cy), "$", font=_font_px(int(20 * SS)), fill="#8D6E00", anchor="mm")
+            person(d, W * 0.20, gy, 1.05, BOSS, t, mood="worried", face_dir=1)
+            if latest and latest.get("label"):
+                label(img, latest["label"], t - (latest["t"] - 0.1), accent, w, h)
+        elif kind == "money_window":
+            # receipts on the desk turn into green bills and fly out of the open window
+            gy = H * 0.84
+            d.rectangle((0, gy, W, H), fill="#22222B")
+            wx0, wx1, wy0, wy1 = W * 0.66, W * 0.94, H * 0.10, H * 0.56
+            d.rectangle((wx0, wy0, wx1, wy1), fill="#9ED0F0", outline="#ECEFF1", width=int(10 * SS))
+            d.ellipse((wx0 + 40 * SS, wy0 + 40 * SS, wx0 + 120 * SS, wy0 + 120 * SS), fill="#FFD60A")
+            cur_k = 0.5 + 0.5 * math.sin(t * 4)
+            d.polygon([(wx0, wy0), (wx0 - 50 * SS * cur_k - 20 * SS, (wy0 + wy1) / 2), (wx0, wy1)], fill="#ECEFF1")
+            d.rounded_rectangle((W * 0.08, gy - 150 * SS, W * 0.52, gy - 80 * SS), 10 * SS, fill="#8D6E63")
+            d.rectangle((W * 0.10, gy - 80 * SS, W * 0.13, gy), fill="#6D4C41")
+            d.rectangle((W * 0.47, gy - 80 * SS, W * 0.50, gy), fill="#6D4C41")
+            person(d, W * 0.30, gy - 10 * SS, 1.0, BOSS, t, mood="worried", face_dir=1, wave=1.0 if st > 1.0 else 0.0)
+            nxt = [sc_["t"] for sc_ in scenes if sc_["t"] > cur["t"]]
+            scene_len = (min(nxt) if nxt else dur) - cur["t"]
+            gap = max(0.35, (scene_len - 1.6) / 9)       # spread the bills over the whole scene
+            for j in range(9):
+                start = gap * j
+                ph = st - start
+                if ph < 0:
+                    x, y = W * (0.12 + 0.04 * j), gy - 165 * SS
+                    d.rectangle((x - 26 * SS, y - 16 * SS, x + 26 * SS, y + 16 * SS), fill="#FAFAF7", outline="#B0BEC5", width=int(2 * SS))
+                    continue
+                k = _lin(ph / 1.6)
+                x = W * (0.12 + 0.04 * j) + (W * 0.80 - W * (0.12 + 0.04 * j)) * k
+                y = (gy - 165 * SS) - (H * 0.45) * math.sin(k * math.pi * 0.8) + 20 * SS * math.sin(t * 8 + j)
+                if k >= 1:
+                    continue
+                bill = Image.new("RGBA", (int(64 * SS), int(34 * SS)), (0, 0, 0, 0))
+                bd = ImageDraw.Draw(bill)
+                bd.rounded_rectangle((0, 0, 64 * SS - 1, 34 * SS - 1), 5 * SS, fill="#43A047", outline="#1B5E20", width=int(2 * SS))
+                bd.text((32 * SS, 17 * SS), "$", font=_font_px(int(22 * SS)), fill="#E8F5E9", anchor="mm")
+                bill = bill.rotate(40 * math.sin(t * 6 + j), expand=True, resample=Image.BICUBIC)
+                img.alpha_composite(bill, (int(x - bill.width / 2), int(y - bill.height / 2)))
+            d = ImageDraw.Draw(img)
+            latest = None
+            for it in cur.get("items", []):
+                if t >= it["t"] - 0.1:
+                    latest = it
+            text = (latest or {}).get("label") or cur.get("label")
+            if text:
+                label(img, text, t - ((latest or cur)["t"] - 0.1), accent, w, h)
         elif kind == "walk_out":
             gy = H * 0.86
             d.rectangle((0, gy, W, H), fill="#22222B")

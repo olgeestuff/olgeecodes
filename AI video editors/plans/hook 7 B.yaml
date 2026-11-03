@@ -1,0 +1,42 @@
+# Hook 7 "loss aversion" - Flavor B "Money blowing away" (toon). A-roll: "hook 7 loss aversion.mp4"; demo: "demo 2 source.mp4"
+title: "Your Shoebox Is Leaking Money"
+subtitle: "Snap It. Log It. Find It."
+prompt: "Every receipt or invoice or lease agreement or quote you can't find is a cost you can't claim. That's money leaking out of your box, your shoebox, your documents or your file storage. Snap it, it's logged and found. Comment SORTED and I'll show you what that looks like with your paperwork."
+end_after: "your paperwork"
+fix: {release: lease}
+segments:
+  - at: "every receipt"
+    graphic: story
+    scenes:
+      - at: "every receipt"
+        scene: money_window
+        items:
+          - {at: "every receipt", label: "Every receipt"}
+          - {at: "invoice", label: "Every invoice"}
+          - {at: "lease", label: "Every lease"}
+          - {at: "quote", label: "Every quote"}
+          - {at: "cost", label: "A cost you can't claim"}
+  - at: "that's money"            # quick face cut on the punchline
+    full: true
+  - at: "box"
+    graphic: story
+    scenes:
+      - at: "box"
+        scene: money_leak
+        items:
+          - {at: "box", icon: shoebox, label: "Money leaking out"}
+          - {at: "shoebox", icon: shoebox, label: "Your shoebox"}
+          - {at: "documents", icon: folder, label: "Your documents"}
+          - {at: "file", icon: cabinet, label: "Your file storage"}
+  - at: "snap"                    # the fix: upload into Drive
+    src: 15
+    crop: [300, 200, 1100, 873]
+  - at: "logged"                  # rows appear
+    src: 25
+    crop: [0, 330, 900, 714]
+  - at: "found"                   # full sheet
+    src: 52
+    crop: [0, 330, 900, 714]
+  - at: "comment"
+    src: 68
+    crop: [0, 330, 900, 714]

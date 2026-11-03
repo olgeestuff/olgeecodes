@@ -376,6 +376,8 @@ def render(hook: Path | None, body: list[Path], demo: Path | None, out: Path,
                         scenes.append({**sc, "t": ts - a0, "items": items})
                     if scenes:
                         scenes[0]["t"] = 0.0
+                        if scenes[0]["items"]:          # first item visible from the first frame
+                            scenes[0]["items"][0]["t"] = min(scenes[0]["items"][0]["t"], 0.1)
                         extra_pops.extend(a0 + sc["t"] for sc in scenes[1:])
                     clip = render_story(scenes, d + 0.1, bw, bh, cfg, WORK / f"{tag}_story{k}.mp4", fps)
                     i_seg = add("-i", clip)
