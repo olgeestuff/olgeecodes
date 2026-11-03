@@ -18,3 +18,4 @@ __pycache__/
 *.pyc
 .env
 editor/bin/
+AI video editors/references/canva/

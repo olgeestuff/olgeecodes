@@ -1,0 +1,35 @@
+# Edit plan: "hook 4 office full.mp4" (A-roll, script "Hook 4 - File Tower") + "demo 2 source.mp4" (muted)
+# Canva version (A/B test vs hook 4.yaml toons): Canva AI cartoon intro; was: tax season stamp → auditor asks → box tower; quick face cut on "or you've got this"; demo proof.
+title: "Tax Season: The Auditor Is Here"
+subtitle: "Find Any Invoice In 3 Seconds"
+prompt: "To avoid regulatory sanctions. The auditor asks for last year's maintenance costs. You've got four boxes and a guess. Or you've got this. Every invoice, every property, every lease, every rent, every quote. Found in three seconds. Comment SORTED and I'll show you what this looks like with your paperwork."
+end_after: "your paperwork"
+fix: {zero: ""}                  # "every zero quote" -> drop the stray word
+segments:
+  - at: "to avoid"               # Canva AI cartoon: calendar deadline beat
+    file: references/canva/hook4_auditor_canva.mp4
+    src: 0
+    crop: [120, 0, 907, 720]
+  - at: "the auditor"            # Canva: auditor walks in with clipboard
+    file: references/canva/hook4_auditor_canva.mp4
+    src: 2.9
+    speed: 0.6                   # Canva made this beat short; slow it to cover the line
+    crop: [120, 0, 907, 720]
+  - at: "couple"                 # Canva: boxes pile up around the owner
+    file: references/canva/hook4_auditor_canva.mp4
+    src: 5.0
+    crop: [120, 0, 907, 720]
+  - at: "or you've got"          # quick cut to the face for the turn
+    full: true
+  - at: "every invoice"          # messy PDFs landing in the Drive Inbox
+    src: 15
+    crop: [300, 200, 1100, 873]
+  - at: "rent"                   # rows appearing in the sheet
+    src: 25
+    crop: [0, 330, 900, 714]
+  - at: "three seconds"          # full, structured sheet
+    src: 52
+    crop: [0, 330, 900, 714]
+  - at: "comment"
+    src: 68
+    crop: [0, 330, 900, 714]
