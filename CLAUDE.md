@@ -8,6 +8,10 @@
   (`graphic: story` toons or `graphic: paperwork` cards) → short full-frame cuts (`full: true`)
   → demo segments timed to spoken words → cut retakes after the CTA (`end_after`) → SFX.
 - The user (Sholz) loves the cartoon story intros (`graphic: story`); use them by default.
+- Winning structure (Sholz's favourite): the cartoon acts out the story in parts, timed to his narration,
+  then the B-roll switches to the **live demo** proving it works, with a short face cut in between. Keep this mix.
+- AI-generated visuals (Veo, Canva): publishing files set TikTok "AI-generated content: On" and YouTube
+  "Altered content: Yes". Code-drawn toons: both Off.
 
 ## After every finished video (standing instruction from the user)
 When a video export is delivered, **ask Sholz whether he is ready for the publishing .md file**.
