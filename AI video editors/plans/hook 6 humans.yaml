@@ -1,0 +1,24 @@
+# Hook 6 "before hiring" - realistic human version (Gemini images of Marcus & Jay, animated with push-ins).
+# When the Veo videos arrive, swap each `file:` to "raw footage/veo/hook 6 veo scene K.mp4" and add the crop.
+title: "Before You Hire A Temp…"
+subtitle: "Snap It. It's In Your Sheet."
+prompt: "So, before you hire someone to start typing stuff randomly in your data, just watch this. Photo, and it rolls out. No typing, no AI credits, no production fees. Just comment SORTED and I'll show you what this looks like with your paperwork."
+end_after: "your paperwork"
+segments:
+  - at: "so"                       # Marcus drops another stack on Jay, who is buried in paper
+    file: raw footage/veo/hook 6 photo scene 1.mp4
+    src: 0
+  - at: "just watch"               # "watch this": Marcus snaps the invoice with his phone
+    file: raw footage/veo/hook 6 photo scene 2.mp4
+    src: 0
+  - at: "rolls"                    # real proof: the row lands in the sheet
+    src: 25
+    crop: [0, 330, 900, 714]
+  - at: "no typing"                # relaxed office, coffee, Jay laughing
+    file: raw footage/veo/hook 6 photo scene 3.mp4
+    src: 0
+  - at: "no production"            # quick face cut on the last benefit
+    full: true
+  - at: "comment"                  # full sheet
+    src: 68
+    crop: [0, 330, 900, 714]

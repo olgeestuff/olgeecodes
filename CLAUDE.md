@@ -31,4 +31,7 @@ Remind him that trending TikTok sounds can only be added in the mobile app.
   in the upload window.
 - Character reference image: `AI video editors/references/characters/boss_reference.png` (Sholz puts it in veo vids).
 - Fetch with `python editor/fetch_veo.py` → `raw footage/veo/`; splice with plan segments `file: raw footage/veo/<name>.mp4`.
+- Realistic humans work: brief = Gemini cast photo → scene stills from it → Veo animates each still (consistent
+  faces confirmed on Hook 6: Marcus & Jay). If the Veo videos don't arrive, animate the stills with crop+zoompan
+  push-ins (see raw footage/veo/hook 6 photo scene *.mp4) and swap the Veo clips in later.
 - Canva AI video: ~1 clip/month (limit resets ~25th). Poppy: 2,775 image credits/month. Budget is tight: never buy credits.
