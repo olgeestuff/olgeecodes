@@ -93,6 +93,10 @@ graphics:
   auto_numbers: true        # show a badge for spoken numbers / money / percentages
 
 audio:
+  denoise:                  # AI background-noise removal (DeepFilterNet) before anything else
+    enabled: true
+    strength_db: 35         # max noise reduction in dB: 25 = gentle, 35 = strong, 50+ = can sound robotic
+  voice_eq: "highpass=f=80,equalizer=f=250:t=q:w=1:g=-2,equalizer=f=3500:t=q:w=1.2:g=2,acompressor=threshold=-20dB:ratio=3:attack=5:release=120:makeup=2"
   voice_lufs: -14
   music_file: ""            # path in references/music, empty = no music (add trending sound in TikTok app)
   music_db: -20             # music level under voice

@@ -18,17 +18,19 @@ from common import (EXPORTS, WORK, duration, ffmpeg_bin, has_audio, load_config,
 import yaml
 from PIL import Image
 
+from denoise import denoise
 from graphics import ensure_sfx, make_mask, make_title, pick_graphics
 from transcribe import transcribe
 
 
 # ---------------------------------------------------------------- silence trim
-def keep_segments(media: Path, cfg: dict) -> list[tuple[float, float]]:
+def keep_segments(media: Path, cfg: dict, audio: Path | None = None) -> list[tuple[float, float]]:
+    """Speech segments to keep. `audio` = cleaned voice track (pauses are easier to find)."""
     st = cfg["silence_trim"]
     total = duration(media)
     if not st["enabled"] or not has_audio(media):
         return [(0.0, total)]
-    res = run([ffmpeg_bin(), "-hide_banner", "-i", media, "-af",
+    res = run([ffmpeg_bin(), "-hide_banner", "-i", audio or media, "-af",
                f"silencedetect=noise={st['noise_db']}dB:d={st['min_silence']}", "-f", "null", "-"])
     silences, start = [], None
     for line in res.stderr.splitlines():
@@ -57,14 +59,25 @@ def trim_and_join(parts: list[Path], out: Path, cfg: dict) -> Path:
     w0, h0 = video_size(parts[0])
     w0, h0 = w0 // 2 * 2, h0 // 2 * 2
     inputs, chains, labels = [], [], []
+    use_clean = cfg["audio"].get("denoise", {}).get("enabled")
+    n = 0
     for i, p in enumerate(parts):
+        vi = n
         inputs += ["-i", p]
-        segs = keep_segments(p, cfg)
+        n += 1
+        ai = vi
+        audio_src = p
+        if use_clean and has_audio(p):
+            audio_src = denoise(p, cfg)          # cleaned voice replaces the camera audio
+            inputs += ["-i", audio_src]
+            ai = n
+            n += 1
+        segs = keep_segments(p, cfg, audio_src)
         expr = "+".join(f"between(t,{a:.3f},{b:.3f})" for a, b in segs)
-        chains.append(f"[{i}:v]select='{expr}',setpts=N/FRAME_RATE/TB,fps={fps},"
+        chains.append(f"[{vi}:v]select='{expr}',setpts=N/FRAME_RATE/TB,fps={fps},"
                       f"scale={w0}:{h0}:force_original_aspect_ratio=increase,crop={w0}:{h0},setsar=1[v{i}]")
         if has_audio(p):
-            chains.append(f"[{i}:a]aselect='{expr}',asetpts=N/SR/TB,aresample=48000,"
+            chains.append(f"[{ai}:a]aselect='{expr}',asetpts=N/SR/TB,aresample=48000,"
                           f"aformat=channel_layouts=stereo[a{i}]")
         else:
             d = sum(b - a for a, b in segs)
@@ -340,7 +353,8 @@ def render(hook: Path | None, body: list[Path], demo: Path | None, out: Path,
 
     # ---- audio
     a = cfg["audio"]
-    f.append(f"[aa]loudnorm=I={a['voice_lufs']}:TP=-1.5:LRA=11,aresample=48000[voice0]")
+    eq = (a.get("voice_eq") or "anull") + ","
+    f.append(f"[aa]{eq}loudnorm=I={a['voice_lufs']}:TP=-1.5:LRA=11,aresample=48000[voice0]")
     ducking = i_music is not None and a.get("duck")
     f.append("[voice0]asplit=2[voice][vkey]" if ducking else "[voice0]anull[voice]")
     mix = ["[voice]"]
