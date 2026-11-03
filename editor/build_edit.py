@@ -21,6 +21,7 @@ from PIL import Image
 from denoise import denoise
 from graphics import ensure_sfx, make_mask, make_title, pick_graphics
 from motion import render_paperwork
+from toons import render_story
 from transcribe import transcribe
 
 
@@ -356,6 +357,29 @@ def render(hook: Path | None, body: list[Path], demo: Path | None, out: Path,
                 d = max(0.2, a1 - a0)
                 if s.get("full"):            # A-roll full screen covers this; keep the card black
                     f.append(f"color=c=black:s={bw}x{bh}:r={fps}:d={d:.3f},setsar=1[bs{k}]")
+                    parts.append(f"[bs{k}]")
+                    continue
+                if s.get("graphic") == "story":
+                    scenes = []
+                    for sc in s.get("scenes", []):
+                        ts = find_word(w_body, sc["at"], a0) if sc.get("at") else a0
+                        if ts is None or ts >= a1:
+                            print(f'   warning: story scene word "{sc.get("at")}" not found')
+                            continue
+                        ts = max(a0, ts - 0.05)
+                        items = []
+                        for it in sc.get("items", []):
+                            ti = find_word(w_body, it["at"], ts) if it.get("at") else None
+                            if ti is not None and ti < a1:
+                                items.append({**it, "t": ti - a0})
+                                extra_pops.append(ti)
+                        scenes.append({**sc, "t": ts - a0, "items": items})
+                    if scenes:
+                        scenes[0]["t"] = 0.0
+                        extra_pops.extend(a0 + sc["t"] for sc in scenes[1:])
+                    clip = render_story(scenes, d + 0.1, bw, bh, cfg, WORK / f"{tag}_story{k}.mp4", fps)
+                    i_seg = add("-i", clip)
+                    f.append(f"[{i_seg}:v]fps={fps},setsar=1,trim=duration={d:.3f}[bs{k}]")
                     parts.append(f"[bs{k}]")
                     continue
                 if s.get("graphic") == "paperwork":

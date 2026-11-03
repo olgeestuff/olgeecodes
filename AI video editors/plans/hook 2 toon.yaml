@@ -1,0 +1,39 @@
+# Edit plan: "hook 2 memory man.mp4" (A-roll) + "demo 2 source.mp4" (B-roll, muted)
+# Toon version: cartoon story intro, quick full-frame cuts, demo timed to the words.
+title: "Your Business Lives In One Head"
+subtitle: "Turn The Paper Trail Into Data You Own"
+prompt: "Every family business has this person. Every supplier, every payment, every contact, they all live in his head. And when he leaves, it leaves with him. So take the paper trail and turn it into data that you own. Do it before he retires. Not after. The best part, no tokens, no AI credits per document. Comment SORTED and I'll show you what this looks like with your paperwork."
+end_after: "your paper work"     # cut the retake that comes after the CTA
+fix: {trim: trail}               # caption corrections (Whisper heard "paper trim")
+segments:
+  - at: "usually"               # cartoon story: the family shop and its "memory man"
+    graphic: story
+    scenes:
+      - {at: "usually", scene: family_shop, sign: "FAMILY BUSINESS", label: "Every family business"}
+      - {at: "this person", scene: spotlight, label: "Has this person"}
+      - at: "supplier"
+        scene: thinker
+        items:
+          - {at: "supplier", icon: truck, label: "Every supplier"}
+          - {at: "payment", icon: money, label: "Every payment"}
+          - {at: "contact", icon: phone, label: "Every contact"}
+          - {at: "head", icon: none, label: "All in his head"}
+  - at: "when he leaves"        # punchline on the face
+    full: true
+  - at: "so take"               # messy PDFs landing in the Drive Inbox
+    src: 15
+    crop: [300, 200, 1100, 873]
+  - at: "turn it into"          # rows appear in the Invoice Log
+    src: 25
+    crop: [0, 330, 900, 714]
+  - at: "before he retires"     # sheet filling up
+    src: 44
+    crop: [0, 330, 900, 714]
+  - at: "the best part"         # face for the payoff line
+    full: true
+  - at: "no tokens"             # full, structured sheet
+    src: 52
+    crop: [0, 330, 900, 714]
+  - at: "comment"
+    src: 68
+    crop: [0, 330, 900, 714]
