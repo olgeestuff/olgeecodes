@@ -1,0 +1,31 @@
+# Hook 7 "loss aversion" - Version C "The shrinking refund" (Gemini Veo clips). A-roll: "hook 7 loss aversion.mp4"
+title: "The Shrinking Refund"
+subtitle: "Every Lost Receipt Costs You Money"
+prompt: "Every receipt or invoice or lease agreement or quote you can't find is a cost you can't claim. That's money leaking out of your box, your shoebox, your documents or your file storage. Snap it, it's logged and found. Comment SORTED and I'll show you what that looks like with your paperwork."
+end_after: "your paperwork"
+fix: {release: lease, snapbit: "snap it"}
+segments:
+  - at: "every receipt"            # Veo 1: shoebox handed to the accountant, faded receipts crumble
+    file: raw footage/veo/hook 7 veo scene 1.mp4
+    src: 0
+    speed: 1.4
+    crop: [60, 0, 907, 720]
+  - at: "that's money"             # quick face cut on the punchline
+    full: true
+  - at: "box"                      # Veo 2: piggy bank shrinks as receipts turn to dust
+    file: raw footage/veo/hook 7 veo scene 2.mp4
+    src: 0
+    speed: 1.9
+    crop: [186, 0, 907, 720]
+  - at: "snap"                     # Veo 3: phone snap -> receipt flies into the laptop spreadsheet
+    file: raw footage/veo/hook 7 veo scene 3.mp4
+    src: 0.5
+    speed: 1.5
+    crop: [140, 0, 907, 720]
+  - at: "found"                    # real proof: the full Invoice Log sheet
+    src: 52
+    crop: [0, 330, 900, 714]
+  - at: "comment"                  # Veo 3 ending: neat spreadsheet, piggy bank grows back
+    file: raw footage/veo/hook 7 veo scene 3.mp4
+    src: 6.0
+    crop: [140, 0, 907, 720]
