@@ -16,3 +16,15 @@ platform (TikTok Studio, YouTube Studio, LinkedIn): upload, caption, hashtags, c
 disclosure ("Your brand" on TikTok, paid promotion unticked on YouTube), and schedule/post.
 Save it next to the export as `<video name> - publish.md` and send it with SendUserFile.
 Remind him that trending TikTok sounds can only be added in the mobile app.
+
+## AI video clips from Gemini Veo (standing workflow)
+- Sholz's Google AI Pro (Gemini, ~3 Veo videos/day, 8 s each) is on an Office Geek Tester account
+  (likely officegeektester1). Claude Code cannot reach Gemini directly.
+- For a video that needs richer cartoon B-roll, write `<video name> - veo brief.md` for **Claude in Chrome**:
+  exact prompts per scene (flat 2D cartoon, 16:9, no text, no speech/music, our boss character described),
+  exact file names (`hook N veo scene K.mp4`), download, then upload to Drive folder **veo vids**
+  (id 1okvCi-dcKvf_lUPJNGjDYNig93jZhpQw, inside "teleprompter vids on office geek"); Sholz picks the files
+  in the upload window.
+- Character reference image: `AI video editors/references/characters/boss_reference.png` (Sholz puts it in veo vids).
+- Fetch with `python editor/fetch_veo.py` → `raw footage/veo/`; splice with plan segments `file: raw footage/veo/<name>.mp4`.
+- Canva AI video: ~1 clip/month (limit resets ~25th). Poppy: 2,775 image credits/month. Budget is tight: never buy credits.
