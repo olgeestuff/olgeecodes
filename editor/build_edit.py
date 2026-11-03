@@ -399,7 +399,8 @@ def render(hook: Path | None, body: list[Path], demo: Path | None, out: Path,
                 x, y, cw, ch = s.get("crop", [0, 0, 0, 0])
                 crop = f"crop={cw}:{ch}:{x}:{y}," if cw and ch else ""
                 # seek on the input (fast) instead of trimming from the start of a long demo
-                i_seg = add("-ss", f"{float(s['src']):.3f}", "-t", f"{d * sp + 0.5:.3f}", "-i", demo)
+                src_file = ref_path(s["file"]) if s.get("file") else demo   # a segment can use its own clip
+                i_seg = add("-ss", f"{float(s.get('src', 0)):.3f}", "-t", f"{d * sp + 0.5:.3f}", "-i", src_file)
                 f.append(f"[{i_seg}:v]setpts=(PTS-STARTPTS)/{sp},fps={fps},{crop}{_cover(bw, bh)},setsar=1,"
                          f"tpad=stop_mode=clone:stop_duration={d:.3f},trim=duration={d:.3f}[bs{k}]")
                 parts.append(f"[bs{k}]")
