@@ -47,15 +47,22 @@ def transcribe(media: Path, cache: bool = True, prompt: str | None = None) -> li
 
     # WHISPER_MODEL_DIR lets you point at a local model folder (offline machines).
     model = _get_model(os.environ.get("WHISPER_MODEL_DIR") or cfg["model"])
-    segments, _ = model.transcribe(_load_audio(media), language=cfg.get("language"),
-                                   word_timestamps=True, vad_filter=True,
-                                   initial_prompt=prompt)
-    words = []
-    for seg in segments:
-        for w in seg.words or []:
-            text = w.word.strip()
-            if text:
-                words.append({"word": text, "start": round(w.start, 3), "end": round(w.end, 3)})
+    audio = _load_audio(media)
+
+    def run_once(**extra):
+        segs, _ = model.transcribe(audio, language=cfg.get("language"), word_timestamps=True,
+                                   vad_filter=True, **extra)
+        return [{"word": w.word.strip(), "start": round(w.start, 3), "end": round(w.end, 3)}
+                for seg in segs for w in (seg.words or []) if w.word.strip()]
+
+    # The script is passed as "hotwords" (biases spelling: "lease" not "visa") rather than as an
+    # initial prompt, which can make Whisper skip speech that matches the prompt.
+    words = run_once(hotwords=prompt) if prompt else run_once()
+    if prompt:
+        plain = run_once()
+        if len(words) < 0.85 * len(plain):     # safety net: never lose speech because of the prompt
+            print("  note: script hint dropped words; using plain transcription")
+            words = plain
     out.write_text(json.dumps(words, indent=1), encoding="utf-8")
     return words
 

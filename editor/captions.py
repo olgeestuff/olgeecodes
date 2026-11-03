@@ -37,8 +37,14 @@ def group_words(words: list[dict], per_line: int) -> list[list[dict]]:
     return groups
 
 
+CASE_FIX = {"i": "I", "i'll": "I'll", "i'm": "I'm", "i've": "I've", "i'd": "I'd", "ai": "AI"}
+
+
 def _clean(word: str, upper: bool) -> str:
     w = word.replace("{", "").replace("}", "").replace("\\", "")
+    core = w.strip(".,!?;:")
+    if core.lower() in CASE_FIX:
+        w = w.replace(core, CASE_FIX[core.lower()])
     w = w.rstrip(",;:")
     return w.upper() if upper else w
 

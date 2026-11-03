@@ -163,6 +163,26 @@ def find_word(words: list[dict], target: str, after: float = 0.0) -> float | Non
     return None
 
 
+def find_phrase_end(words: list[dict], phrase: str) -> float | None:
+    """End time of the LAST occurrence of a spoken phrase."""
+    toks = [_norm_word(t) for t in phrase.split() if _norm_word(t)]
+    flat = []          # split joined words ("paperwork" vs "paper work") into a comparable stream
+    for w in words:
+        flat.append((_norm_word(w["word"]), w["end"]))
+    target = "".join(toks)
+    best = None
+    for i in range(len(flat)):
+        acc = ""
+        for j in range(i, min(i + len(toks) + 3, len(flat))):
+            acc += flat[j][0]
+            if acc == target:
+                best = flat[j][1]
+                break
+            if not target.startswith(acc):
+                break
+    return best
+
+
 def load_plan(path: Path | None) -> dict:
     if path and path.exists():
         with open(path, encoding="utf-8") as fh:
@@ -199,6 +219,26 @@ def render(hook: Path | None, body: list[Path], demo: Path | None, out: Path,
     w_hook = transcribe(hook_t, prompt=prompt) if hook_t else []
     w_body = [{**w, "start": w["start"] + hook_dur, "end": w["end"] + hook_dur}
               for w in transcribe(body_t, prompt=prompt)]
+    # Optional: end the video right after a phrase (drops retakes / chatter after the CTA)
+    if plan.get("end_after"):
+        t_end = find_phrase_end(w_body, plan["end_after"])
+        if t_end is None:
+            print(f'   warning: end_after phrase "{plan["end_after"]}" not found; keeping full length')
+        elif t_end + 0.6 < total:
+            keep = t_end + 0.6 - hook_dur
+            cut = WORK / f"{tag}_body_cut.mp4"
+            run([ffmpeg_bin(), "-y", "-i", body_t, "-t", f"{keep:.3f}", "-c:v", "libx264", "-preset", "veryfast",
+                 "-crf", "16", "-c:a", "aac", "-b:a", "192k", cut])
+            body_t, body_dur = cut, duration(cut)
+            total = hook_dur + body_dur
+            w_body = [w for w in w_body if w["start"] < total]
+    # Plan word fixes for captions, e.g. {trim: trail} when Whisper mishears a word
+    fixes = {str(k).lower(): str(v) for k, v in (plan.get("fix") or {}).items()}
+    if fixes:
+        def _fx(w):
+            core = w["word"].strip(".,!?;:").lower()
+            return {**w, "word": w["word"].lower().replace(core, fixes[core])} if core in fixes else w
+        w_hook, w_body = [_fx(w) for w in w_hook], [_fx(w) for w in w_body]
     words = w_hook + w_body
 
     print("3/5 planning layout + graphics...")
