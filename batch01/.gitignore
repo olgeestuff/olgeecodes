@@ -8,3 +8,4 @@ hf/out/*.mp4
 transcripts_med/log.txt
 __pycache__/
 hf/out/work-*/
+hf/out/.*
