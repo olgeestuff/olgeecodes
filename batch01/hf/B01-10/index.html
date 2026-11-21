@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<style>
+@font-face { font-family: Pop; font-weight: 400; src: url(assets/fonts/poppins-latin-400-normal.woff2); }
+@font-face { font-family: Pop; font-weight: 600; src: url(assets/fonts/poppins-latin-600-normal.woff2); }
+@font-face { font-family: Pop; font-weight: 700; src: url(assets/fonts/poppins-latin-700-normal.woff2); }
+@font-face { font-family: Pop; font-weight: 800; src: url(assets/fonts/poppins-latin-800-normal.woff2); }
+:root { --navy:#0a1224; --panel:#13203b; --line:#24365c; --gold:#f5b82e; --orange:#ff8a1f;
+        --ink:#ffffff; --muted:#a9b8d6; --red:#ff5a5f; --green:#3ddc84; }
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:1080px; height:1920px; overflow:hidden; background:var(--navy); }
+#root { position:relative; width:100%; height:100%; font-family:Pop, sans-serif; color:var(--ink); }
+.top { position:absolute; left:0; top:0; width:1080px; height:940px; overflow:hidden;
+       background: radial-gradient(120% 90% at 50% 0%, #1b2d55 0%, #0d1830 55%, #0a1224 100%); }
+.grid { position:absolute; inset:0; opacity:.18;
+        background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+        background-size: 54px 54px; }
+.hdr { position:absolute; left:44px; right:44px; top:40px; display:flex; justify-content:space-between; align-items:center; z-index:5; }
+.brandmini { display:flex; align-items:center; gap:14px; font-weight:600; font-size:30px; }
+.logo { width:52px; height:52px; border-radius:14px; background:linear-gradient(135deg,var(--orange),var(--gold));
+        color:#0a1224; font-weight:800; font-size:34px; display:flex; align-items:center; justify-content:center; }
+.cardid { font-size:24px; font-weight:600; color:var(--gold); border:2px solid var(--gold); padding:6px 16px; border-radius:40px; }
+.scene { position:absolute; left:0; top:110px; width:1080px; height:790px; display:flex; align-items:center; justify-content:center; }
+.center { display:flex; align-items:center; justify-content:center; text-align:center; }
+.col { flex-direction:column; } .row { display:flex; flex-direction:row; align-items:stretch; }
+.gap20 { gap:20px; } .gap24 { gap:24px; } .gap28 { gap:28px; } .gap32 { gap:32px; } .w860 { width:860px; }
+.kicker { font-size:30px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--gold); }
+.big { font-size:84px; line-height:1.06; font-weight:800; max-width:960px; letter-spacing:-.02em; }
+.big.red { color:var(--red); }
+.sub { font-size:38px; line-height:1.3; color:var(--muted); max-width:900px; font-weight:400; }
+.note { font-size:24px; color:#7f90b3; font-style:italic; }
+.gold { color:var(--gold); } .under { text-decoration: underline; text-decoration-color: var(--red); text-underline-offset: 14px; }
+.iconbadge, .urgentbadge { width:150px; height:150px; border-radius:40px; background:var(--panel); border:2px solid var(--line);
+        display:flex; align-items:center; justify-content:center; color:var(--gold); }
+.urgentbadge { color:var(--red); border-color:var(--red); }
+.q1 { font-size:56px; font-weight:600; color:var(--muted); max-width:920px; line-height:1.2; }
+.q2 { font-size:84px; font-weight:800; max-width:960px; line-height:1.1; }
+.step { display:flex; align-items:center; gap:26px; width:100%; background:var(--panel); border:2px solid var(--line);
+        border-radius:22px; padding:22px 28px; text-align:left; }
+.num { flex:none; width:64px; height:64px; border-radius:18px; background:var(--gold); color:#0a1224; font-weight:800; font-size:34px;
+       display:flex; align-items:center; justify-content:center; }
+.num.okc { background:var(--green); }
+.steptxt { font-size:40px; font-weight:600; }
+.notcard { position:relative; width:300px; padding:36px 22px; background:var(--panel); border:2px solid var(--line); border-radius:28px;
+           display:flex; flex-direction:column; align-items:center; gap:20px; }
+.noticon { color:var(--muted); } .nottxt { font-size:32px; font-weight:600; line-height:1.2; }
+.xbadge { position:absolute; top:-18px; right:-18px; width:64px; height:64px; border-radius:50%; background:var(--red);
+          color:white; display:flex; align-items:center; justify-content:center; }
+.cmp { width:440px; padding:40px 30px; background:var(--panel); border:2px solid var(--line); border-radius:30px;
+       display:flex; flex-direction:column; align-items:center; gap:18px; }
+.cmp.hot { border-color:var(--gold); } .cmpicon { color:var(--gold); }
+.cmph { font-size:40px; font-weight:700; } .cmpb { font-size:30px; color:var(--muted); line-height:1.3; }
+.cmptag { font-size:24px; font-weight:600; background:#0a1224; padding:8px 18px; border-radius:30px; color:var(--gold); }
+.building { color:var(--muted); }
+.pricetag { display:flex; align-items:center; gap:20px; background:var(--gold); color:#0a1224; font-weight:800; font-size:96px;
+            padding:16px 46px; border-radius:26px; transform:rotate(-3deg); }
+.phone { width:520px; height:640px; border-radius:46px; background:#0d1626; border:6px solid #2a3a5e; overflow:hidden;
+         display:flex; flex-direction:column; text-align:left; }
+.phonebar, .appbar { padding:20px 26px; font-size:26px; font-weight:600; background:#16243f; color:var(--muted); display:flex; gap:12px; align-items:center; }
+.appbar { color:var(--ink); background:#1a6bd6; }
+.chatlist { display:flex; flex-direction:column; gap:18px; padding:26px; }
+.bubble { max-width:80%; font-size:28px; padding:16px 22px; border-radius:24px; line-height:1.3; }
+.bubble.in { background:#22314f; align-self:flex-start; border-bottom-left-radius:6px; }
+.bubble.out { background:#1f7a4d; align-self:flex-end; border-bottom-right-radius:6px; }
+.meterpic { background:#ddd5c4; border-radius:16px; padding:22px; display:flex; flex-direction:column; align-items:center; gap:8px; color:#333; }
+.meterdial { display:flex; gap:6px; } .meterdial span { background:#111; color:#fff; font-size:46px; font-weight:700; width:48px; text-align:center; border-radius:6px; font-family:monospace; }
+.meterlbl { font-size:22px; font-weight:600; }
+.sheetwrap { width:940px; background:#ffffff; border-radius:20px; overflow:hidden; color:#1f2937; }
+.sheetbar { background:#1e7b45; color:white; font-size:26px; font-weight:600; padding:12px 20px; display:flex; gap:12px; align-items:center; }
+.tbl { position:relative; }
+table { width:100%; border-collapse:collapse; font-size:28px; }
+th { background:#eef2f7; font-weight:700; height:66px; border:1px solid #d6dde8; }
+td { height:64px; border:1px solid #e3e8ef; padding:0 12px; }
+tr.new td { background:#fff4d6; font-weight:700; }
+.hlbox { position:absolute; left:4px; right:4px; height:64px; border:5px solid var(--gold); border-radius:8px; box-shadow:0 0 0 9999px rgba(10,18,36,.25); }
+.calcbox { width:820px; background:var(--panel); border:2px solid var(--line); border-radius:28px; padding:36px 40px; display:flex; flex-direction:column; gap:18px; text-align:left; }
+.calcline { font-size:44px; font-weight:600; font-family:Pop; }
+.calcres { font-size:54px; font-weight:800; color:var(--gold); border-top:3px dashed var(--line); padding-top:18px; }
+.mgrid { display:grid; grid-template-columns:repeat(4, 200px); gap:18px; }
+.mtile { background:var(--panel); border:2px solid var(--line); border-radius:20px; padding:18px 10px; display:flex; flex-direction:column; gap:6px; }
+.mtile b { font-size:32px; } .mtile span { font-size:24px; color:var(--orange); font-weight:600; }
+.phone.app { height:660px; background:#f4f7fb; color:#0f172a; border-color:#1a6bd6; }
+.fields { display:flex; flex-direction:column; gap:14px; padding:22px; }
+.field { background:white; border-radius:16px; padding:12px 18px; box-shadow:0 2px 6px rgba(0,0,0,.08); }
+.flbl { font-size:20px; color:#64748b; font-weight:600; } .fval { font-size:30px; font-weight:700; }
+.thumb { display:flex; align-items:center; gap:10px; font-size:24px; color:#1a6bd6; }
+.status { margin:6px 22px; background:var(--green); color:#06301a; font-weight:700; font-size:28px; border-radius:16px; padding:14px; display:flex; gap:10px; align-items:center; justify-content:center; }
+.alertcard { width:860px; background:var(--panel); border:3px solid var(--gold); border-radius:30px; padding:30px 36px; display:flex; flex-direction:column; gap:14px; }
+.alerthead { display:flex; align-items:center; gap:18px; color:var(--gold); font-size:46px; font-weight:800; padding-bottom:12px; border-bottom:2px solid var(--line); }
+.arow { display:flex; justify-content:space-between; font-size:34px; } .arow span { color:var(--muted); }
+.scat { width:300px; padding:30px 20px; background:var(--panel); border:3px dashed var(--line); border-radius:26px; display:flex; flex-direction:column; align-items:center; gap:14px; color:var(--muted); }
+.scat.miss { border-color:var(--red); color:var(--red); }
+.scath { font-size:32px; font-weight:700; color:var(--ink); } .scatb { font-size:26px; line-height:1.3; }
+.chip { display:flex; align-items:center; gap:20px; background:var(--panel); border:2px solid var(--line); border-radius:24px; padding:20px 34px; font-size:42px; font-weight:700; color:var(--gold); }
+.chip span { color:var(--ink); }
+.dash { width:900px; background:#f4f7fb; border-radius:26px; overflow:hidden; color:#0f172a; }
+.dashbar { background:#1a6bd6; color:white; font-size:26px; font-weight:600; padding:14px 22px; display:flex; gap:12px; align-items:center; }
+.dgrid { display:grid; grid-template-columns:repeat(2,1fr); gap:18px; padding:24px; }
+.dtile { background:white; border-radius:18px; padding:22px; box-shadow:0 2px 6px rgba(0,0,0,.08); text-align:left; }
+.dnum { font-size:58px; font-weight:800; color:#1a6bd6; } .dlbl { font-size:26px; color:#475569; font-weight:600; }
+.brand { display:flex; align-items:center; gap:22px; font-size:52px; font-weight:800; }
+.brand .logo { width:96px; height:96px; font-size:62px; border-radius:26px; }
+.question { display:flex; align-items:center; gap:22px; max-width:920px; background:var(--gold); color:#0a1224; font-size:40px; font-weight:700;
+            padding:26px 34px; border-radius:28px; text-align:left; line-height:1.25; }
+.foot { position:absolute; left:0; top:940px; width:1080px; height:980px; overflow:hidden; background:#000; }
+.foot video { width:100%; height:100%; object-fit:cover; object-position:50% 30%; }
+.seam { position:absolute; left:0; top:936px; width:1080px; height:8px; background:linear-gradient(90deg,var(--orange),var(--gold)); z-index:6; }
+.cap { position:absolute; left:0; top:888px; width:1080px; display:flex; justify-content:center; z-index:8; }
+.capin { max-width:960px; text-align:center; font-size:56px; font-weight:800; line-height:1.15; padding:14px 26px; border-radius:20px;
+         background:rgba(10,18,36,.82); color:#fff; letter-spacing:-.01em; }
+.capin .w { color:#ffffff; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="67.00" data-width="1080" data-height="1920">
+  <div class="top"><div class="grid"></div>
+    <div class="hdr"><div class="brandmini"><div class="logo">A</div>Automation With Sholz</div><div class="cardid">B01-10</div></div>
+  </div>
+  <div id="sc0" class="clip scene" data-start="0.00" data-duration="13.50" data-track-index="1"><div class="center col gap28"><div class="kicker" data-at="0.00">Software won&#x27;t…</div>
+      <div class="row gap24"><div class="notcard" data-at="3.00"><div class="noticon"><svg width="76" height="76" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 32L32 12l24 20"/><path d="M14 28v26h36V28"/><path d="M40 36c0 4-3 6-3 9a3 3 0 0 0 6 0c0-3-3-5-3-9z"/></svg></div>
+            <div class="nottxt">Inspect a leaking roof</div><div class="xbadge" data-at="3.50"><svg width="34" height="34" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 18l28 28M46 18L18 46"/></svg></div></div><div class="notcard" data-at="8.00"><div class="noticon"><svg width="76" height="76" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 34l10-10 10 4 8-6 10 2 14 12-10 12-8-6-8 6-10-8z"/></svg></div>
+            <div class="nottxt">Build trust with a contractor</div><div class="xbadge" data-at="8.50"><svg width="34" height="34" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 18l28 28M46 18L18 46"/></svg></div></div><div class="notcard" data-at="11.00"><div class="noticon"><svg width="76" height="76" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M24 12a9 9 0 0 0-12 8 9 9 0 0 0-2 16 9 9 0 0 0 12 12h2V12zM40 12a9 9 0 0 1 12 8 9 9 0 0 1 2 16 9 9 0 0 1-12 12h-2V12z"/></svg></div>
+            <div class="nottxt">Replace good judgment</div><div class="xbadge" data-at="11.50"><svg width="34" height="34" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 18l28 28M46 18L18 46"/></svg></div></div></div></div></div><div id="sc1" class="clip scene" data-start="13.50" data-duration="2.20" data-track-index="1">
+    <div class="center col gap24">
+      <div class="iconbadge" data-at="13.50"><svg width="92" height="92" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="22" r="10"/><path d="M12 56c2-12 10-18 20-18s18 6 20 18"/></svg></div>
+      <div class="kicker" data-at="13.60">Not even AI</div>
+      <div class="big" data-at="13.75">That part is <span class="gold">ours</span>.</div>
+      <div class="sub" data-at="14.10">Human judgment stays human.</div>
+      
+    </div></div><div id="sc2" class="clip scene" data-start="15.70" data-duration="7.50" data-track-index="1"><div class="center col gap20 w860">
+      <div class="kicker" data-at="15.70">But it can help you</div><div class="step ok" data-at="16.60"><div class="num okc"><svg width="36" height="36" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 33l12 12 24-26"/></svg></div><div class="steptxt">Record requests</div></div><div class="step ok" data-at="18.70"><div class="num okc"><svg width="36" height="36" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 33l12 12 24-26"/></svg></div><div class="steptxt">Assign responsibility</div></div><div class="step ok" data-at="20.40"><div class="num okc"><svg width="36" height="36" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 33l12 12 24-26"/></svg></div><div class="steptxt">Track progress</div></div><div class="step ok" data-at="22.10"><div class="num okc"><svg width="36" height="36" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 33l12 12 24-26"/></svg></div><div class="steptxt">Keep evidence together</div></div></div></div><div id="sc3" class="clip scene" data-start="23.20" data-duration="9.90" data-track-index="1">
+    <div class="center col gap24">
+      <div class="iconbadge" data-at="23.20"><svg width="92" height="92" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 34l10-10 10 4 8-6 10 2 14 12-10 12-8-6-8 6-10-8z"/></svg></div>
+      <div class="kicker" data-at="23.30">So you can focus on</div>
+      <div class="big" data-at="23.45">Building <span class="gold">trust</span> &amp; making jobs easier</div>
+      
+      
+    </div></div><div id="sc4" class="clip scene" data-start="33.10" data-duration="11.00" data-track-index="1">
+    <div class="center col gap32">
+      <div class="q1" data-at="33.10">The goal isn&#x27;t to remove humans from property management.</div>
+      <div class="q2" data-at="38.50">It&#x27;s to stop you having to <span class="gold under">remember everything</span>.</div>
+    </div></div><div id="sc5" class="clip scene" data-start="44.10" data-duration="3.30" data-track-index="1">
+    <div class="center col gap24">
+      <div class="iconbadge" data-at="44.10"><svg width="92" height="92" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 32s10-18 28-18 28 18 28 18-10 18-28 18S4 32 4 32z"/><circle cx="32" cy="32" r="8"/></svg></div>
+      <div class="kicker" data-at="44.20">The result</div>
+      <div class="big" data-at="44.35">You stay <span class="gold">in control</span>.</div>
+      
+      
+    </div></div><div id="sc6" class="clip scene" data-start="47.40" data-duration="19.60" data-track-index="1"><div class="center col gap28">
+      <div class="brand" data-at="47.40"><div class="logo">A</div><div>Automation With Sholz</div></div>
+      <div class="sub" data-at="47.80">I&#x27;m Sholz. I build systems with Google AppSheet for property &amp; inventory management.</div>
+      <div class="question" data-at="48.40"><svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12h48v30H26l-12 10V42H8z"/></svg><span>What should software handle, and what should always stay human?</span></div>
+      <div class="note" data-at="49.00">Comment below, or DM me “WORKFLOW”</div></div></div>
+  <div class="foot"><video id="talk" class="clip" src="assets/talk.mp4" data-start="0" data-duration="67.00" data-media-start="0"
+       data-has-audio="true" data-track-index="0" playsinline></video></div>
+  <div class="seam"></div>
+  <div class="clip cap" data-start="0.23" data-duration="0.59" data-track-index="3"><div class="capin"><span class="w" data-ws="0.23">Well,</span> </div></div><div class="clip cap" data-start="0.83" data-duration="1.79" data-track-index="3"><div class="capin"><span class="w" data-ws="0.83">from</span> <span class="w" data-ws="1.71">what</span> <span class="w" data-ws="1.85">I</span> <span class="w" data-ws="2.01">know,</span> </div></div><div class="clip cap" data-start="3.17" data-duration="2.07" data-track-index="3"><div class="capin"><span class="w" data-ws="3.17">software</span> <span class="w" data-ws="3.73">won&#x27;t</span> <span class="w" data-ws="4.67">inspect</span> <span class="w" data-ws="5.05">a</span> </div></div><div class="clip cap" data-start="5.25" data-duration="1.73" data-track-index="3"><div class="capin"><span class="w" data-ws="5.25">leaking</span> <span class="w" data-ws="5.49">roof</span> <span class="w" data-ws="5.93">for</span> <span class="w" data-ws="6.47">us</span> </div></div><div class="clip cap" data-start="6.99" data-duration="1.23" data-track-index="3"><div class="capin"><span class="w" data-ws="6.99">or</span> <span class="w" data-ws="7.35">you,</span> </div></div><div class="clip cap" data-start="8.23" data-duration="1.25" data-track-index="3"><div class="capin"><span class="w" data-ws="8.23">it</span> <span class="w" data-ws="8.27">won&#x27;t</span> <span class="w" data-ws="8.93">build</span> <span class="w" data-ws="9.09">trust</span> </div></div><div class="clip cap" data-start="9.49" data-duration="1.01" data-track-index="3"><div class="capin"><span class="w" data-ws="9.49">with</span> <span class="w" data-ws="9.77">a</span> <span class="w" data-ws="9.89">contractor,</span> </div></div><div class="clip cap" data-start="10.89" data-duration="1.03" data-track-index="3"><div class="capin"><span class="w" data-ws="10.89">it</span> <span class="w" data-ws="11.19">won&#x27;t</span> <span class="w" data-ws="11.33">replace</span> <span class="w" data-ws="11.65">good</span> </div></div><div class="clip cap" data-start="11.93" data-duration="0.59" data-track-index="3"><div class="capin"><span class="w" data-ws="11.93">judgment,</span> </div></div><div class="clip cap" data-start="12.57" data-duration="0.33" data-track-index="3"><div class="capin"><span class="w" data-ws="12.57">so</span> <span class="w" data-ws="12.61">I</span> <span class="w" data-ws="12.69">don&#x27;t</span> <span class="w" data-ws="12.77">think</span> </div></div><div class="clip cap" data-start="12.91" data-duration="0.47" data-track-index="3"><div class="capin"><span class="w" data-ws="12.91">it</span> <span class="w" data-ws="13.01">will</span> <span class="w" data-ws="13.11">ever</span> <span class="w" data-ws="13.27">do</span> </div></div><div class="clip cap" data-start="13.39" data-duration="0.30" data-track-index="3"><div class="capin"><span class="w" data-ws="13.39">that,</span> </div></div><div class="clip cap" data-start="13.55" data-duration="0.71" data-track-index="3"><div class="capin"><span class="w" data-ws="13.55">not</span> <span class="w" data-ws="13.61">even</span> <span class="w" data-ws="13.79">AI</span> <span class="w" data-ws="14.07">will</span> </div></div><div class="clip cap" data-start="14.27" data-duration="0.33" data-track-index="3"><div class="capin"><span class="w" data-ws="14.27">do</span> <span class="w" data-ws="14.39">that,</span> </div></div><div class="clip cap" data-start="14.61" data-duration="0.95" data-track-index="3"><div class="capin"><span class="w" data-ws="14.61">because</span> <span class="w" data-ws="14.69">that&#x27;s</span> <span class="w" data-ws="14.89">our</span> <span class="w" data-ws="15.01">part.</span> </div></div><div class="clip cap" data-start="15.89" data-duration="0.45" data-track-index="3"><div class="capin"><span class="w" data-ws="15.89">But</span> <span class="w" data-ws="16.01">it</span> <span class="w" data-ws="16.05">can</span> <span class="w" data-ws="16.13">help</span> </div></div><div class="clip cap" data-start="16.35" data-duration="2.03" data-track-index="3"><div class="capin"><span class="w" data-ws="16.35">you</span> <span class="w" data-ws="16.69">record</span> <span class="w" data-ws="17.51">requests,</span> </div></div><div class="clip cap" data-start="18.77" data-duration="1.21" data-track-index="3"><div class="capin"><span class="w" data-ws="18.77">assign</span> <span class="w" data-ws="19.15">responsibility,</span> </div></div><div class="clip cap" data-start="20.49" data-duration="1.01" data-track-index="3"><div class="capin"><span class="w" data-ws="20.49">track</span> <span class="w" data-ws="20.79">progress,</span> </div></div><div class="clip cap" data-start="21.81" data-duration="1.43" data-track-index="3"><div class="capin"><span class="w" data-ws="21.81">and</span> <span class="w" data-ws="21.93">keep</span> <span class="w" data-ws="22.15">evidence</span> <span class="w" data-ws="22.63">together,</span> </div></div><div class="clip cap" data-start="23.25" data-duration="0.33" data-track-index="3"><div class="capin"><span class="w" data-ws="23.25">and</span> <span class="w" data-ws="23.27">these</span> <span class="w" data-ws="23.41">are</span> <span class="w" data-ws="23.55">the</span> </div></div><div class="clip cap" data-start="23.59" data-duration="1.33" data-track-index="3"><div class="capin"><span class="w" data-ws="23.59">things</span> <span class="w" data-ws="23.73">that</span> <span class="w" data-ws="23.97">help</span> <span class="w" data-ws="24.43">those</span> </div></div><div class="clip cap" data-start="24.93" data-duration="1.39" data-track-index="3"><div class="capin"><span class="w" data-ws="24.93">three</span> <span class="w" data-ws="25.71">things</span> <span class="w" data-ws="25.89">I</span> <span class="w" data-ws="26.01">discussed.</span> </div></div><div class="clip cap" data-start="26.33" data-duration="1.07" data-track-index="3"><div class="capin"><span class="w" data-ws="26.33">Building</span> <span class="w" data-ws="26.65">trust,</span> </div></div><div class="clip cap" data-start="28.05" data-duration="1.23" data-track-index="3"><div class="capin"><span class="w" data-ws="28.05">or</span> <span class="w" data-ws="28.09">making</span> <span class="w" data-ws="28.35">some</span> <span class="w" data-ws="28.67">jobs</span> </div></div><div class="clip cap" data-start="29.29" data-duration="1.09" data-track-index="3"><div class="capin"><span class="w" data-ws="29.29">even</span> <span class="w" data-ws="29.65">easier</span> <span class="w" data-ws="30.09">for</span> <span class="w" data-ws="30.29">the</span> </div></div><div class="clip cap" data-start="30.39" data-duration="0.49" data-track-index="3"><div class="capin"><span class="w" data-ws="30.39">person,</span> </div></div><div class="clip cap" data-start="30.89" data-duration="0.97" data-track-index="3"><div class="capin"><span class="w" data-ws="30.89">for</span> <span class="w" data-ws="30.91">you,</span> </div></div><div class="clip cap" data-start="31.87" data-duration="2.19" data-track-index="3"><div class="capin"><span class="w" data-ws="31.87">because</span> <span class="w" data-ws="33.23">the</span> <span class="w" data-ws="33.43">goal</span> <span class="w" data-ws="33.71">isn&#x27;t</span> </div></div><div class="clip cap" data-start="34.07" data-duration="1.09" data-track-index="3"><div class="capin"><span class="w" data-ws="34.07">to</span> <span class="w" data-ws="34.25">remove</span> <span class="w" data-ws="34.53">humans</span> <span class="w" data-ws="34.85">from</span> </div></div><div class="clip cap" data-start="35.17" data-duration="1.91" data-track-index="3"><div class="capin"><span class="w" data-ws="35.17">inventory</span> <span class="w" data-ws="36.19">management</span> <span class="w" data-ws="36.55">or</span> <span class="w" data-ws="36.77">property</span> </div></div><div class="clip cap" data-start="37.09" data-duration="0.53" data-track-index="3"><div class="capin"><span class="w" data-ws="37.09">management,</span> </div></div><div class="clip cap" data-start="37.63" data-duration="2.15" data-track-index="3"><div class="capin"><span class="w" data-ws="37.63">it&#x27;s</span> <span class="w" data-ws="38.57">to</span> <span class="w" data-ws="38.71">stop</span> <span class="w" data-ws="39.21">humans</span> </div></div><div class="clip cap" data-start="39.79" data-duration="2.09" data-track-index="3"><div class="capin"><span class="w" data-ws="39.79">from</span> <span class="w" data-ws="39.99">having</span> <span class="w" data-ws="40.15">to</span> <span class="w" data-ws="40.47">do</span> </div></div><div class="clip cap" data-start="41.89" data-duration="0.55" data-track-index="3"><div class="capin"><span class="w" data-ws="41.89">everything,</span> </div></div><div class="clip cap" data-start="42.45" data-duration="1.29" data-track-index="3"><div class="capin"><span class="w" data-ws="42.45">remember</span> <span class="w" data-ws="42.63">everything</span> <span class="w" data-ws="42.93">themselves,</span> </div></div><div class="clip cap" data-start="44.15" data-duration="1.89" data-track-index="3"><div class="capin"><span class="w" data-ws="44.15">and</span> <span class="w" data-ws="44.61">put</span> <span class="w" data-ws="44.81">us</span> <span class="w" data-ws="45.51">actually</span> </div></div><div class="clip cap" data-start="46.05" data-duration="0.57" data-track-index="3"><div class="capin"><span class="w" data-ws="46.05">in</span> <span class="w" data-ws="46.25">control.</span> </div></div><div class="clip cap" data-start="46.63" data-duration="0.33" data-track-index="3"><div class="capin"><span class="w" data-ws="46.63">So,</span> </div></div><div class="clip cap" data-start="47.57" data-duration="1.29" data-track-index="3"><div class="capin"><span class="w" data-ws="47.57">I</span> <span class="w" data-ws="48.17">think</span> <span class="w" data-ws="48.29">that&#x27;s</span> <span class="w" data-ws="48.57">really</span> </div></div><div class="clip cap" data-start="48.87" data-duration="0.89" data-track-index="3"><div class="capin"><span class="w" data-ws="48.87">the</span> <span class="w" data-ws="49.41">way</span> <span class="w" data-ws="49.51">I</span> <span class="w" data-ws="49.61">see</span> </div></div><div class="clip cap" data-start="49.77" data-duration="0.57" data-track-index="3"><div class="capin"><span class="w" data-ws="49.77">things,</span> </div></div><div class="clip cap" data-start="50.37" data-duration="1.17" data-track-index="3"><div class="capin"><span class="w" data-ws="50.37">so</span> <span class="w" data-ws="50.37">I&#x27;m</span> <span class="w" data-ws="50.93">Sholz,</span> </div></div><div class="clip cap" data-start="51.55" data-duration="0.61" data-track-index="3"><div class="capin"><span class="w" data-ws="51.55">and</span> <span class="w" data-ws="51.57">I</span> <span class="w" data-ws="51.67">help</span> <span class="w" data-ws="51.83">people</span> </div></div><div class="clip cap" data-start="52.17" data-duration="3.51" data-track-index="3"><div class="capin"><span class="w" data-ws="52.17">make</span> <span class="w" data-ws="53.33">systems</span> <span class="w" data-ws="54.79">with</span> <span class="w" data-ws="55.15">apps</span> </div></div><div class="clip cap" data-start="55.69" data-duration="2.01" data-track-index="3"><div class="capin"><span class="w" data-ws="55.69">in</span> <span class="w" data-ws="56.81">Google</span> <span class="w" data-ws="57.07">AppSheet</span> <span class="w" data-ws="57.57">and</span> </div></div><div class="clip cap" data-start="57.71" data-duration="3.93" data-track-index="3"><div class="capin"><span class="w" data-ws="57.71">other</span> <span class="w" data-ws="57.89">platforms</span> <span class="w" data-ws="58.47">for</span> <span class="w" data-ws="59.91">their</span> </div></div><div class="clip cap" data-start="61.65" data-duration="0.75" data-track-index="3"><div class="capin"><span class="w" data-ws="61.65">jobs,</span> </div></div><div class="clip cap" data-start="63.71" data-duration="1.43" data-track-index="3"><div class="capin"><span class="w" data-ws="63.71">usually</span> <span class="w" data-ws="64.09">in</span> <span class="w" data-ws="64.35">property</span> <span class="w" data-ws="64.81">management</span> </div></div><div class="clip cap" data-start="65.15" data-duration="1.27" data-track-index="3"><div class="capin"><span class="w" data-ws="65.15">or</span> <span class="w" data-ws="65.39">inventory</span> <span class="w" data-ws="65.77">management.</span> </div></div>
+</div>
+<script>
+  window.__timelines = window.__timelines || {};
+  const tl = gsap.timeline({ paused: true });
+  document.querySelectorAll(".scene").forEach(sc => {
+    tl.fromTo(sc, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power1.out" }, +sc.dataset.start);
+  });
+  document.querySelectorAll("[data-at]").forEach(el => {
+    tl.fromTo(el, { opacity: 0, y: 36, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.6)" }, +el.dataset.at);
+  });
+  document.querySelectorAll(".pulse").forEach(el => {
+    tl.to(el, { scale: 1.08, duration: 0.45, yoyo: true, repeat: 7, ease: "sine.inOut" }, +el.dataset.at + 0.5);
+  });
+  document.querySelectorAll(".capin .w").forEach(w => {
+    tl.set(w, { color: "#f5b82e" }, +w.dataset.ws);
+  });
+  document.querySelectorAll(".cap").forEach(c => {
+    tl.fromTo(c, { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.12 }, +c.dataset.start);
+  });
+  window.__timelines["main"] = tl;
+  tl.seek(0);
+</script>
+</body>
+</html>

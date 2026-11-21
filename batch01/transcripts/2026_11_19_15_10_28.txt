@@ -1,0 +1,4 @@
+[  0.43- 15.51] Well, from what I know, software won't inspect a leaking roof for us or you, it won't build trust with a contractor, it won't replace good judgment, so I don't think it will ever do that, not even AI will do that, because that's our part.
+[ 16.09- 26.53] But it can help you record requests, assign responsibility, trap progress, and keep evidence together, and these are the things that help those three things I discussed.
+[ 26.53- 46.83] Building trust, or making some jobs even easier for the person, for the UN person, because the goal isn't to remove humans from inventory management or property management, it's to stop humans from having to do everything, remember everything themselves, and put us actually in control.
+[ 46.83- 66.37] So, I think that's really the way I see things, so I'm Charles, and I help people make systems with apps in Google AppSheet and other platforms for their jobs, usually in property management or inventory management.

@@ -1,0 +1,23 @@
+[  0.72-  5.94] So here this is how some tenants handle their system.
+[  6.52-  8.60] A tenant sends a meter photo
+[  9.07- 11.72] and someone has to identify the reading,
+[ 12.30- 15.86] find the previous number, enter it into a spreadsheet,
+[ 16.38- 20.12] then calculate the charge, then repeat it next month.
+[ 20.76- 22.82] See, none of these steps I just highlighted
+[ 23.59- 26.90] looks huge on its own, just a couple of things.
+[ 27.38- 29.90] But the recurring administrative cost
+[ 30.12- 34.00] has a way of consuming attention or getting missed.
+[ 34.74- 37.38] Like cost sometimes goes beyond money.
+[ 37.90- 40.76] It's now attention or time consumed.
+[ 41.68- 44.38] The opportunity to capture information
+[ 44.38- 49.10] once in a consistent workflow exists in your Google account.
+[ 50.10- 53.18] And I can help unlock it or at least show you how.
+[ 53.96- 57.34] It's with free tools that Google gives, Google Sheets,
+[ 57.93- 59.98] Google Apps Sheets, Google Apps Script.
+[ 60.84- 63.78] Okay, help the capture of information,
+[ 64.36- 68.94] whether it's meter reading or tasks done easily
+[ 69.75- 71.60] and uniformly across your people.
+[ 72.92- 75.64] So I think that the smart way to do things
+[ 76.30- 79.46] is for you to unlock it or get help to unlock it.
+[ 79.52- 81.54] And that's why I could be of assistance to you.
+[ 82.58- 83.08] Take care.

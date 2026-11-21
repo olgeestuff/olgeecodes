@@ -1,0 +1,38 @@
+[  0.72-  5.94] So here this is how some tenants handle their system
+[  5.94-  8.76] A tenant sends a meta photo
+[  8.76- 11.78] and someone has to identify the reading
+[ 11.78- 14.04] find the previous number
+[ 14.04- 15.92] enter it into a spreadsheet
+[ 15.92- 17.78] then calculate the charge
+[ 17.78- 20.28] then repeat it next month
+[ 20.28- 22.86] see none of these steps I just highlighted
+[ 22.86- 25.16] looks huge on its own
+[ 25.16- 26.94] just you know a couple of things
+[ 26.94- 30.06] but the recurring administrative cost
+[ 30.06- 32.44] has a way of consuming attention
+[ 32.44- 34.14] or getting missed
+[ 34.14- 37.52] like cost sometimes goes beyond money
+[ 37.52- 39.46] it's now attention
+[ 39.46- 40.94] or time consumed
+[ 41.56- 43.76] the opportunity to capture
+[ 43.76- 46.02] information once in a consistent
+[ 46.02- 47.68] workflow exists
+[ 47.68- 49.20] in your Google account
+[ 49.20- 52.06] and I can help unlock it
+[ 52.06- 53.44] or at least show you how
+[ 53.44- 55.80] it's with free tools
+[ 55.80- 57.88] that Google gives Google Sheets
+[ 57.88- 58.98] Google App Sheets
+[ 58.98- 60.06] Google Apps Script
+[ 60.92- 63.16] help the capture of
+[ 63.16- 65.18] information whether it's
+[ 65.18- 67.10] meta reading or tasks
+[ 67.10- 69.04] done easily
+[ 69.04- 71.10] and uniformly across
+[ 71.10- 71.96] your people
+[ 72.66- 75.04] so I think that's a smart way
+[ 75.04- 75.90] to do things
+[ 75.90- 78.92] it's free to unlock it or get help
+[ 78.92- 80.98] to unlock it and that's why it could be of assistance
+[ 80.98- 81.78] to you
+[ 81.78- 83.10] take care

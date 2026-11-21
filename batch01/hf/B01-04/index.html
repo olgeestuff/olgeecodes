@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<style>
+@font-face { font-family: Pop; font-weight: 400; src: url(assets/fonts/poppins-latin-400-normal.woff2); }
+@font-face { font-family: Pop; font-weight: 600; src: url(assets/fonts/poppins-latin-600-normal.woff2); }
+@font-face { font-family: Pop; font-weight: 700; src: url(assets/fonts/poppins-latin-700-normal.woff2); }
+@font-face { font-family: Pop; font-weight: 800; src: url(assets/fonts/poppins-latin-800-normal.woff2); }
+:root { --navy:#0a1224; --panel:#13203b; --line:#24365c; --gold:#f5b82e; --orange:#ff8a1f;
+        --ink:#ffffff; --muted:#a9b8d6; --red:#ff5a5f; --green:#3ddc84; }
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:1080px; height:1920px; overflow:hidden; background:var(--navy); }
+#root { position:relative; width:100%; height:100%; font-family:Pop, sans-serif; color:var(--ink); }
+.top { position:absolute; left:0; top:0; width:1080px; height:940px; overflow:hidden;
+       background: radial-gradient(120% 90% at 50% 0%, #1b2d55 0%, #0d1830 55%, #0a1224 100%); }
+.grid { position:absolute; inset:0; opacity:.18;
+        background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+        background-size: 54px 54px; }
+.hdr { position:absolute; left:44px; right:44px; top:40px; display:flex; justify-content:space-between; align-items:center; z-index:5; }
+.brandmini { display:flex; align-items:center; gap:14px; font-weight:600; font-size:30px; }
+.logo { width:52px; height:52px; border-radius:14px; background:linear-gradient(135deg,var(--orange),var(--gold));
+        color:#0a1224; font-weight:800; font-size:34px; display:flex; align-items:center; justify-content:center; }
+.cardid { font-size:24px; font-weight:600; color:var(--gold); border:2px solid var(--gold); padding:6px 16px; border-radius:40px; }
+.scene { position:absolute; left:0; top:110px; width:1080px; height:790px; display:flex; align-items:center; justify-content:center; }
+.center { display:flex; align-items:center; justify-content:center; text-align:center; }
+.col { flex-direction:column; } .row { display:flex; flex-direction:row; align-items:stretch; }
+.gap20 { gap:20px; } .gap24 { gap:24px; } .gap28 { gap:28px; } .gap32 { gap:32px; } .w860 { width:860px; }
+.kicker { font-size:30px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--gold); }
+.big { font-size:84px; line-height:1.06; font-weight:800; max-width:960px; letter-spacing:-.02em; }
+.big.red { color:var(--red); }
+.sub { font-size:38px; line-height:1.3; color:var(--muted); max-width:900px; font-weight:400; }
+.note { font-size:24px; color:#7f90b3; font-style:italic; }
+.gold { color:var(--gold); } .under { text-decoration: underline; text-decoration-color: var(--red); text-underline-offset: 14px; }
+.iconbadge, .urgentbadge { width:150px; height:150px; border-radius:40px; background:var(--panel); border:2px solid var(--line);
+        display:flex; align-items:center; justify-content:center; color:var(--gold); }
+.urgentbadge { color:var(--red); border-color:var(--red); }
+.q1 { font-size:56px; font-weight:600; color:var(--muted); max-width:920px; line-height:1.2; }
+.q2 { font-size:84px; font-weight:800; max-width:960px; line-height:1.1; }
+.step { display:flex; align-items:center; gap:26px; width:100%; background:var(--panel); border:2px solid var(--line);
+        border-radius:22px; padding:22px 28px; text-align:left; }
+.num { flex:none; width:64px; height:64px; border-radius:18px; background:var(--gold); color:#0a1224; font-weight:800; font-size:34px;
+       display:flex; align-items:center; justify-content:center; }
+.num.okc { background:var(--green); }
+.steptxt { font-size:40px; font-weight:600; }
+.notcard { position:relative; width:300px; padding:36px 22px; background:var(--panel); border:2px solid var(--line); border-radius:28px;
+           display:flex; flex-direction:column; align-items:center; gap:20px; }
+.noticon { color:var(--muted); } .nottxt { font-size:32px; font-weight:600; line-height:1.2; }
+.xbadge { position:absolute; top:-18px; right:-18px; width:64px; height:64px; border-radius:50%; background:var(--red);
+          color:white; display:flex; align-items:center; justify-content:center; }
+.cmp { width:440px; padding:40px 30px; background:var(--panel); border:2px solid var(--line); border-radius:30px;
+       display:flex; flex-direction:column; align-items:center; gap:18px; }
+.cmp.hot { border-color:var(--gold); } .cmpicon { color:var(--gold); }
+.cmph { font-size:40px; font-weight:700; } .cmpb { font-size:30px; color:var(--muted); line-height:1.3; }
+.cmptag { font-size:24px; font-weight:600; background:#0a1224; padding:8px 18px; border-radius:30px; color:var(--gold); }
+.building { color:var(--muted); }
+.pricetag { display:flex; align-items:center; gap:20px; background:var(--gold); color:#0a1224; font-weight:800; font-size:96px;
+            padding:16px 46px; border-radius:26px; transform:rotate(-3deg); }
+.phone { width:520px; height:640px; border-radius:46px; background:#0d1626; border:6px solid #2a3a5e; overflow:hidden;
+         display:flex; flex-direction:column; text-align:left; }
+.phonebar, .appbar { padding:20px 26px; font-size:26px; font-weight:600; background:#16243f; color:var(--muted); display:flex; gap:12px; align-items:center; }
+.appbar { color:var(--ink); background:#1a6bd6; }
+.chatlist { display:flex; flex-direction:column; gap:18px; padding:26px; }
+.bubble { max-width:80%; font-size:28px; padding:16px 22px; border-radius:24px; line-height:1.3; }
+.bubble.in { background:#22314f; align-self:flex-start; border-bottom-left-radius:6px; }
+.bubble.out { background:#1f7a4d; align-self:flex-end; border-bottom-right-radius:6px; }
+.meterpic { background:#ddd5c4; border-radius:16px; padding:22px; display:flex; flex-direction:column; align-items:center; gap:8px; color:#333; }
+.meterdial { display:flex; gap:6px; } .meterdial span { background:#111; color:#fff; font-size:46px; font-weight:700; width:48px; text-align:center; border-radius:6px; font-family:monospace; }
+.meterlbl { font-size:22px; font-weight:600; }
+.sheetwrap { width:940px; background:#ffffff; border-radius:20px; overflow:hidden; color:#1f2937; }
+.sheetbar { background:#1e7b45; color:white; font-size:26px; font-weight:600; padding:12px 20px; display:flex; gap:12px; align-items:center; }
+.tbl { position:relative; }
+table { width:100%; border-collapse:collapse; font-size:28px; }
+th { background:#eef2f7; font-weight:700; height:66px; border:1px solid #d6dde8; }
+td { height:64px; border:1px solid #e3e8ef; padding:0 12px; }
+tr.new td { background:#fff4d6; font-weight:700; }
+.hlbox { position:absolute; left:4px; right:4px; height:64px; border:5px solid var(--gold); border-radius:8px; box-shadow:0 0 0 9999px rgba(10,18,36,.25); }
+.calcbox { width:820px; background:var(--panel); border:2px solid var(--line); border-radius:28px; padding:36px 40px; display:flex; flex-direction:column; gap:18px; text-align:left; }
+.calcline { font-size:44px; font-weight:600; font-family:Pop; }
+.calcres { font-size:54px; font-weight:800; color:var(--gold); border-top:3px dashed var(--line); padding-top:18px; }
+.mgrid { display:grid; grid-template-columns:repeat(4, 200px); gap:18px; }
+.mtile { background:var(--panel); border:2px solid var(--line); border-radius:20px; padding:18px 10px; display:flex; flex-direction:column; gap:6px; }
+.mtile b { font-size:32px; } .mtile span { font-size:24px; color:var(--orange); font-weight:600; }
+.phone.app { height:660px; background:#f4f7fb; color:#0f172a; border-color:#1a6bd6; }
+.fields { display:flex; flex-direction:column; gap:14px; padding:22px; }
+.field { background:white; border-radius:16px; padding:12px 18px; box-shadow:0 2px 6px rgba(0,0,0,.08); }
+.flbl { font-size:20px; color:#64748b; font-weight:600; } .fval { font-size:30px; font-weight:700; }
+.thumb { display:flex; align-items:center; gap:10px; font-size:24px; color:#1a6bd6; }
+.status { margin:6px 22px; background:var(--green); color:#06301a; font-weight:700; font-size:28px; border-radius:16px; padding:14px; display:flex; gap:10px; align-items:center; justify-content:center; }
+.alertcard { width:860px; background:var(--panel); border:3px solid var(--gold); border-radius:30px; padding:30px 36px; display:flex; flex-direction:column; gap:14px; }
+.alerthead { display:flex; align-items:center; gap:18px; color:var(--gold); font-size:46px; font-weight:800; padding-bottom:12px; border-bottom:2px solid var(--line); }
+.arow { display:flex; justify-content:space-between; font-size:34px; } .arow span { color:var(--muted); }
+.scat { width:300px; padding:30px 20px; background:var(--panel); border:3px dashed var(--line); border-radius:26px; display:flex; flex-direction:column; align-items:center; gap:14px; color:var(--muted); }
+.scat.miss { border-color:var(--red); color:var(--red); }
+.scath { font-size:32px; font-weight:700; color:var(--ink); } .scatb { font-size:26px; line-height:1.3; }
+.chip { display:flex; align-items:center; gap:20px; background:var(--panel); border:2px solid var(--line); border-radius:24px; padding:20px 34px; font-size:42px; font-weight:700; color:var(--gold); }
+.chip span { color:var(--ink); }
+.dash { width:900px; background:#f4f7fb; border-radius:26px; overflow:hidden; color:#0f172a; }
+.dashbar { background:#1a6bd6; color:white; font-size:26px; font-weight:600; padding:14px 22px; display:flex; gap:12px; align-items:center; }
+.dgrid { display:grid; grid-template-columns:repeat(2,1fr); gap:18px; padding:24px; }
+.dtile { background:white; border-radius:18px; padding:22px; box-shadow:0 2px 6px rgba(0,0,0,.08); text-align:left; }
+.dnum { font-size:58px; font-weight:800; color:#1a6bd6; } .dlbl { font-size:26px; color:#475569; font-weight:600; }
+.brand { display:flex; align-items:center; gap:22px; font-size:52px; font-weight:800; }
+.brand .logo { width:96px; height:96px; font-size:62px; border-radius:26px; }
+.question { display:flex; align-items:center; gap:22px; max-width:920px; background:var(--gold); color:#0a1224; font-size:40px; font-weight:700;
+            padding:26px 34px; border-radius:28px; text-align:left; line-height:1.25; }
+.foot { position:absolute; left:0; top:940px; width:1080px; height:980px; overflow:hidden; background:#000; }
+.foot video { width:100%; height:100%; object-fit:cover; object-position:50% 30%; }
+.seam { position:absolute; left:0; top:936px; width:1080px; height:8px; background:linear-gradient(90deg,var(--orange),var(--gold)); z-index:6; }
+.cap { position:absolute; left:0; top:888px; width:1080px; display:flex; justify-content:center; z-index:8; }
+.capin { max-width:960px; text-align:center; font-size:56px; font-weight:800; line-height:1.15; padding:14px 26px; border-radius:20px;
+         background:rgba(10,18,36,.82); color:#fff; letter-spacing:-.01em; }
+.capin .w { color:#ffffff; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="69.02" data-width="1080" data-height="1920">
+  <div class="top"><div class="grid"></div>
+    <div class="hdr"><div class="brandmini"><div class="logo">A</div>Automation With Sholz</div><div class="cardid">B01-04</div></div>
+  </div>
+  <div id="sc0" class="clip scene" data-start="0.00" data-duration="3.42" data-track-index="1"><div class="center col gap24"><div class="kicker" data-at="0.00">A lease date sits in a spreadsheet</div>
+      <div class="sheetwrap" data-at="0.10"><div class="sheetbar"><svg width="30" height="30" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="12" width="48" height="40" rx="3"/><path d="M8 24h48M8 36h48M24 12v40M40 12v40"/></svg> Property_Tracker.xlsx</div>
+      <div class="tbl"><table><tr><th>Unit</th><th>Tenant</th><th>Lease end</th></tr><tr><td>2A</td><td>J. Okafor</td><td>31 Jan</td></tr><tr><td>3C</td><td>M. Diaz</td><td>14 Mar</td></tr><tr class="hl"><td>4B</td><td>A. Chen</td><td>02 Dec</td></tr><tr><td>5D</td><td>R. Patel</td><td>19 Jun</td></tr></table><div class="hlbox" data-at="1.20" style="top:206px"></div></div></div>
+      </div></div><div id="sc1" class="clip scene" data-start="3.42" data-duration="6.80" data-track-index="1"><div class="center col gap28"><div class="kicker" data-at="3.42">Important dates live in different places</div>
+      <div class="row gap24"><div class="scat " data-at="3.62"><svg width="70" height="70" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="12" width="48" height="40" rx="3"/><path d="M8 24h48M8 36h48M24 12v40M40 12v40"/></svg><div class="scath">Spreadsheet</div>
+        <div class="scatb">Lease end: 02 Dec</div></div><div class="scat " data-at="4.42"><svg width="70" height="70" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="18" y="6" width="28" height="52" rx="5"/><path d="M28 50h8"/></svg><div class="scath">Phone note</div>
+        <div class="scatb">“Call A. Chen about renewal”</div></div><div class="scat miss" data-at="5.82"><svg width="70" height="70" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="14" width="48" height="42" rx="4"/><path d="M8 26h48M20 8v12M44 8v12"/></svg><div class="scath">Calendar</div>
+        <div class="scatb">Reminder never created</div></div></div><div class="sub" data-at="8.02">…or it only lives in someone&#x27;s memory</div></div></div><div id="sc2" class="clip scene" data-start="10.22" data-duration="12.40" data-track-index="1"><div class="center col gap24"><div class="urgentbadge pulse" data-at="10.22"><svg width="80" height="80" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 44V30a14 14 0 0 1 28 0v14l4 4H14z"/><path d="M27 54a5 5 0 0 0 10 0"/></svg></div>
+      <div class="big red" data-at="10.42">Renewal due in 6 days!</div><div class="sub" data-at="12.22">Now the team is chasing a renewal that should have been on the radar weeks ago.</div></div></div><div id="sc3" class="clip scene" data-start="22.62" data-duration="5.40" data-track-index="1">
+    <div class="center col gap32">
+      <div class="q1" data-at="22.62">The problem isn&#x27;t memory.</div>
+      <div class="q2" data-at="27.02">It&#x27;s <span class="gold under">visibility</span>.</div>
+    </div></div><div id="sc4" class="clip scene" data-start="28.02" data-duration="11.20" data-track-index="1"><div class="center col gap24"><div class="kicker" data-at="28.02">One place, for every stakeholder</div>
+      <div class="alertcard" data-at="28.12"><div class="alerthead"><svg width="44" height="44" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 44V30a14 14 0 0 1 28 0v14l4 4H14z"/><path d="M27 54a5 5 0 0 0 10 0"/></svg><span>Renewal due in 60 days</span></div>
+      <div class="arow" data-at="28.62"><span>Unit</span><b>Maple Court · 4B</b></div><div class="arow" data-at="29.42"><span>Lease end</span><b>02 Dec 2026</b></div><div class="arow" data-at="30.42"><span>Responsible</span><b>Ada · Property Manager</b></div><div class="arow" data-at="31.62"><span>Next action</span><b>Send renewal offer</b></div></div></div></div><div id="sc5" class="clip scene" data-start="39.22" data-duration="10.40" data-track-index="1"><div class="center col gap28"><div class="kicker" data-at="39.22">Scattered information hurts</div>
+      <div class="col gap20"><div class="chip" data-at="42.22"><svg width="44" height="44" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="14" y="10" width="36" height="46" rx="3"/><path d="M22 20h6M36 20h6M22 30h6M36 30h6M22 40h6M36 40h6M28 56v-8h8v8"/></svg><span>Property managers</span></div><div class="chip" data-at="44.22"><svg width="44" height="44" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="12" width="48" height="40" rx="3"/><path d="M8 24h48M8 36h48M24 12v40M40 12v40"/></svg><span>Inventory teams</span></div></div><div class="sub" data-at="47.72">It&#x27;s alarming.</div></div></div><div id="sc6" class="clip scene" data-start="49.62" data-duration="13.14" data-track-index="1"><div class="center col gap28"><div class="kicker" data-at="49.62">The fix often already sits in your Google account</div>
+      <div class="col gap20"><div class="chip" data-at="52.42"><svg width="44" height="44" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="12" width="48" height="40" rx="3"/><path d="M8 24h48M8 36h48M24 12v40M40 12v40"/></svg><span>Google Sheets</span></div><div class="chip" data-at="54.62"><svg width="44" height="44" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="8" width="18" height="14" rx="3"/><rect x="40" y="25" width="18" height="14" rx="3"/><rect x="6" y="42" width="18" height="14" rx="3"/><path d="M24 15h8v32h-8M32 32h8"/></svg><span>Google AppSheet</span></div></div><div class="sub" data-at="57.62">A system that shows your team what&#x27;s coming, before it happens</div></div></div><div id="sc7" class="clip scene" data-start="62.76" data-duration="6.26" data-track-index="1"><div class="center col gap28">
+      <div class="brand" data-at="62.76"><div class="logo">A</div><div>Automation With Sholz</div></div>
+      <div class="sub" data-at="63.16">I build simple work apps with Google AppSheet, Sheets &amp; Apps Script</div>
+      <div class="question" data-at="63.76"><svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12h48v30H26l-12 10V42H8z"/></svg><span>Where do your lease renewal reminders live today?</span></div>
+      <div class="note" data-at="64.36">Comment below, or DM me “WORKFLOW”</div></div></div>
+  <div class="foot"><video id="talk" class="clip" src="assets/talk.mp4" data-start="0" data-duration="69.02" data-media-start="0"
+       data-has-audio="true" data-track-index="0" playsinline></video></div>
+  <div class="seam"></div>
+  <div class="clip cap" data-start="0.00" data-duration="1.41" data-track-index="3"><div class="capin"><span class="w" data-ws="0.00">spreadsheet</span> <span class="w" data-ws="0.74">a</span> <span class="w" data-ws="0.98">lease</span> <span class="w" data-ws="1.22">date</span> </div></div><div class="clip cap" data-start="1.42" data-duration="0.91" data-track-index="3"><div class="capin"><span class="w" data-ws="1.42">and</span> <span class="w" data-ws="1.56">expiry</span> <span class="w" data-ws="1.90">date</span> <span class="w" data-ws="2.16">sits</span> </div></div><div class="clip cap" data-start="2.34" data-duration="1.71" data-track-index="3"><div class="capin"><span class="w" data-ws="2.34">in</span> <span class="w" data-ws="2.56">one</span> <span class="w" data-ws="2.72">place</span> <span class="w" data-ws="3.42">notes</span> </div></div><div class="clip cap" data-start="4.06" data-duration="1.43" data-track-index="3"><div class="capin"><span class="w" data-ws="4.06">sits</span> <span class="w" data-ws="4.72">in</span> <span class="w" data-ws="4.90">someone</span> <span class="w" data-ws="5.14">else&#x27;s</span> </div></div><div class="clip cap" data-start="5.50" data-duration="1.53" data-track-index="3"><div class="capin"><span class="w" data-ws="5.50">phone</span> <span class="w" data-ws="6.04">kind</span> <span class="w" data-ws="6.50">of</span> <span class="w" data-ws="6.62">reminder</span> </div></div><div class="clip cap" data-start="7.04" data-duration="1.51" data-track-index="3"><div class="capin"><span class="w" data-ws="7.04">it&#x27;s</span> <span class="w" data-ws="7.86">never</span> <span class="w" data-ws="8.06">been</span> <span class="w" data-ws="8.24">created</span> </div></div><div class="clip cap" data-start="8.56" data-duration="1.09" data-track-index="3"><div class="capin"><span class="w" data-ws="8.56">in</span> <span class="w" data-ws="8.84">someone&#x27;s</span> <span class="w" data-ws="9.38">memory</span> <span class="w" data-ws="9.48">it</span> </div></div><div class="clip cap" data-start="9.66" data-duration="0.85" data-track-index="3"><div class="capin"><span class="w" data-ws="9.66">reminds</span> <span class="w" data-ws="9.92">the</span> <span class="w" data-ws="10.10">whole</span> <span class="w" data-ws="10.24">team</span> </div></div><div class="clip cap" data-start="10.52" data-duration="1.51" data-track-index="3"><div class="capin"><span class="w" data-ws="10.52">now</span> <span class="w" data-ws="11.14">then</span> <span class="w" data-ws="11.56">the</span> <span class="w" data-ws="11.68">team</span> </div></div><div class="clip cap" data-start="12.04" data-duration="1.45" data-track-index="3"><div class="capin"><span class="w" data-ws="12.04">suddenly</span> <span class="w" data-ws="12.66">begins</span> <span class="w" data-ws="13.04">to</span> <span class="w" data-ws="13.20">chase</span> </div></div><div class="clip cap" data-start="13.50" data-duration="1.33" data-track-index="3"><div class="capin"><span class="w" data-ws="13.50">the</span> <span class="w" data-ws="13.70">renewal</span> <span class="w" data-ws="13.98">date</span> <span class="w" data-ws="14.46">that</span> </div></div><div class="clip cap" data-start="14.84" data-duration="0.63" data-track-index="3"><div class="capin"><span class="w" data-ws="14.84">should</span> <span class="w" data-ws="15.02">have</span> <span class="w" data-ws="15.16">been</span> <span class="w" data-ws="15.32">on</span> </div></div><div class="clip cap" data-start="15.48" data-duration="1.55" data-track-index="3"><div class="capin"><span class="w" data-ws="15.48">the</span> <span class="w" data-ws="15.60">radar</span> <span class="w" data-ws="15.90">weeks</span> <span class="w" data-ws="16.52">ago</span> </div></div><div class="clip cap" data-start="17.04" data-duration="2.17" data-track-index="3"><div class="capin"><span class="w" data-ws="17.04">until</span> <span class="w" data-ws="17.76">when</span> <span class="w" data-ws="18.20">the</span> <span class="w" data-ws="18.78">innocent</span> </div></div><div class="clip cap" data-start="19.22" data-duration="1.55" data-track-index="3"><div class="capin"><span class="w" data-ws="19.22">victims</span> <span class="w" data-ws="19.68">begin</span> <span class="w" data-ws="20.30">to</span> <span class="w" data-ws="20.64">you</span> </div></div><div class="clip cap" data-start="20.78" data-duration="2.49" data-track-index="3"><div class="capin"><span class="w" data-ws="20.78">overspending</span> <span class="w" data-ws="21.62">time</span> <span class="w" data-ws="21.98">when</span> <span class="w" data-ws="22.64">important</span> </div></div><div class="clip cap" data-start="23.28" data-duration="1.77" data-track-index="3"><div class="capin"><span class="w" data-ws="23.28">dates</span> <span class="w" data-ws="23.84">live</span> <span class="w" data-ws="24.46">in</span> <span class="w" data-ws="24.70">different</span> </div></div><div class="clip cap" data-start="25.06" data-duration="1.45" data-track-index="3"><div class="capin"><span class="w" data-ws="25.06">places</span> <span class="w" data-ws="25.58">the</span> <span class="w" data-ws="26.00">problem</span> <span class="w" data-ws="26.20">isn&#x27;t</span> </div></div><div class="clip cap" data-start="26.52" data-duration="2.71" data-track-index="3"><div class="capin"><span class="w" data-ws="26.52">memory</span> <span class="w" data-ws="26.98">it&#x27;s</span> <span class="w" data-ws="27.86">visibility</span> <span class="w" data-ws="28.38">put</span> </div></div><div class="clip cap" data-start="29.24" data-duration="2.19" data-track-index="3"><div class="capin"><span class="w" data-ws="29.24">the</span> <span class="w" data-ws="29.50">date</span> <span class="w" data-ws="29.80">responsible</span> <span class="w" data-ws="30.90">person</span> </div></div><div class="clip cap" data-start="31.44" data-duration="1.15" data-track-index="3"><div class="capin"><span class="w" data-ws="31.44">and</span> <span class="w" data-ws="31.70">the</span> <span class="w" data-ws="31.80">next</span> <span class="w" data-ws="32.12">action</span> </div></div><div class="clip cap" data-start="32.60" data-duration="1.59" data-track-index="3"><div class="capin"><span class="w" data-ws="32.60">in</span> <span class="w" data-ws="33.02">one</span> <span class="w" data-ws="33.24">place</span> <span class="w" data-ws="33.66">for</span> </div></div><div class="clip cap" data-start="34.20" data-duration="1.17" data-track-index="3"><div class="capin"><span class="w" data-ws="34.20">every</span> <span class="w" data-ws="34.64">stakeholder</span> <span class="w" data-ws="35.06">to</span> <span class="w" data-ws="35.24">get</span> </div></div><div class="clip cap" data-start="35.38" data-duration="1.39" data-track-index="3"><div class="capin"><span class="w" data-ws="35.38">involved</span> <span class="w" data-ws="35.74">in</span> <span class="w" data-ws="36.04">like</span> <span class="w" data-ws="36.54">this</span> </div></div><div class="clip cap" data-start="36.78" data-duration="1.63" data-track-index="3"><div class="capin"><span class="w" data-ws="36.78">stuff</span> <span class="w" data-ws="36.98">the</span> <span class="w" data-ws="37.22">issues</span> <span class="w" data-ws="37.74">this</span> </div></div><div class="clip cap" data-start="39.24" data-duration="2.33" data-track-index="3"><div class="capin"><span class="w" data-ws="39.24">this</span> <span class="w" data-ws="40.08">poor</span> <span class="w" data-ws="40.64">organization</span> <span class="w" data-ws="41.40">of</span> </div></div><div class="clip cap" data-start="41.58" data-duration="1.95" data-track-index="3"><div class="capin"><span class="w" data-ws="41.58">information</span> <span class="w" data-ws="41.92">causes</span> <span class="w" data-ws="42.42">for</span> <span class="w" data-ws="43.04">different</span> </div></div><div class="clip cap" data-start="43.54" data-duration="1.55" data-track-index="3"><div class="capin"><span class="w" data-ws="43.54">people</span> <span class="w" data-ws="43.82">for</span> <span class="w" data-ws="44.12">property</span> <span class="w" data-ws="44.72">managers</span> </div></div><div class="clip cap" data-start="45.10" data-duration="1.35" data-track-index="3"><div class="capin"><span class="w" data-ws="45.10">and</span> <span class="w" data-ws="45.52">people</span> <span class="w" data-ws="45.84">in</span> <span class="w" data-ws="46.02">inventory</span> </div></div><div class="clip cap" data-start="46.46" data-duration="3.75" data-track-index="3"><div class="capin"><span class="w" data-ws="46.46">it&#x27;s</span> <span class="w" data-ws="47.44">alarming</span> <span class="w" data-ws="47.88">and</span> <span class="w" data-ws="48.96">what&#x27;s</span> </div></div><div class="clip cap" data-start="50.22" data-duration="1.03" data-track-index="3"><div class="capin"><span class="w" data-ws="50.22">interesting</span> <span class="w" data-ws="50.56">is</span> <span class="w" data-ws="50.74">the</span> <span class="w" data-ws="50.86">solution</span> </div></div><div class="clip cap" data-start="51.26" data-duration="1.59" data-track-index="3"><div class="capin"><span class="w" data-ws="51.26">usually</span> <span class="w" data-ws="51.78">sits</span> <span class="w" data-ws="52.08">in</span> <span class="w" data-ws="52.68">your</span> </div></div><div class="clip cap" data-start="52.86" data-duration="0.81" data-track-index="3"><div class="capin"><span class="w" data-ws="52.86">Google</span> <span class="w" data-ws="53.02">sheet</span> <span class="w" data-ws="53.34">in</span> <span class="w" data-ws="53.58">your</span> </div></div><div class="clip cap" data-start="53.68" data-duration="1.09" data-track-index="3"><div class="capin"><span class="w" data-ws="53.68">Google</span> <span class="w" data-ws="53.84">account</span> <span class="w" data-ws="54.22">your</span> <span class="w" data-ws="54.58">Google</span> </div></div><div class="clip cap" data-start="54.78" data-duration="1.17" data-track-index="3"><div class="capin"><span class="w" data-ws="54.78">AppSheet</span> <span class="w" data-ws="55.20">and</span> <span class="w" data-ws="55.72">you</span> <span class="w" data-ws="55.82">can</span> </div></div><div class="clip cap" data-start="55.96" data-duration="0.87" data-track-index="3"><div class="capin"><span class="w" data-ws="55.96">unlock</span> <span class="w" data-ws="56.24">it</span> <span class="w" data-ws="56.54">or</span> <span class="w" data-ws="56.74">I</span> </div></div><div class="clip cap" data-start="56.84" data-duration="0.81" data-track-index="3"><div class="capin"><span class="w" data-ws="56.84">can</span> <span class="w" data-ws="57.00">build</span> <span class="w" data-ws="57.18">a</span> <span class="w" data-ws="57.40">system</span> </div></div><div class="clip cap" data-start="57.66" data-duration="1.39" data-track-index="3"><div class="capin"><span class="w" data-ws="57.66">to</span> <span class="w" data-ws="57.84">help</span> <span class="w" data-ws="57.98">you</span> <span class="w" data-ws="58.54">build</span> </div></div><div class="clip cap" data-start="59.06" data-duration="0.93" data-track-index="3"><div class="capin"><span class="w" data-ws="59.06">a</span> <span class="w" data-ws="59.24">system</span> <span class="w" data-ws="59.54">to</span> <span class="w" data-ws="59.74">show</span> </div></div><div class="clip cap" data-start="60.00" data-duration="1.99" data-track-index="3"><div class="capin"><span class="w" data-ws="60.00">all</span> <span class="w" data-ws="60.50">your</span> <span class="w" data-ws="60.66">members</span> <span class="w" data-ws="61.00">what&#x27;s</span> </div></div><div class="clip cap" data-start="62.00" data-duration="1.47" data-track-index="3"><div class="capin"><span class="w" data-ws="62.00">going</span> <span class="w" data-ws="62.16">on</span> <span class="w" data-ws="62.76">before</span> <span class="w" data-ws="63.26">it</span> </div></div><div class="clip cap" data-start="63.48" data-duration="3.05" data-track-index="3"><div class="capin"><span class="w" data-ws="63.48">happens</span> <span class="w" data-ws="64.00">take</span> <span class="w" data-ws="65.50">care</span> <span class="w" data-ws="65.76">that&#x27;s</span> </div></div><div class="clip cap" data-start="66.54" data-duration="0.61" data-track-index="3"><div class="capin"><span class="w" data-ws="66.54">my</span> <span class="w" data-ws="66.66">tip</span> <span class="w" data-ws="66.86">for</span> <span class="w" data-ws="67.04">the</span> </div></div><div class="clip cap" data-start="67.16" data-duration="0.77" data-track-index="3"><div class="capin"><span class="w" data-ws="67.16">day</span> <span class="w" data-ws="67.38">I</span> <span class="w" data-ws="67.74">hope</span> <span class="w" data-ws="67.84">it</span> </div></div><div class="clip cap" data-start="67.94" data-duration="1.15" data-track-index="3"><div class="capin"><span class="w" data-ws="67.94">makes</span> <span class="w" data-ws="68.08">sense</span> <span class="w" data-ws="68.28">to</span> <span class="w" data-ws="68.48">you</span> </div></div>
+</div>
+<script>
+  window.__timelines = window.__timelines || {};
+  const tl = gsap.timeline({ paused: true });
+  document.querySelectorAll(".scene").forEach(sc => {
+    tl.fromTo(sc, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power1.out" }, +sc.dataset.start);
+  });
+  document.querySelectorAll("[data-at]").forEach(el => {
+    tl.fromTo(el, { opacity: 0, y: 36, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.6)" }, +el.dataset.at);
+  });
+  document.querySelectorAll(".pulse").forEach(el => {
+    tl.to(el, { scale: 1.08, duration: 0.45, yoyo: true, repeat: 7, ease: "sine.inOut" }, +el.dataset.at + 0.5);
+  });
+  document.querySelectorAll(".capin .w").forEach(w => {
+    tl.set(w, { color: "#f5b82e" }, +w.dataset.ws);
+  });
+  document.querySelectorAll(".cap").forEach(c => {
+    tl.fromTo(c, { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.12 }, +c.dataset.start);
+  });
+  window.__timelines["main"] = tl;
+  tl.seek(0);
+</script>
+</body>
+</html>

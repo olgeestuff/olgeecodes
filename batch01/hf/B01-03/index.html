@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<style>
+@font-face { font-family: Pop; font-weight: 400; src: url(assets/fonts/poppins-latin-400-normal.woff2); }
+@font-face { font-family: Pop; font-weight: 600; src: url(assets/fonts/poppins-latin-600-normal.woff2); }
+@font-face { font-family: Pop; font-weight: 700; src: url(assets/fonts/poppins-latin-700-normal.woff2); }
+@font-face { font-family: Pop; font-weight: 800; src: url(assets/fonts/poppins-latin-800-normal.woff2); }
+:root { --navy:#0a1224; --panel:#13203b; --line:#24365c; --gold:#f5b82e; --orange:#ff8a1f;
+        --ink:#ffffff; --muted:#a9b8d6; --red:#ff5a5f; --green:#3ddc84; }
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:1080px; height:1920px; overflow:hidden; background:var(--navy); }
+#root { position:relative; width:100%; height:100%; font-family:Pop, sans-serif; color:var(--ink); }
+.top { position:absolute; left:0; top:0; width:1080px; height:940px; overflow:hidden;
+       background: radial-gradient(120% 90% at 50% 0%, #1b2d55 0%, #0d1830 55%, #0a1224 100%); }
+.grid { position:absolute; inset:0; opacity:.18;
+        background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+        background-size: 54px 54px; }
+.hdr { position:absolute; left:44px; right:44px; top:40px; display:flex; justify-content:space-between; align-items:center; z-index:5; }
+.brandmini { display:flex; align-items:center; gap:14px; font-weight:600; font-size:30px; }
+.logo { width:52px; height:52px; border-radius:14px; background:linear-gradient(135deg,var(--orange),var(--gold));
+        color:#0a1224; font-weight:800; font-size:34px; display:flex; align-items:center; justify-content:center; }
+.cardid { font-size:24px; font-weight:600; color:var(--gold); border:2px solid var(--gold); padding:6px 16px; border-radius:40px; }
+.scene { position:absolute; left:0; top:110px; width:1080px; height:790px; display:flex; align-items:center; justify-content:center; }
+.center { display:flex; align-items:center; justify-content:center; text-align:center; }
+.col { flex-direction:column; } .row { display:flex; flex-direction:row; align-items:stretch; }
+.gap20 { gap:20px; } .gap24 { gap:24px; } .gap28 { gap:28px; } .gap32 { gap:32px; } .w860 { width:860px; }
+.kicker { font-size:30px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--gold); }
+.big { font-size:84px; line-height:1.06; font-weight:800; max-width:960px; letter-spacing:-.02em; }
+.big.red { color:var(--red); }
+.sub { font-size:38px; line-height:1.3; color:var(--muted); max-width:900px; font-weight:400; }
+.note { font-size:24px; color:#7f90b3; font-style:italic; }
+.gold { color:var(--gold); } .under { text-decoration: underline; text-decoration-color: var(--red); text-underline-offset: 14px; }
+.iconbadge, .urgentbadge { width:150px; height:150px; border-radius:40px; background:var(--panel); border:2px solid var(--line);
+        display:flex; align-items:center; justify-content:center; color:var(--gold); }
+.urgentbadge { color:var(--red); border-color:var(--red); }
+.q1 { font-size:56px; font-weight:600; color:var(--muted); max-width:920px; line-height:1.2; }
+.q2 { font-size:84px; font-weight:800; max-width:960px; line-height:1.1; }
+.step { display:flex; align-items:center; gap:26px; width:100%; background:var(--panel); border:2px solid var(--line);
+        border-radius:22px; padding:22px 28px; text-align:left; }
+.num { flex:none; width:64px; height:64px; border-radius:18px; background:var(--gold); color:#0a1224; font-weight:800; font-size:34px;
+       display:flex; align-items:center; justify-content:center; }
+.num.okc { background:var(--green); }
+.steptxt { font-size:40px; font-weight:600; }
+.notcard { position:relative; width:300px; padding:36px 22px; background:var(--panel); border:2px solid var(--line); border-radius:28px;
+           display:flex; flex-direction:column; align-items:center; gap:20px; }
+.noticon { color:var(--muted); } .nottxt { font-size:32px; font-weight:600; line-height:1.2; }
+.xbadge { position:absolute; top:-18px; right:-18px; width:64px; height:64px; border-radius:50%; background:var(--red);
+          color:white; display:flex; align-items:center; justify-content:center; }
+.cmp { width:440px; padding:40px 30px; background:var(--panel); border:2px solid var(--line); border-radius:30px;
+       display:flex; flex-direction:column; align-items:center; gap:18px; }
+.cmp.hot { border-color:var(--gold); } .cmpicon { color:var(--gold); }
+.cmph { font-size:40px; font-weight:700; } .cmpb { font-size:30px; color:var(--muted); line-height:1.3; }
+.cmptag { font-size:24px; font-weight:600; background:#0a1224; padding:8px 18px; border-radius:30px; color:var(--gold); }
+.building { color:var(--muted); }
+.pricetag { display:flex; align-items:center; gap:20px; background:var(--gold); color:#0a1224; font-weight:800; font-size:96px;
+            padding:16px 46px; border-radius:26px; transform:rotate(-3deg); }
+.phone { width:520px; height:640px; border-radius:46px; background:#0d1626; border:6px solid #2a3a5e; overflow:hidden;
+         display:flex; flex-direction:column; text-align:left; }
+.phonebar, .appbar { padding:20px 26px; font-size:26px; font-weight:600; background:#16243f; color:var(--muted); display:flex; gap:12px; align-items:center; }
+.appbar { color:var(--ink); background:#1a6bd6; }
+.chatlist { display:flex; flex-direction:column; gap:18px; padding:26px; }
+.bubble { max-width:80%; font-size:28px; padding:16px 22px; border-radius:24px; line-height:1.3; }
+.bubble.in { background:#22314f; align-self:flex-start; border-bottom-left-radius:6px; }
+.bubble.out { background:#1f7a4d; align-self:flex-end; border-bottom-right-radius:6px; }
+.meterpic { background:#ddd5c4; border-radius:16px; padding:22px; display:flex; flex-direction:column; align-items:center; gap:8px; color:#333; }
+.meterdial { display:flex; gap:6px; } .meterdial span { background:#111; color:#fff; font-size:46px; font-weight:700; width:48px; text-align:center; border-radius:6px; font-family:monospace; }
+.meterlbl { font-size:22px; font-weight:600; }
+.sheetwrap { width:940px; background:#ffffff; border-radius:20px; overflow:hidden; color:#1f2937; }
+.sheetbar { background:#1e7b45; color:white; font-size:26px; font-weight:600; padding:12px 20px; display:flex; gap:12px; align-items:center; }
+.tbl { position:relative; }
+table { width:100%; border-collapse:collapse; font-size:28px; }
+th { background:#eef2f7; font-weight:700; height:66px; border:1px solid #d6dde8; }
+td { height:64px; border:1px solid #e3e8ef; padding:0 12px; }
+tr.new td { background:#fff4d6; font-weight:700; }
+.hlbox { position:absolute; left:4px; right:4px; height:64px; border:5px solid var(--gold); border-radius:8px; box-shadow:0 0 0 9999px rgba(10,18,36,.25); }
+.calcbox { width:820px; background:var(--panel); border:2px solid var(--line); border-radius:28px; padding:36px 40px; display:flex; flex-direction:column; gap:18px; text-align:left; }
+.calcline { font-size:44px; font-weight:600; font-family:Pop; }
+.calcres { font-size:54px; font-weight:800; color:var(--gold); border-top:3px dashed var(--line); padding-top:18px; }
+.mgrid { display:grid; grid-template-columns:repeat(4, 200px); gap:18px; }
+.mtile { background:var(--panel); border:2px solid var(--line); border-radius:20px; padding:18px 10px; display:flex; flex-direction:column; gap:6px; }
+.mtile b { font-size:32px; } .mtile span { font-size:24px; color:var(--orange); font-weight:600; }
+.phone.app { height:660px; background:#f4f7fb; color:#0f172a; border-color:#1a6bd6; }
+.fields { display:flex; flex-direction:column; gap:14px; padding:22px; }
+.field { background:white; border-radius:16px; padding:12px 18px; box-shadow:0 2px 6px rgba(0,0,0,.08); }
+.flbl { font-size:20px; color:#64748b; font-weight:600; } .fval { font-size:30px; font-weight:700; }
+.thumb { display:flex; align-items:center; gap:10px; font-size:24px; color:#1a6bd6; }
+.status { margin:6px 22px; background:var(--green); color:#06301a; font-weight:700; font-size:28px; border-radius:16px; padding:14px; display:flex; gap:10px; align-items:center; justify-content:center; }
+.alertcard { width:860px; background:var(--panel); border:3px solid var(--gold); border-radius:30px; padding:30px 36px; display:flex; flex-direction:column; gap:14px; }
+.alerthead { display:flex; align-items:center; gap:18px; color:var(--gold); font-size:46px; font-weight:800; padding-bottom:12px; border-bottom:2px solid var(--line); }
+.arow { display:flex; justify-content:space-between; font-size:34px; } .arow span { color:var(--muted); }
+.scat { width:300px; padding:30px 20px; background:var(--panel); border:3px dashed var(--line); border-radius:26px; display:flex; flex-direction:column; align-items:center; gap:14px; color:var(--muted); }
+.scat.miss { border-color:var(--red); color:var(--red); }
+.scath { font-size:32px; font-weight:700; color:var(--ink); } .scatb { font-size:26px; line-height:1.3; }
+.chip { display:flex; align-items:center; gap:20px; background:var(--panel); border:2px solid var(--line); border-radius:24px; padding:20px 34px; font-size:42px; font-weight:700; color:var(--gold); }
+.chip span { color:var(--ink); }
+.dash { width:900px; background:#f4f7fb; border-radius:26px; overflow:hidden; color:#0f172a; }
+.dashbar { background:#1a6bd6; color:white; font-size:26px; font-weight:600; padding:14px 22px; display:flex; gap:12px; align-items:center; }
+.dgrid { display:grid; grid-template-columns:repeat(2,1fr); gap:18px; padding:24px; }
+.dtile { background:white; border-radius:18px; padding:22px; box-shadow:0 2px 6px rgba(0,0,0,.08); text-align:left; }
+.dnum { font-size:58px; font-weight:800; color:#1a6bd6; } .dlbl { font-size:26px; color:#475569; font-weight:600; }
+.brand { display:flex; align-items:center; gap:22px; font-size:52px; font-weight:800; }
+.brand .logo { width:96px; height:96px; font-size:62px; border-radius:26px; }
+.question { display:flex; align-items:center; gap:22px; max-width:920px; background:var(--gold); color:#0a1224; font-size:40px; font-weight:700;
+            padding:26px 34px; border-radius:28px; text-align:left; line-height:1.25; }
+.foot { position:absolute; left:0; top:940px; width:1080px; height:980px; overflow:hidden; background:#000; }
+.foot video { width:100%; height:100%; object-fit:cover; object-position:50% 28%; }
+.seam { position:absolute; left:0; top:936px; width:1080px; height:8px; background:linear-gradient(90deg,var(--orange),var(--gold)); z-index:6; }
+.cap { position:absolute; left:0; top:888px; width:1080px; display:flex; justify-content:center; z-index:8; }
+.capin { max-width:960px; text-align:center; font-size:56px; font-weight:800; line-height:1.15; padding:14px 26px; border-radius:20px;
+         background:rgba(10,18,36,.82); color:#fff; letter-spacing:-.01em; }
+.capin .w { color:#ffffff; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="82.80" data-width="1080" data-height="1920">
+  <div class="top"><div class="grid"></div>
+    <div class="hdr"><div class="brandmini"><div class="logo">A</div>Automation With Sholz</div><div class="cardid">B01-03</div></div>
+  </div>
+  <div id="sc0" class="clip scene" data-start="0.00" data-duration="8.26" data-track-index="1"><div class="center col gap20"><div class="kicker" data-at="0.00">Every month, every unit</div>
+      <div class="phone" data-at="0.00"><div class="phonebar">Tenant · Unit 4B</div>
+      <div class="chatlist"><div class="bubble in" data-at="0.60">Hi! Here&#x27;s this month&#x27;s meter reading</div><div class="bubble in" data-at="5.30"><div class="meterpic"><div class="meterdial">
+              <span>0</span><span>4</span><span>5</span><span>2</span><span>7</span></div><div class="meterlbl">kWh</div></div></div><div class="bubble out" data-at="7.20">Thanks, logging it now</div></div></div></div></div><div id="sc1" class="clip scene" data-start="8.26" data-duration="3.02" data-track-index="1">
+    <div class="center col gap24">
+      <div class="iconbadge" data-at="8.26"><svg width="92" height="92" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 32s10-18 28-18 28 18 28 18-10 18-28 18S4 32 4 32z"/><circle cx="32" cy="32" r="8"/></svg></div>
+      <div class="kicker" data-at="8.36">Step 1</div>
+      <div class="big" data-at="8.51">Identify the reading</div>
+      <div class="sub" data-at="8.86">04527 kWh</div>
+      
+    </div></div><div id="sc2" class="clip scene" data-start="11.28" data-duration="4.14" data-track-index="1"><div class="center col gap24"><div class="kicker" data-at="11.28">Find the previous number. Enter the new one.</div>
+      <div class="sheetwrap" data-at="11.38"><div class="sheetbar"><svg width="30" height="30" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="12" width="48" height="40" rx="3"/><path d="M8 24h48M8 36h48M24 12v40M40 12v40"/></svg> Property_Tracker.xlsx</div>
+      <div class="tbl"><table><tr><th>Unit</th><th>Month</th><th>Reading</th></tr><tr><td>4A</td><td>Oct</td><td>03112</td></tr><tr class="hl"><td>4B</td><td>Oct</td><td>04398</td></tr><tr><td>5A</td><td>Oct</td><td>02870</td></tr><tr class="new" data-at="13.68"><td>4B</td><td>Nov</td><td>04527</td></tr></table><div class="hlbox" data-at="11.78" style="top:142px"></div></div></div>
+      </div></div><div id="sc3" class="clip scene" data-start="15.42" data-duration="1.86" data-track-index="1"><div class="center col gap24"><div class="kicker" data-at="15.42">Calculate the charge</div>
+      <div class="calcbox" data-at="15.52"><div class="calcline" data-at="15.62">04527 − 04398</div><div class="calcline" data-at="16.22">= 129 kWh × tariff</div><div class="calcres" data-at="16.82">Charge calculated ✓</div></div></div></div><div id="sc4" class="clip scene" data-start="17.28" data-duration="16.36" data-track-index="1"><div class="center col gap28"><div class="kicker" data-at="17.28">Then repeat it next month</div>
+      <div class="mgrid"><div class="mtile" data-at="17.58"><b>JAN</b><span>10 min</span></div><div class="mtile" data-at="17.80"><b>FEB</b><span>10 min</span></div><div class="mtile" data-at="18.02"><b>MAR</b><span>10 min</span></div><div class="mtile" data-at="18.24"><b>APR</b><span>10 min</span></div><div class="mtile" data-at="18.46"><b>MAY</b><span>10 min</span></div><div class="mtile" data-at="18.68"><b>JUN</b><span>10 min</span></div><div class="mtile" data-at="18.90"><b>JUL</b><span>10 min</span></div><div class="mtile" data-at="19.12"><b>AUG</b><span>10 min</span></div><div class="mtile" data-at="19.34"><b>SEP</b><span>10 min</span></div><div class="mtile" data-at="19.56"><b>OCT</b><span>10 min</span></div><div class="mtile" data-at="19.78"><b>NOV</b><span>10 min</span></div><div class="mtile" data-at="20.00"><b>DEC</b><span>10 min</span></div></div><div class="sub" data-at="26.28">None of these steps looks huge. Together they eat attention, and get missed.</div></div></div><div id="sc5" class="clip scene" data-start="33.64" data-duration="7.42" data-track-index="1">
+    <div class="center col gap32">
+      <div class="q1" data-at="33.64">Cost sometimes goes beyond money.</div>
+      <div class="q2" data-at="36.94">It&#x27;s <span class="gold under">attention</span> and time.</div>
+    </div></div><div id="sc6" class="clip scene" data-start="41.06" data-duration="11.88" data-track-index="1"><div class="center col gap20"><div class="kicker" data-at="41.06">Capture it once, in one workflow</div>
+      <div class="phone app" data-at="41.06"><div class="appbar"><svg width="30" height="30" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="8" width="18" height="14" rx="3"/><rect x="40" y="25" width="18" height="14" rx="3"/><rect x="6" y="42" width="18" height="14" rx="3"/><path d="M24 15h8v32h-8M32 32h8"/></svg> Meter Reading</div>
+      <div class="fields"><div class="field" data-at="41.86"><div class="flbl">Property / Unit</div>
+        <div class="fval">Maple Court · 4B</div></div><div class="field" data-at="42.86"><div class="flbl">Meter photo</div>
+        <div class="fval"><div class="thumb"><svg width="34" height="34" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="18" width="48" height="34" rx="5"/><circle cx="32" cy="35" r="9"/><path d="M22 18l4-7h12l4 7"/></svg> meter_4B.jpg</div></div></div><div class="field" data-at="43.86"><div class="flbl">Reading</div>
+        <div class="fval">04527 kWh</div></div><div class="field" data-at="44.86"><div class="flbl">Submitted</div>
+        <div class="fval">19 Nov · 09:42</div></div></div><div class="status" data-at="46.06"><svg width="30" height="30" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 33l12 12 24-26"/></svg> Sent for review</div></div></div></div><div id="sc7" class="clip scene" data-start="52.94" data-duration="7.48" data-track-index="1"><div class="center col gap28"><div class="kicker" data-at="52.94">Free tools in your Google account</div>
+      <div class="col gap20"><div class="chip" data-at="56.14"><svg width="44" height="44" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="12" width="48" height="40" rx="3"/><path d="M8 24h48M8 36h48M24 12v40M40 12v40"/></svg><span>Google Sheets</span></div><div class="chip" data-at="57.54"><svg width="44" height="44" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="8" width="18" height="14" rx="3"/><rect x="40" y="25" width="18" height="14" rx="3"/><rect x="6" y="42" width="18" height="14" rx="3"/><path d="M24 15h8v32h-8M32 32h8"/></svg><span>Google AppSheet</span></div><div class="chip" data-at="58.54"><svg width="44" height="44" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M36 6L14 36h16l-4 22 24-32H34z"/></svg><span>Google Apps Script</span></div></div></div></div><div id="sc8" class="clip scene" data-start="60.42" data-duration="11.74" data-track-index="1"><div class="center col gap24"><div class="kicker" data-at="60.42">Captured the same way, across your team</div>
+      <div class="dash" data-at="60.52"><div class="dashbar"><svg width="30" height="30" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 54h44M18 46V30M30 46V20M42 46V34"/></svg> Operations · One view</div>
+      <div class="dgrid"><div class="dtile" data-at="60.92"><div class="dnum">4B</div><div class="dlbl">Meter reading · submitted</div></div><div class="dtile" data-at="61.72"><div class="dnum">2A</div><div class="dlbl">Repair task · done</div></div><div class="dtile" data-at="62.52"><div class="dnum">7C</div><div class="dlbl">Meter reading · in review</div></div><div class="dtile" data-at="63.42"><div class="dnum">1</div><div class="dlbl">Consistent process</div></div></div></div></div></div><div id="sc9" class="clip scene" data-start="72.16" data-duration="10.64" data-track-index="1"><div class="center col gap28">
+      <div class="brand" data-at="72.16"><div class="logo">A</div><div>Automation With Sholz</div></div>
+      <div class="sub" data-at="72.56">I build simple work apps with Google AppSheet, Sheets &amp; Apps Script</div>
+      <div class="question" data-at="73.16"><svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12h48v30H26l-12 10V42H8z"/></svg><span>What recurring 10-minute admin task keeps coming back in your portfolio?</span></div>
+      <div class="note" data-at="73.76">Comment below, or DM me “WORKFLOW”</div></div></div>
+  <div class="foot"><video id="talk" class="clip" src="assets/talk.mp4" data-start="0" data-duration="82.80" data-media-start="0"
+       data-has-audio="true" data-track-index="0" playsinline></video></div>
+  <div class="seam"></div>
+  <div class="clip cap" data-start="0.22" data-duration="2.25" data-track-index="3"><div class="capin"><span class="w" data-ws="0.22">So</span> <span class="w" data-ws="0.74">here</span> <span class="w" data-ws="1.10">this</span> <span class="w" data-ws="1.52">is</span> </div></div><div class="clip cap" data-start="2.48" data-duration="1.01" data-track-index="3"><div class="capin"><span class="w" data-ws="2.48">how</span> <span class="w" data-ws="2.72">some</span> <span class="w" data-ws="3.04">tenants</span> <span class="w" data-ws="3.24">handle</span> </div></div><div class="clip cap" data-start="3.50" data-duration="2.77" data-track-index="3"><div class="capin"><span class="w" data-ws="3.50">their</span> <span class="w" data-ws="4.06">system</span> <span class="w" data-ws="5.44">A</span> <span class="w" data-ws="6.04">tenant</span> </div></div><div class="clip cap" data-start="6.28" data-duration="1.97" data-track-index="3"><div class="capin"><span class="w" data-ws="6.28">sends</span> <span class="w" data-ws="6.84">a</span> <span class="w" data-ws="7.40">meter</span> <span class="w" data-ws="7.66">photo</span> </div></div><div class="clip cap" data-start="8.26" data-duration="2.07" data-track-index="3"><div class="capin"><span class="w" data-ws="8.26">and</span> <span class="w" data-ws="8.94">someone</span> <span class="w" data-ws="9.42">has</span> <span class="w" data-ws="10.18">to</span> </div></div><div class="clip cap" data-start="10.34" data-duration="1.91" data-track-index="3"><div class="capin"><span class="w" data-ws="10.34">identify</span> <span class="w" data-ws="10.70">the</span> <span class="w" data-ws="10.94">reading</span> <span class="w" data-ws="11.28">find</span> </div></div><div class="clip cap" data-start="12.26" data-duration="2.21" data-track-index="3"><div class="capin"><span class="w" data-ws="12.26">the</span> <span class="w" data-ws="12.56">previous</span> <span class="w" data-ws="12.84">number</span> <span class="w" data-ws="13.54">enter</span> </div></div><div class="clip cap" data-start="14.48" data-duration="0.93" data-track-index="3"><div class="capin"><span class="w" data-ws="14.48">it</span> <span class="w" data-ws="14.66">into</span> <span class="w" data-ws="14.80">a</span> <span class="w" data-ws="15.00">spreadsheet</span> </div></div><div class="clip cap" data-start="15.42" data-duration="1.85" data-track-index="3"><div class="capin"><span class="w" data-ws="15.42">then</span> <span class="w" data-ws="16.10">calculate</span> <span class="w" data-ws="16.52">the</span> <span class="w" data-ws="16.82">charge</span> </div></div><div class="clip cap" data-start="17.28" data-duration="1.91" data-track-index="3"><div class="capin"><span class="w" data-ws="17.28">then</span> <span class="w" data-ws="18.44">repeat</span> <span class="w" data-ws="18.74">it</span> <span class="w" data-ws="18.98">next</span> </div></div><div class="clip cap" data-start="19.20" data-duration="1.69" data-track-index="3"><div class="capin"><span class="w" data-ws="19.20">month</span> <span class="w" data-ws="19.78">see</span> <span class="w" data-ws="20.38">none</span> <span class="w" data-ws="20.62">of</span> </div></div><div class="clip cap" data-start="20.90" data-duration="1.07" data-track-index="3"><div class="capin"><span class="w" data-ws="20.90">these</span> <span class="w" data-ws="21.16">steps</span> <span class="w" data-ws="21.70">I</span> <span class="w" data-ws="21.84">just</span> </div></div><div class="clip cap" data-start="21.98" data-duration="2.19" data-track-index="3"><div class="capin"><span class="w" data-ws="21.98">highlighted</span> <span class="w" data-ws="22.36">looks</span> <span class="w" data-ws="23.50">huge</span> <span class="w" data-ws="23.94">on</span> </div></div><div class="clip cap" data-start="24.18" data-duration="1.09" data-track-index="3"><div class="capin"><span class="w" data-ws="24.18">its</span> <span class="w" data-ws="24.32">own</span> <span class="w" data-ws="24.66">just</span> <span class="w" data-ws="25.02">you</span> </div></div><div class="clip cap" data-start="25.28" data-duration="0.87" data-track-index="3"><div class="capin"><span class="w" data-ws="25.28">know</span> <span class="w" data-ws="25.72">a</span> <span class="w" data-ws="25.92">couple</span> <span class="w" data-ws="26.04">of</span> </div></div><div class="clip cap" data-start="26.16" data-duration="1.77" data-track-index="3"><div class="capin"><span class="w" data-ws="26.16">things</span> <span class="w" data-ws="26.44">but</span> <span class="w" data-ws="27.16">the</span> <span class="w" data-ws="27.34">recurring</span> </div></div><div class="clip cap" data-start="27.94" data-duration="2.25" data-track-index="3"><div class="capin"><span class="w" data-ws="27.94">administrative</span> <span class="w" data-ws="28.88">cost</span> <span class="w" data-ws="29.56">has</span> <span class="w" data-ws="30.10">a</span> </div></div><div class="clip cap" data-start="30.20" data-duration="1.73" data-track-index="3"><div class="capin"><span class="w" data-ws="30.20">way</span> <span class="w" data-ws="30.28">of</span> <span class="w" data-ws="30.46">consuming</span> <span class="w" data-ws="31.04">attention</span> </div></div><div class="clip cap" data-start="31.94" data-duration="2.33" data-track-index="3"><div class="capin"><span class="w" data-ws="31.94">or</span> <span class="w" data-ws="32.62">getting</span> <span class="w" data-ws="32.98">missed</span> <span class="w" data-ws="33.64">like</span> </div></div><div class="clip cap" data-start="34.28" data-duration="2.25" data-track-index="3"><div class="capin"><span class="w" data-ws="34.28">cost</span> <span class="w" data-ws="34.88">sometimes</span> <span class="w" data-ws="35.62">goes</span> <span class="w" data-ws="36.20">beyond</span> </div></div><div class="clip cap" data-start="36.54" data-duration="2.41" data-track-index="3"><div class="capin"><span class="w" data-ws="36.54">money</span> <span class="w" data-ws="37.02">it&#x27;s</span> <span class="w" data-ws="37.90">now</span> <span class="w" data-ws="38.26">attention</span> </div></div><div class="clip cap" data-start="38.96" data-duration="1.73" data-track-index="3"><div class="capin"><span class="w" data-ws="38.96">or</span> <span class="w" data-ws="39.46">time</span> <span class="w" data-ws="39.86">consumed</span> </div></div><div class="clip cap" data-start="41.06" data-duration="2.19" data-track-index="3"><div class="capin"><span class="w" data-ws="41.06">the</span> <span class="w" data-ws="41.58">opportunity</span> <span class="w" data-ws="42.18">to</span> <span class="w" data-ws="42.80">capture</span> </div></div><div class="clip cap" data-start="43.26" data-duration="1.73" data-track-index="3"><div class="capin"><span class="w" data-ws="43.26">information</span> <span class="w" data-ws="43.88">once</span> <span class="w" data-ws="44.46">in</span> <span class="w" data-ws="44.84">a</span> </div></div><div class="clip cap" data-start="45.00" data-duration="2.99" data-track-index="3"><div class="capin"><span class="w" data-ws="45.00">consistent</span> <span class="w" data-ws="45.52">workflow</span> <span class="w" data-ws="46.08">exists</span> <span class="w" data-ws="47.18">in</span> </div></div><div class="clip cap" data-start="48.00" data-duration="2.09" data-track-index="3"><div class="capin"><span class="w" data-ws="48.00">your</span> <span class="w" data-ws="48.14">Google</span> <span class="w" data-ws="48.32">account</span> <span class="w" data-ws="48.70">and</span> </div></div><div class="clip cap" data-start="50.10" data-duration="1.03" data-track-index="3"><div class="capin"><span class="w" data-ws="50.10">I</span> <span class="w" data-ws="50.24">can</span> <span class="w" data-ws="50.38">help</span> <span class="w" data-ws="50.68">unlock</span> </div></div><div class="clip cap" data-start="51.14" data-duration="1.01" data-track-index="3"><div class="capin"><span class="w" data-ws="51.14">it</span> <span class="w" data-ws="51.56">or</span> <span class="w" data-ws="51.92">at</span> <span class="w" data-ws="52.06">least</span> </div></div><div class="clip cap" data-start="52.16" data-duration="1.81" data-track-index="3"><div class="capin"><span class="w" data-ws="52.16">show</span> <span class="w" data-ws="52.32">you</span> <span class="w" data-ws="52.48">how</span> <span class="w" data-ws="52.94">it&#x27;s</span> </div></div><div class="clip cap" data-start="53.98" data-duration="1.47" data-track-index="3"><div class="capin"><span class="w" data-ws="53.98">with</span> <span class="w" data-ws="54.14">free</span> <span class="w" data-ws="54.90">tools</span> <span class="w" data-ws="55.30">that</span> </div></div><div class="clip cap" data-start="55.46" data-duration="1.91" data-track-index="3"><div class="capin"><span class="w" data-ws="55.46">Google</span> <span class="w" data-ws="55.64">gives</span> <span class="w" data-ws="55.92">Google</span> <span class="w" data-ws="56.32">Sheets</span> </div></div><div class="clip cap" data-start="57.38" data-duration="1.73" data-track-index="3"><div class="capin"><span class="w" data-ws="57.38">Google</span> <span class="w" data-ws="57.76">AppSheet</span> <span class="w" data-ws="58.48">Google</span> <span class="w" data-ws="58.92">Apps</span> </div></div><div class="clip cap" data-start="59.12" data-duration="0.69" data-track-index="3"><div class="capin"><span class="w" data-ws="59.12">Script</span> </div></div><div class="clip cap" data-start="60.42" data-duration="2.23" data-track-index="3"><div class="capin"><span class="w" data-ws="60.42">help</span> <span class="w" data-ws="61.14">the</span> <span class="w" data-ws="61.86">capture</span> <span class="w" data-ws="62.28">of</span> </div></div><div class="clip cap" data-start="62.66" data-duration="2.27" data-track-index="3"><div class="capin"><span class="w" data-ws="62.66">information</span> <span class="w" data-ws="63.32">whether</span> <span class="w" data-ws="64.14">it&#x27;s</span> <span class="w" data-ws="64.68">meter</span> </div></div><div class="clip cap" data-start="64.94" data-duration="2.09" data-track-index="3"><div class="capin"><span class="w" data-ws="64.94">reading</span> <span class="w" data-ws="65.40">or</span> <span class="w" data-ws="66.18">tasks</span> <span class="w" data-ws="66.60">done</span> </div></div><div class="clip cap" data-start="67.04" data-duration="3.55" data-track-index="3"><div class="capin"><span class="w" data-ws="67.04">easily</span> <span class="w" data-ws="68.54">and</span> <span class="w" data-ws="69.56">uniformly</span> <span class="w" data-ws="70.14">across</span> </div></div><div class="clip cap" data-start="70.60" data-duration="1.11" data-track-index="3"><div class="capin"><span class="w" data-ws="70.60">your</span> <span class="w" data-ws="70.82">people</span> </div></div><div class="clip cap" data-start="72.16" data-duration="1.93" data-track-index="3"><div class="capin"><span class="w" data-ws="72.16">so</span> <span class="w" data-ws="72.52">I</span> <span class="w" data-ws="73.76">think</span> <span class="w" data-ws="73.86">that&#x27;s</span> </div></div><div class="clip cap" data-start="74.10" data-duration="0.59" data-track-index="3"><div class="capin"><span class="w" data-ws="74.10">a</span> <span class="w" data-ws="74.10">smart</span> <span class="w" data-ws="74.34">way</span> <span class="w" data-ws="74.54">to</span> </div></div><div class="clip cap" data-start="74.70" data-duration="1.87" data-track-index="3"><div class="capin"><span class="w" data-ws="74.70">do</span> <span class="w" data-ws="74.86">things</span> <span class="w" data-ws="75.40">is</span> <span class="w" data-ws="76.46">for</span> </div></div><div class="clip cap" data-start="76.58" data-duration="0.79" data-track-index="3"><div class="capin"><span class="w" data-ws="76.58">you</span> <span class="w" data-ws="76.58">to</span> <span class="w" data-ws="76.72">unlock</span> <span class="w" data-ws="77.02">it</span> </div></div><div class="clip cap" data-start="77.38" data-duration="1.21" data-track-index="3"><div class="capin"><span class="w" data-ws="77.38">or</span> <span class="w" data-ws="78.00">get</span> <span class="w" data-ws="78.16">help</span> <span class="w" data-ws="78.42">to</span> </div></div><div class="clip cap" data-start="78.60" data-duration="0.67" data-track-index="3"><div class="capin"><span class="w" data-ws="78.60">unlock</span> <span class="w" data-ws="78.80">it</span> <span class="w" data-ws="78.96">and</span> <span class="w" data-ws="79.06">that&#x27;s</span> </div></div><div class="clip cap" data-start="79.28" data-duration="0.65" data-track-index="3"><div class="capin"><span class="w" data-ws="79.28">why</span> <span class="w" data-ws="79.40">I</span> <span class="w" data-ws="79.48">could</span> <span class="w" data-ws="79.64">be</span> </div></div><div class="clip cap" data-start="79.94" data-duration="1.33" data-track-index="3"><div class="capin"><span class="w" data-ws="79.94">of</span> <span class="w" data-ws="80.10">assistance</span> <span class="w" data-ws="80.48">to</span> <span class="w" data-ws="80.80">you</span> </div></div><div class="clip cap" data-start="81.28" data-duration="1.57" data-track-index="3"><div class="capin"><span class="w" data-ws="81.28">take</span> <span class="w" data-ws="82.36">care</span> </div></div>
+</div>
+<script>
+  window.__timelines = window.__timelines || {};
+  const tl = gsap.timeline({ paused: true });
+  document.querySelectorAll(".scene").forEach(sc => {
+    tl.fromTo(sc, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power1.out" }, +sc.dataset.start);
+  });
+  document.querySelectorAll("[data-at]").forEach(el => {
+    tl.fromTo(el, { opacity: 0, y: 36, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.6)" }, +el.dataset.at);
+  });
+  document.querySelectorAll(".pulse").forEach(el => {
+    tl.to(el, { scale: 1.08, duration: 0.45, yoyo: true, repeat: 7, ease: "sine.inOut" }, +el.dataset.at + 0.5);
+  });
+  document.querySelectorAll(".capin .w").forEach(w => {
+    tl.set(w, { color: "#f5b82e" }, +w.dataset.ws);
+  });
+  document.querySelectorAll(".cap").forEach(c => {
+    tl.fromTo(c, { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.12 }, +c.dataset.start);
+  });
+  window.__timelines["main"] = tl;
+  tl.seek(0);
+</script>
+</body>
+</html>

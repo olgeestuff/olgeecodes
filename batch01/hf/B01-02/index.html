@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<style>
+@font-face { font-family: Pop; font-weight: 400; src: url(assets/fonts/poppins-latin-400-normal.woff2); }
+@font-face { font-family: Pop; font-weight: 600; src: url(assets/fonts/poppins-latin-600-normal.woff2); }
+@font-face { font-family: Pop; font-weight: 700; src: url(assets/fonts/poppins-latin-700-normal.woff2); }
+@font-face { font-family: Pop; font-weight: 800; src: url(assets/fonts/poppins-latin-800-normal.woff2); }
+:root { --navy:#0a1224; --panel:#13203b; --line:#24365c; --gold:#f5b82e; --orange:#ff8a1f;
+        --ink:#ffffff; --muted:#a9b8d6; --red:#ff5a5f; --green:#3ddc84; }
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:1080px; height:1920px; overflow:hidden; background:var(--navy); }
+#root { position:relative; width:100%; height:100%; font-family:Pop, sans-serif; color:var(--ink); }
+.top { position:absolute; left:0; top:0; width:1080px; height:940px; overflow:hidden;
+       background: radial-gradient(120% 90% at 50% 0%, #1b2d55 0%, #0d1830 55%, #0a1224 100%); }
+.grid { position:absolute; inset:0; opacity:.18;
+        background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+        background-size: 54px 54px; }
+.hdr { position:absolute; left:44px; right:44px; top:40px; display:flex; justify-content:space-between; align-items:center; z-index:5; }
+.brandmini { display:flex; align-items:center; gap:14px; font-weight:600; font-size:30px; }
+.logo { width:52px; height:52px; border-radius:14px; background:linear-gradient(135deg,var(--orange),var(--gold));
+        color:#0a1224; font-weight:800; font-size:34px; display:flex; align-items:center; justify-content:center; }
+.cardid { font-size:24px; font-weight:600; color:var(--gold); border:2px solid var(--gold); padding:6px 16px; border-radius:40px; }
+.scene { position:absolute; left:0; top:110px; width:1080px; height:790px; display:flex; align-items:center; justify-content:center; }
+.center { display:flex; align-items:center; justify-content:center; text-align:center; }
+.col { flex-direction:column; } .row { display:flex; flex-direction:row; align-items:stretch; }
+.gap20 { gap:20px; } .gap24 { gap:24px; } .gap28 { gap:28px; } .gap32 { gap:32px; } .w860 { width:860px; }
+.kicker { font-size:30px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--gold); }
+.big { font-size:84px; line-height:1.06; font-weight:800; max-width:960px; letter-spacing:-.02em; }
+.big.red { color:var(--red); }
+.sub { font-size:38px; line-height:1.3; color:var(--muted); max-width:900px; font-weight:400; }
+.note { font-size:24px; color:#7f90b3; font-style:italic; }
+.gold { color:var(--gold); } .under { text-decoration: underline; text-decoration-color: var(--red); text-underline-offset: 14px; }
+.iconbadge, .urgentbadge { width:150px; height:150px; border-radius:40px; background:var(--panel); border:2px solid var(--line);
+        display:flex; align-items:center; justify-content:center; color:var(--gold); }
+.urgentbadge { color:var(--red); border-color:var(--red); }
+.q1 { font-size:56px; font-weight:600; color:var(--muted); max-width:920px; line-height:1.2; }
+.q2 { font-size:84px; font-weight:800; max-width:960px; line-height:1.1; }
+.step { display:flex; align-items:center; gap:26px; width:100%; background:var(--panel); border:2px solid var(--line);
+        border-radius:22px; padding:22px 28px; text-align:left; }
+.num { flex:none; width:64px; height:64px; border-radius:18px; background:var(--gold); color:#0a1224; font-weight:800; font-size:34px;
+       display:flex; align-items:center; justify-content:center; }
+.num.okc { background:var(--green); }
+.steptxt { font-size:40px; font-weight:600; }
+.notcard { position:relative; width:300px; padding:36px 22px; background:var(--panel); border:2px solid var(--line); border-radius:28px;
+           display:flex; flex-direction:column; align-items:center; gap:20px; }
+.noticon { color:var(--muted); } .nottxt { font-size:32px; font-weight:600; line-height:1.2; }
+.xbadge { position:absolute; top:-18px; right:-18px; width:64px; height:64px; border-radius:50%; background:var(--red);
+          color:white; display:flex; align-items:center; justify-content:center; }
+.cmp { width:440px; padding:40px 30px; background:var(--panel); border:2px solid var(--line); border-radius:30px;
+       display:flex; flex-direction:column; align-items:center; gap:18px; }
+.cmp.hot { border-color:var(--gold); } .cmpicon { color:var(--gold); }
+.cmph { font-size:40px; font-weight:700; } .cmpb { font-size:30px; color:var(--muted); line-height:1.3; }
+.cmptag { font-size:24px; font-weight:600; background:#0a1224; padding:8px 18px; border-radius:30px; color:var(--gold); }
+.building { color:var(--muted); }
+.pricetag { display:flex; align-items:center; gap:20px; background:var(--gold); color:#0a1224; font-weight:800; font-size:96px;
+            padding:16px 46px; border-radius:26px; transform:rotate(-3deg); }
+.phone { width:520px; height:640px; border-radius:46px; background:#0d1626; border:6px solid #2a3a5e; overflow:hidden;
+         display:flex; flex-direction:column; text-align:left; }
+.phonebar, .appbar { padding:20px 26px; font-size:26px; font-weight:600; background:#16243f; color:var(--muted); display:flex; gap:12px; align-items:center; }
+.appbar { color:var(--ink); background:#1a6bd6; }
+.chatlist { display:flex; flex-direction:column; gap:18px; padding:26px; }
+.bubble { max-width:80%; font-size:28px; padding:16px 22px; border-radius:24px; line-height:1.3; }
+.bubble.in { background:#22314f; align-self:flex-start; border-bottom-left-radius:6px; }
+.bubble.out { background:#1f7a4d; align-self:flex-end; border-bottom-right-radius:6px; }
+.meterpic { background:#ddd5c4; border-radius:16px; padding:22px; display:flex; flex-direction:column; align-items:center; gap:8px; color:#333; }
+.meterdial { display:flex; gap:6px; } .meterdial span { background:#111; color:#fff; font-size:46px; font-weight:700; width:48px; text-align:center; border-radius:6px; font-family:monospace; }
+.meterlbl { font-size:22px; font-weight:600; }
+.sheetwrap { width:940px; background:#ffffff; border-radius:20px; overflow:hidden; color:#1f2937; }
+.sheetbar { background:#1e7b45; color:white; font-size:26px; font-weight:600; padding:12px 20px; display:flex; gap:12px; align-items:center; }
+.tbl { position:relative; }
+table { width:100%; border-collapse:collapse; font-size:28px; }
+th { background:#eef2f7; font-weight:700; height:66px; border:1px solid #d6dde8; }
+td { height:64px; border:1px solid #e3e8ef; padding:0 12px; }
+tr.new td { background:#fff4d6; font-weight:700; }
+.hlbox { position:absolute; left:4px; right:4px; height:64px; border:5px solid var(--gold); border-radius:8px; box-shadow:0 0 0 9999px rgba(10,18,36,.25); }
+.calcbox { width:820px; background:var(--panel); border:2px solid var(--line); border-radius:28px; padding:36px 40px; display:flex; flex-direction:column; gap:18px; text-align:left; }
+.calcline { font-size:44px; font-weight:600; font-family:Pop; }
+.calcres { font-size:54px; font-weight:800; color:var(--gold); border-top:3px dashed var(--line); padding-top:18px; }
+.mgrid { display:grid; grid-template-columns:repeat(4, 200px); gap:18px; }
+.mtile { background:var(--panel); border:2px solid var(--line); border-radius:20px; padding:18px 10px; display:flex; flex-direction:column; gap:6px; }
+.mtile b { font-size:32px; } .mtile span { font-size:24px; color:var(--orange); font-weight:600; }
+.phone.app { height:660px; background:#f4f7fb; color:#0f172a; border-color:#1a6bd6; }
+.fields { display:flex; flex-direction:column; gap:14px; padding:22px; }
+.field { background:white; border-radius:16px; padding:12px 18px; box-shadow:0 2px 6px rgba(0,0,0,.08); }
+.flbl { font-size:20px; color:#64748b; font-weight:600; } .fval { font-size:30px; font-weight:700; }
+.thumb { display:flex; align-items:center; gap:10px; font-size:24px; color:#1a6bd6; }
+.status { margin:6px 22px; background:var(--green); color:#06301a; font-weight:700; font-size:28px; border-radius:16px; padding:14px; display:flex; gap:10px; align-items:center; justify-content:center; }
+.alertcard { width:860px; background:var(--panel); border:3px solid var(--gold); border-radius:30px; padding:30px 36px; display:flex; flex-direction:column; gap:14px; }
+.alerthead { display:flex; align-items:center; gap:18px; color:var(--gold); font-size:46px; font-weight:800; padding-bottom:12px; border-bottom:2px solid var(--line); }
+.arow { display:flex; justify-content:space-between; font-size:34px; } .arow span { color:var(--muted); }
+.scat { width:300px; padding:30px 20px; background:var(--panel); border:3px dashed var(--line); border-radius:26px; display:flex; flex-direction:column; align-items:center; gap:14px; color:var(--muted); }
+.scat.miss { border-color:var(--red); color:var(--red); }
+.scath { font-size:32px; font-weight:700; color:var(--ink); } .scatb { font-size:26px; line-height:1.3; }
+.chip { display:flex; align-items:center; gap:20px; background:var(--panel); border:2px solid var(--line); border-radius:24px; padding:20px 34px; font-size:42px; font-weight:700; color:var(--gold); }
+.chip span { color:var(--ink); }
+.dash { width:900px; background:#f4f7fb; border-radius:26px; overflow:hidden; color:#0f172a; }
+.dashbar { background:#1a6bd6; color:white; font-size:26px; font-weight:600; padding:14px 22px; display:flex; gap:12px; align-items:center; }
+.dgrid { display:grid; grid-template-columns:repeat(2,1fr); gap:18px; padding:24px; }
+.dtile { background:white; border-radius:18px; padding:22px; box-shadow:0 2px 6px rgba(0,0,0,.08); text-align:left; }
+.dnum { font-size:58px; font-weight:800; color:#1a6bd6; } .dlbl { font-size:26px; color:#475569; font-weight:600; }
+.brand { display:flex; align-items:center; gap:22px; font-size:52px; font-weight:800; }
+.brand .logo { width:96px; height:96px; font-size:62px; border-radius:26px; }
+.question { display:flex; align-items:center; gap:22px; max-width:920px; background:var(--gold); color:#0a1224; font-size:40px; font-weight:700;
+            padding:26px 34px; border-radius:28px; text-align:left; line-height:1.25; }
+.foot { position:absolute; left:0; top:940px; width:1080px; height:980px; overflow:hidden; background:#000; }
+.foot video { width:100%; height:100%; object-fit:cover; object-position:50% 22%; }
+.seam { position:absolute; left:0; top:936px; width:1080px; height:8px; background:linear-gradient(90deg,var(--orange),var(--gold)); z-index:6; }
+.cap { position:absolute; left:0; top:888px; width:1080px; display:flex; justify-content:center; z-index:8; }
+.capin { max-width:960px; text-align:center; font-size:56px; font-weight:800; line-height:1.15; padding:14px 26px; border-radius:20px;
+         background:rgba(10,18,36,.82); color:#fff; letter-spacing:-.01em; }
+.capin .w { color:#ffffff; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="91.10" data-width="1080" data-height="1920">
+  <div class="top"><div class="grid"></div>
+    <div class="hdr"><div class="brandmini"><div class="logo">A</div>Automation With Sholz</div><div class="cardid">B01-02</div></div>
+  </div>
+  <div id="sc0" class="clip scene" data-start="0.00" data-duration="11.10" data-track-index="1"><div class="center col gap24">
+      <div class="building" data-at="0.00"><svg width="150" height="150" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="14" y="10" width="36" height="46" rx="3"/><path d="M22 20h6M36 20h6M22 30h6M36 30h6M22 40h6M36 40h6M28 56v-8h8v8"/></svg></div>
+      <div class="pricetag" data-at="0.50"><svg width="54" height="54" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 32V10h22l26 26-22 22z"/><circle cx="20" cy="22" r="4"/></svg><span>$15,000</span></div>
+      <div class="sub" data-at="0.90">just to get started with software, for 45 units</div>
+      <div class="note" data-at="1.20">Illustrative scenario</div></div></div><div id="sc1" class="clip scene" data-start="11.10" data-duration="28.50" data-track-index="1"><div class="center col gap28"><div class="row gap28"><div class="cmp " data-at="11.10"><div class="cmpicon"><svg width="70" height="70" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 22h14a6 6 0 1 1 12 0h14v14a6 6 0 1 0 0 12v8H10z"/></svg></div>
+          <div class="cmph">Option A</div><div class="cmpb">Covers only part of the workflow</div>
+          <div class="cmptag">Gaps</div></div><div class="cmp hot" data-at="17.60"><div class="cmpicon"><svg width="70" height="70" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="14" y="10" width="36" height="46" rx="3"/><path d="M22 20h6M36 20h6M22 30h6M36 30h6M22 40h6M36 40h6M28 56v-8h8v8"/></svg></div>
+          <div class="cmph">Option B</div><div class="cmpb">Huge all-in-one system + onboarding costs</div>
+          <div class="cmptag">Bloat</div></div></div>
+      <div class="sub" data-at="18.40">A difficult choice for a small portfolio</div></div></div><div id="sc2" class="clip scene" data-start="39.60" data-duration="5.20" data-track-index="1">
+    <div class="center col gap24">
+      <div class="iconbadge" data-at="39.60"><svg width="92" height="92" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12h48v30H26l-12 10V42H8z"/></svg></div>
+      <div class="kicker" data-at="39.70">Your turn</div>
+      <div class="big" data-at="39.85">What would you <span class="gold">advise</span> him to do?</div>
+      
+      
+    </div></div><div id="sc3" class="clip scene" data-start="44.80" data-duration="12.20" data-track-index="1">
+    <div class="center col gap32">
+      <div class="q1" data-at="44.80">The lesson isn&#x27;t that every big platform is overpriced.</div>
+      <div class="q2" data-at="51.20">Software should <span class="gold under">fit</span> your operation.</div>
+    </div></div><div id="sc4" class="clip scene" data-start="57.00" data-duration="14.40" data-track-index="1">
+    <div class="center col gap24">
+      <div class="iconbadge" data-at="57.00"><svg width="92" height="92" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="8" width="18" height="14" rx="3"/><rect x="40" y="25" width="18" height="14" rx="3"/><rect x="6" y="42" width="18" height="14" rx="3"/><path d="M24 15h8v32h-8M32 32h8"/></svg></div>
+      <div class="kicker" data-at="57.10">Sometimes the missing piece is</div>
+      <div class="big" data-at="57.25">a <span class="gold">focused workflow app</span></div>
+      <div class="sub" data-at="57.60">not another all-in-one system. One that grows and scales with you.</div>
+      
+    </div></div><div id="sc5" class="clip scene" data-start="71.40" data-duration="13.40" data-track-index="1"><div class="center col gap28"><div class="kicker" data-at="71.40">That&#x27;s where I come in</div>
+      <div class="col gap20"><div class="chip" data-at="72.20"><svg width="44" height="44" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="8" width="18" height="14" rx="3"/><rect x="40" y="25" width="18" height="14" rx="3"/><rect x="6" y="42" width="18" height="14" rx="3"/><path d="M24 15h8v32h-8M32 32h8"/></svg><span>Google AppSheet</span></div><div class="chip" data-at="72.80"><svg width="44" height="44" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="12" width="48" height="40" rx="3"/><path d="M8 24h48M8 36h48M24 12v40M40 12v40"/></svg><span>Google Sheets</span></div><div class="chip" data-at="73.40"><svg width="44" height="44" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M36 6L14 36h16l-4 22 24-32H34z"/></svg><span>Apps Script</span></div></div><div class="sub" data-at="78.40">Operate better now. Move smoothly to the next level.</div></div></div><div id="sc6" class="clip scene" data-start="84.80" data-duration="6.30" data-track-index="1"><div class="center col gap28">
+      <div class="brand" data-at="84.80"><div class="logo">A</div><div>Automation With Sholz</div></div>
+      <div class="sub" data-at="85.20">I build simple work apps with Google AppSheet, Sheets &amp; Apps Script</div>
+      <div class="question" data-at="85.80"><svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12h48v30H26l-12 10V42H8z"/></svg><span>Full platform, or fix the one workflow causing the most friction?</span></div>
+      <div class="note" data-at="86.40">Comment below, or DM me “WORKFLOW”</div></div></div>
+  <div class="foot"><video id="talk" class="clip" src="assets/talk.mp4" data-start="0" data-duration="91.10" data-media-start="0"
+       data-has-audio="true" data-track-index="0" playsinline></video></div>
+  <div class="seam"></div>
+  <div class="clip cap" data-start="0.29" data-duration="0.71" data-track-index="3"><div class="capin"><span class="w" data-ws="0.29">So,</span> </div></div><div class="clip cap" data-start="1.01" data-duration="1.81" data-track-index="3"><div class="capin"><span class="w" data-ws="1.01">one</span> <span class="w" data-ws="1.17">property</span> <span class="w" data-ws="1.93">operator</span> <span class="w" data-ws="2.57">that</span> </div></div><div class="clip cap" data-start="2.83" data-duration="1.93" data-track-index="3"><div class="capin"><span class="w" data-ws="2.83">I</span> <span class="w" data-ws="2.99">know</span> <span class="w" data-ws="3.37">went</span> <span class="w" data-ws="4.11">looking</span> </div></div><div class="clip cap" data-start="4.77" data-duration="1.25" data-track-index="3"><div class="capin"><span class="w" data-ws="4.77">for</span> <span class="w" data-ws="5.23">one</span> <span class="w" data-ws="5.71">of</span> <span class="w" data-ws="5.83">these</span> </div></div><div class="clip cap" data-start="6.03" data-duration="1.37" data-track-index="3"><div class="capin"><span class="w" data-ws="6.03">apps</span> <span class="w" data-ws="6.37">or</span> <span class="w" data-ws="6.61">software</span> <span class="w" data-ws="7.03">and</span> </div></div><div class="clip cap" data-start="7.41" data-duration="0.85" data-track-index="3"><div class="capin"><span class="w" data-ws="7.41">ran</span> <span class="w" data-ws="7.53">into</span> <span class="w" data-ws="7.77">a</span> <span class="w" data-ws="7.93">difficult</span> </div></div><div class="clip cap" data-start="8.27" data-duration="0.51" data-track-index="3"><div class="capin"><span class="w" data-ws="8.27">choice.</span> </div></div><div class="clip cap" data-start="8.79" data-duration="0.41" data-track-index="3"><div class="capin"><span class="w" data-ws="8.79">I&#x27;m</span> <span class="w" data-ws="8.87">going</span> <span class="w" data-ws="8.95">to</span> <span class="w" data-ws="9.07">share</span> </div></div><div class="clip cap" data-start="9.21" data-duration="0.55" data-track-index="3"><div class="capin"><span class="w" data-ws="9.21">it</span> <span class="w" data-ws="9.37">with</span> <span class="w" data-ws="9.41">you,</span> </div></div><div class="clip cap" data-start="9.77" data-duration="1.29" data-track-index="3"><div class="capin"><span class="w" data-ws="9.77">so</span> <span class="w" data-ws="9.89">let&#x27;s</span> <span class="w" data-ws="10.19">hear</span> <span class="w" data-ws="10.47">your</span> </div></div><div class="clip cap" data-start="11.07" data-duration="0.57" data-track-index="3"><div class="capin"><span class="w" data-ws="11.07">thoughts.</span> </div></div><div class="clip cap" data-start="12.15" data-duration="0.85" data-track-index="3"><div class="capin"><span class="w" data-ws="12.15">One</span> <span class="w" data-ws="12.29">of</span> <span class="w" data-ws="12.39">the</span> <span class="w" data-ws="12.57">tools</span> </div></div><div class="clip cap" data-start="13.01" data-duration="2.15" data-track-index="3"><div class="capin"><span class="w" data-ws="13.01">that</span> <span class="w" data-ws="13.63">he</span> <span class="w" data-ws="13.73">chose</span> <span class="w" data-ws="14.33">covered</span> </div></div><div class="clip cap" data-start="15.17" data-duration="1.65" data-track-index="3"><div class="capin"><span class="w" data-ws="15.17">only</span> <span class="w" data-ws="15.51">part</span> <span class="w" data-ws="16.03">of</span> <span class="w" data-ws="16.65">the</span> </div></div><div class="clip cap" data-start="16.83" data-duration="1.23" data-track-index="3"><div class="capin"><span class="w" data-ws="16.83">workflow</span> <span class="w" data-ws="17.13">they</span> <span class="w" data-ws="17.35">need</span> <span class="w" data-ws="17.59">for</span> </div></div><div class="clip cap" data-start="18.07" data-duration="1.09" data-track-index="3"><div class="capin"><span class="w" data-ws="18.07">the</span> <span class="w" data-ws="18.21">way</span> <span class="w" data-ws="18.33">he</span> <span class="w" data-ws="18.51">works.</span> </div></div><div class="clip cap" data-start="19.61" data-duration="2.15" data-track-index="3"><div class="capin"><span class="w" data-ws="19.61">The</span> <span class="w" data-ws="19.75">other</span> <span class="w" data-ws="20.05">one</span> <span class="w" data-ws="20.53">is</span> </div></div><div class="clip cap" data-start="21.77" data-duration="3.01" data-track-index="3"><div class="capin"><span class="w" data-ws="21.77">a</span> <span class="w" data-ws="22.19">huge</span> <span class="w" data-ws="22.59">system</span> <span class="w" data-ws="23.21">with</span> </div></div><div class="clip cap" data-start="24.79" data-duration="2.53" data-track-index="3"><div class="capin"><span class="w" data-ws="24.79">onboarding</span> <span class="w" data-ws="25.83">costs</span> <span class="w" data-ws="26.33">that</span> <span class="w" data-ws="27.13">he</span> </div></div><div class="clip cap" data-start="27.33" data-duration="2.33" data-track-index="3"><div class="capin"><span class="w" data-ws="27.33">said</span> <span class="w" data-ws="27.65">his</span> <span class="w" data-ws="28.21">portfolio</span> <span class="w" data-ws="29.19">couldn&#x27;t</span> </div></div><div class="clip cap" data-start="29.67" data-duration="1.81" data-track-index="3"><div class="capin"><span class="w" data-ws="29.67">even</span> <span class="w" data-ws="29.87">support</span> <span class="w" data-ws="30.25">because</span> <span class="w" data-ws="30.67">it&#x27;s</span> </div></div><div class="clip cap" data-start="31.49" data-duration="0.91" data-track-index="3"><div class="capin"><span class="w" data-ws="31.49">a</span> <span class="w" data-ws="31.65">lot</span> <span class="w" data-ws="31.83">of</span> <span class="w" data-ws="32.03">process</span> </div></div><div class="clip cap" data-start="32.41" data-duration="1.95" data-track-index="3"><div class="capin"><span class="w" data-ws="32.41">but</span> <span class="w" data-ws="33.01">it</span> <span class="w" data-ws="33.11">has</span> <span class="w" data-ws="33.33">everything</span> </div></div><div class="clip cap" data-start="34.37" data-duration="1.47" data-track-index="3"><div class="capin"><span class="w" data-ws="34.37">and</span> <span class="w" data-ws="34.57">more</span> <span class="w" data-ws="35.03">but</span> <span class="w" data-ws="35.67">was</span> </div></div><div class="clip cap" data-start="35.85" data-duration="1.37" data-track-index="3"><div class="capin"><span class="w" data-ws="35.85">just</span> <span class="w" data-ws="36.21">bloat</span> <span class="w" data-ws="36.79">to</span> <span class="w" data-ws="37.09">me</span> </div></div><div class="clip cap" data-start="37.23" data-duration="1.09" data-track-index="3"><div class="capin"><span class="w" data-ws="37.23">like</span> <span class="w" data-ws="37.37">bloat</span> <span class="w" data-ws="37.83">where</span> <span class="w" data-ws="38.07">something</span> </div></div><div class="clip cap" data-start="38.33" data-duration="0.87" data-track-index="3"><div class="capin"><span class="w" data-ws="38.33">like</span> <span class="w" data-ws="38.51">that.</span> </div></div><div class="clip cap" data-start="39.65" data-duration="0.47" data-track-index="3"><div class="capin"><span class="w" data-ws="39.65">So</span> <span class="w" data-ws="39.73">what</span> <span class="w" data-ws="39.89">would</span> <span class="w" data-ws="40.03">you</span> </div></div><div class="clip cap" data-start="40.13" data-duration="1.71" data-track-index="3"><div class="capin"><span class="w" data-ws="40.13">advise</span> <span class="w" data-ws="40.41">him</span> <span class="w" data-ws="40.69">to</span> <span class="w" data-ws="40.91">do?</span> </div></div><div class="clip cap" data-start="41.85" data-duration="1.21" data-track-index="3"><div class="capin"><span class="w" data-ws="41.85">Because</span> <span class="w" data-ws="42.03">for</span> <span class="w" data-ws="42.65">me</span> <span class="w" data-ws="42.89">the</span> </div></div><div class="clip cap" data-start="43.07" data-duration="1.11" data-track-index="3"><div class="capin"><span class="w" data-ws="43.07">way</span> <span class="w" data-ws="43.13">I</span> <span class="w" data-ws="43.29">see</span> <span class="w" data-ws="43.47">things,</span> </div></div><div class="clip cap" data-start="44.71" data-duration="1.63" data-track-index="3"><div class="capin"><span class="w" data-ws="44.71">the</span> <span class="w" data-ws="44.83">lesson</span> <span class="w" data-ws="45.23">based</span> <span class="w" data-ws="46.19">on</span> </div></div><div class="clip cap" data-start="46.35" data-duration="1.55" data-track-index="3"><div class="capin"><span class="w" data-ws="46.35">his</span> <span class="w" data-ws="46.51">dilemma</span> <span class="w" data-ws="46.85">isn&#x27;t</span> <span class="w" data-ws="47.51">that</span> </div></div><div class="clip cap" data-start="47.91" data-duration="1.73" data-track-index="3"><div class="capin"><span class="w" data-ws="47.91">every</span> <span class="w" data-ws="48.41">big</span> <span class="w" data-ws="49.01">platform</span> <span class="w" data-ws="49.45">is</span> </div></div><div class="clip cap" data-start="49.65" data-duration="0.89" data-track-index="3"><div class="capin"><span class="w" data-ws="49.65">overpriced.</span> </div></div><div class="clip cap" data-start="50.99" data-duration="1.47" data-track-index="3"><div class="capin"><span class="w" data-ws="50.99">It&#x27;s</span> <span class="w" data-ws="51.29">that</span> <span class="w" data-ws="51.69">apps</span> <span class="w" data-ws="52.27">and</span> </div></div><div class="clip cap" data-start="52.47" data-duration="1.09" data-track-index="3"><div class="capin"><span class="w" data-ws="52.47">software</span> <span class="w" data-ws="52.75">now</span> <span class="w" data-ws="53.05">should</span> <span class="w" data-ws="53.29">fit</span> </div></div><div class="clip cap" data-start="53.57" data-duration="1.55" data-track-index="3"><div class="capin"><span class="w" data-ws="53.57">your</span> <span class="w" data-ws="53.95">operations</span> <span class="w" data-ws="54.43">at</span> <span class="w" data-ws="54.99">the</span> </div></div><div class="clip cap" data-start="55.13" data-duration="1.23" data-track-index="3"><div class="capin"><span class="w" data-ws="55.13">level</span> <span class="w" data-ws="55.29">you</span> <span class="w" data-ws="55.49">are.</span> </div></div><div class="clip cap" data-start="57.07" data-duration="1.41" data-track-index="3"><div class="capin"><span class="w" data-ws="57.07">My</span> <span class="w" data-ws="57.67">lesson</span> <span class="w" data-ws="57.97">is</span> <span class="w" data-ws="58.13">sometimes</span> </div></div><div class="clip cap" data-start="58.49" data-duration="1.69" data-track-index="3"><div class="capin"><span class="w" data-ws="58.49">the</span> <span class="w" data-ws="58.71">missing</span> <span class="w" data-ws="58.97">piece</span> <span class="w" data-ws="59.45">is</span> </div></div><div class="clip cap" data-start="60.19" data-duration="1.45" data-track-index="3"><div class="capin"><span class="w" data-ws="60.19">not</span> <span class="w" data-ws="60.45">another</span> <span class="w" data-ws="61.03">all</span> <span class="w" data-ws="61.47">-in</span> </div></div><div class="clip cap" data-start="61.65" data-duration="1.07" data-track-index="3"><div class="capin"><span class="w" data-ws="61.65">-one</span> <span class="w" data-ws="61.95">system.</span> </div></div><div class="clip cap" data-start="63.11" data-duration="1.25" data-track-index="3"><div class="capin"><span class="w" data-ws="63.11">It&#x27;s</span> <span class="w" data-ws="63.21">just</span> <span class="w" data-ws="63.51">the</span> <span class="w" data-ws="64.13">tool</span> </div></div><div class="clip cap" data-start="64.37" data-duration="1.49" data-track-index="3"><div class="capin"><span class="w" data-ws="64.37">that&#x27;s</span> <span class="w" data-ws="64.87">focused</span> <span class="w" data-ws="65.19">towards</span> <span class="w" data-ws="65.67">your</span> </div></div><div class="clip cap" data-start="65.87" data-duration="1.37" data-track-index="3"><div class="capin"><span class="w" data-ws="65.87">workflow</span> <span class="w" data-ws="66.21">right</span> <span class="w" data-ws="66.57">now</span> <span class="w" data-ws="66.89">that</span> </div></div><div class="clip cap" data-start="67.25" data-duration="0.93" data-track-index="3"><div class="capin"><span class="w" data-ws="67.25">you&#x27;ll</span> <span class="w" data-ws="67.57">grow</span> <span class="w" data-ws="67.75">and</span> <span class="w" data-ws="67.93">scale</span> </div></div><div class="clip cap" data-start="68.19" data-duration="0.89" data-track-index="3"><div class="capin"><span class="w" data-ws="68.19">with</span> <span class="w" data-ws="68.37">as</span> <span class="w" data-ws="68.51">it</span> <span class="w" data-ws="68.67">comes.</span> </div></div><div class="clip cap" data-start="69.57" data-duration="1.33" data-track-index="3"><div class="capin"><span class="w" data-ws="69.57">And</span> <span class="w" data-ws="69.77">I</span> <span class="w" data-ws="69.87">think</span> <span class="w" data-ws="70.13">for</span> </div></div><div class="clip cap" data-start="70.91" data-duration="0.63" data-track-index="3"><div class="capin"><span class="w" data-ws="70.91">people</span> <span class="w" data-ws="71.11">that</span> <span class="w" data-ws="71.25">are</span> <span class="w" data-ws="71.39">willing</span> </div></div><div class="clip cap" data-start="71.55" data-duration="2.71" data-track-index="3"><div class="capin"><span class="w" data-ws="71.55">to</span> <span class="w" data-ws="72.79">make</span> <span class="w" data-ws="73.61">and</span> <span class="w" data-ws="73.95">own</span> </div></div><div class="clip cap" data-start="74.27" data-duration="1.39" data-track-index="3"><div class="capin"><span class="w" data-ws="74.27">or</span> <span class="w" data-ws="74.53">use</span> <span class="w" data-ws="74.77">tools</span> <span class="w" data-ws="75.21">within</span> </div></div><div class="clip cap" data-start="75.67" data-duration="0.77" data-track-index="3"><div class="capin"><span class="w" data-ws="75.67">their</span> <span class="w" data-ws="76.01">level,</span> </div></div><div class="clip cap" data-start="76.45" data-duration="1.43" data-track-index="3"><div class="capin"><span class="w" data-ws="76.45">that&#x27;s</span> <span class="w" data-ws="77.39">where</span> <span class="w" data-ws="77.51">I</span> <span class="w" data-ws="77.63">come</span> </div></div><div class="clip cap" data-start="77.89" data-duration="1.09" data-track-index="3"><div class="capin"><span class="w" data-ws="77.89">in</span> <span class="w" data-ws="78.09">to</span> <span class="w" data-ws="78.29">help</span> <span class="w" data-ws="78.47">them</span> </div></div><div class="clip cap" data-start="78.99" data-duration="2.35" data-track-index="3"><div class="capin"><span class="w" data-ws="78.99">operate</span> <span class="w" data-ws="79.95">and</span> <span class="w" data-ws="80.67">make</span> <span class="w" data-ws="80.93">things</span> </div></div><div class="clip cap" data-start="81.35" data-duration="1.75" data-track-index="3"><div class="capin"><span class="w" data-ws="81.35">better</span> <span class="w" data-ws="82.03">so</span> <span class="w" data-ws="82.75">they</span> <span class="w" data-ws="82.89">can</span> </div></div><div class="clip cap" data-start="83.11" data-duration="1.81" data-track-index="3"><div class="capin"><span class="w" data-ws="83.11">go</span> <span class="w" data-ws="83.41">smoothly</span> <span class="w" data-ws="84.35">to</span> <span class="w" data-ws="84.79">the</span> </div></div><div class="clip cap" data-start="84.93" data-duration="0.73" data-track-index="3"><div class="capin"><span class="w" data-ws="84.93">next</span> <span class="w" data-ws="85.11">level.</span> </div></div><div class="clip cap" data-start="86.33" data-duration="1.15" data-track-index="3"><div class="capin"><span class="w" data-ws="86.33">So</span> <span class="w" data-ws="86.33">thank</span> <span class="w" data-ws="87.15">you</span> <span class="w" data-ws="87.31">very</span> </div></div><div class="clip cap" data-start="87.49" data-duration="0.87" data-track-index="3"><div class="capin"><span class="w" data-ws="87.49">much.</span> </div></div><div class="clip cap" data-start="88.37" data-duration="0.35" data-track-index="3"><div class="capin"><span class="w" data-ws="88.37">I</span> <span class="w" data-ws="88.43">like</span> <span class="w" data-ws="88.57">to</span> <span class="w" data-ws="88.71">hear</span> </div></div><div class="clip cap" data-start="88.73" data-duration="1.07" data-track-index="3"><div class="capin"><span class="w" data-ws="88.73">your</span> <span class="w" data-ws="88.89">thoughts</span> <span class="w" data-ws="89.07">anyways,</span> </div></div><div class="clip cap" data-start="90.55" data-duration="0.61" data-track-index="3"><div class="capin"><span class="w" data-ws="90.55">take</span> <span class="w" data-ws="90.71">care.</span> </div></div>
+</div>
+<script>
+  window.__timelines = window.__timelines || {};
+  const tl = gsap.timeline({ paused: true });
+  document.querySelectorAll(".scene").forEach(sc => {
+    tl.fromTo(sc, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power1.out" }, +sc.dataset.start);
+  });
+  document.querySelectorAll("[data-at]").forEach(el => {
+    tl.fromTo(el, { opacity: 0, y: 36, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.6)" }, +el.dataset.at);
+  });
+  document.querySelectorAll(".pulse").forEach(el => {
+    tl.to(el, { scale: 1.08, duration: 0.45, yoyo: true, repeat: 7, ease: "sine.inOut" }, +el.dataset.at + 0.5);
+  });
+  document.querySelectorAll(".capin .w").forEach(w => {
+    tl.set(w, { color: "#f5b82e" }, +w.dataset.ws);
+  });
+  document.querySelectorAll(".cap").forEach(c => {
+    tl.fromTo(c, { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.12 }, +c.dataset.start);
+  });
+  window.__timelines["main"] = tl;
+  tl.seek(0);
+</script>
+</body>
+</html>

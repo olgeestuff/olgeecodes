@@ -1,0 +1,10 @@
+raw/
+hf/node_modules/
+hf/test/
+hf/*/.hyperframes/
+hf/*/assets/talk.mp4
+hf/*/assets/fonts/
+hf/out/*.mp4
+transcripts_med/log.txt
+__pycache__/
+hf/out/work-*/
