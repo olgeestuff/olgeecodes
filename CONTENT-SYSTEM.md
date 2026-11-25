@@ -34,7 +34,7 @@ Read this before any content, video or publishing work for Sholz. Last updated 2
 - Sholz reviews captions and wording. This is where he wants the final say.
 
 ## Coming next (not built yet)
-- **TikTok playbook skill**: Sholz will bring a playbook from Google Drive (TikTok algorithm, hashtags, consistency). Turn it into a skill and apply it before creating and before publishing.
+- ✅ **Playbook skill built**: `.claude/skills/attention-playbook-4sholz/`, with a zip at `dist/attention-playbook-4sholz.zip`. Use it for every plan, script, caption and review. To update it, say "Update the playbook" (the Drive folder "Playbooks of Interest Media").
 - **Character sheet**: Sholz's look, stance, posture and values, for cartoon or simulated versions of him.
 - **Role characters**: recurring roles (e.g. a typical US landlord) to scale entertainment and story content. Open question: keep characters consistent, or keep roles consistent?
 - **Triage phase**: sort and prioritise the content backlog by urgency and severity.
