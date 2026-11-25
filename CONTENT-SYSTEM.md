@@ -18,7 +18,7 @@ Read this before any content, video or publishing work for Sholz. Last updated 2
    - AI-only or cartoon ideas: generated (HyperFrames, APIs).
    - Realistic animation: Google Omni/Flow (in the Google app; no public editing API).
 5. **Triage**: Sholz judges and approves (not every video gets published).
-6. **Publish**: Buffer schedules, one post per day at 8:00 AM Lagos time.
+6. **Publish**: Buffer schedules one post per day. Use a random-looking minute in the **Lagos afternoon or evening, about 1:30–7:00 PM**, which is US Eastern morning to lunch (Lagos is 6 h ahead of ET). Give each channel its own time. LinkedIn goes earlier (about 2–4 PM Lagos, US work morning), TikTok later (about 4–7 PM Lagos).
 
 ## Channels
 | Channel | Role | Default |
