@@ -1,9 +1,11 @@
 ---
-name: attention-playbook
+name: attention-playbook-4sholz
 description: Sholz's attention and persuasion playbook for short-form content (Automation With Sholz). Use it whenever planning content ideas, writing a video script, hook, on-screen text, teleprompter narration, caption or hashtags, scheduling posts to TikTok, LinkedIn or Facebook, or reviewing how a post performed. It combines Sam's TikTok algorithm playbook (retention, TikTok SEO, Creator Search Insights), Adley's "entertain the masses, educate the interested, sell to the committed", Russell Brunson's health/wealth/relationships, Eugene Schwartz's awareness levels, Ogilvy's proof-over-adjectives rule, the 11 Laws of Content Creation, and the Law of 100. Platform-specific rules live in references/ so new algorithm notes can be added.
 ---
 
-# Attention Playbook (Automation With Sholz)
+# Attention Playbook 4 Sholz (Automation With Sholz)
+
+**Version 1.1.0** (25 Nov 2026). See `CHANGELOG.md`.
 
 **Mission:** design every piece of content so the behaviour we want (watch time, saves, shares, comments, follows) is the *rational* response for a scrolling human, and for the platform's algorithm that measures those humans.
 
@@ -68,3 +70,9 @@ Diagnose in this order: retention graph → hook → pacing → promise/payoff m
 - **The teleprompter is the source.** Sholz reads the card's narration but may change words. Keep his main point and his version.
 - **Sholz judges.** Claude drafts ideas, scripts and captions. Sholz has the final say on what is published and on the wording.
 - Pipeline details and defaults: `CONTENT-SYSTEM.md` at the repo root, when available.
+
+## Updating this playbook ("Update the playbook")
+1. Read new or changed notes in the Google Drive folder **Playbooks of Interest Media** (id `1pVQWLFod26ALrXRJW-ySPFZw330iNGW6`).
+2. Save each note word for word in `sources/`, named `<platform-or-topic>-<author>.md`.
+3. Merge the rules into the right file: `principles.md` for rules that apply everywhere, `tiktok.md` / `linkedin.md` / `facebook.md` for one platform, or a new `<platform>.md`, added to the table above.
+4. Bump the version (new source or file = minor, wording fix = patch), add a dated line to `CHANGELOG.md`, and rebuild `dist/attention-playbook-4sholz.zip`. Keep the zip name the same so the link never breaks.
