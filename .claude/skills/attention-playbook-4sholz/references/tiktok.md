@@ -52,7 +52,7 @@
 - Account `olgee0`, connected in Buffer.
 - Every video goes to TikTok.
 - Post in the Lagos afternoon or evening, about 4–7 PM, which is the US late morning and lunch. Use a random-looking minute.
-- Hashtag core in every post: `#propertymanagement #landlord #appsheet`, plus 2–3 topical tags (e.g. `#googlesheets #proptech #smallbusiness`).
+- Hashtags, layered (3–5 total). **Brand core**, always and niche-proof: `#appsheet #googleworkspace`. **Niche**, swapped only on a niche change: `#propertymanagement`. **Topic**, per video: 1–2 tags (e.g. `#googlesheets #landlord`). Confirm the volume of topic tags with Creator Search Insights.
 
 ## Pre-publish checklist
 - [ ] Clear niche and pillar (health / wealth / relationships), and clear job (entertain / educate / sell)?

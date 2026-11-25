@@ -11,14 +11,14 @@ The caption's job is to stop the scroll or deepen the watch. It must align with 
 ## TikTok
 - 1–2 lines. Front-load the **search phrase** in the first words.
 - End with a question or an intent CTA ("save this for…").
-- 3–5 specific hashtags: core `#propertymanagement #landlord #appsheet` + topical. Never #fyp or #viral.
+- 3–5 specific hashtags in three layers: brand core `#appsheet #googleworkspace` → niche `#propertymanagement` → 1–2 topic tags. Never #fyp or #viral.
 - Video title field: phrase it like a search result.
 
 ## LinkedIn
 - Line 1: the hook, standalone, readable before "…see more".
 - 3–5 short lines: the story, the lesson, proof (numbers, specifics).
 - One question to invite comments.
-- 5 hashtags, capitalised (`#PropertyManagement`).
+- 5 hashtags, capitalised: `#AppSheet #GoogleWorkspace` + niche `#PropertyManagement` + 2 topic tags.
 - Label illustrative scenarios.
 
 ## Facebook

@@ -10,7 +10,8 @@
 ## Defaults
 - Post in the Lagos afternoon, about 2–4 PM, which is the US work morning. Use a random-looking minute, and post earlier than TikTok the same day.
 - Weekends and US holidays are quieter. Expect lower reach.
-- Caption shape: hook line → 3–5 short lines (story, lesson, proof) → one question → 5 hashtags (`#PropertyManagement #AppSheet` + topical).
+- Caption shape: hook line → 3–5 short lines (story, lesson, proof) → one question → hashtags.
+- Hashtags, layered (5 total). **Brand core**: `#AppSheet #GoogleWorkspace`. **Niche**: `#PropertyManagement`. **Topic**: 2 per post.
 - Business value and proof (Ogilvy). No hype words.
 - Mark illustrative scenarios as illustrative.
 

@@ -5,7 +5,7 @@ description: Sholz's attention and persuasion playbook for short-form content (A
 
 # Attention Playbook 4 Sholz (Automation With Sholz)
 
-**Version 1.1.0** (25 Nov 2026). See `CHANGELOG.md`.
+**Version 1.2.0** (25 Nov 2026). See `CHANGELOG.md`.
 
 **Mission:** design every piece of content so the behaviour we want (watch time, saves, shares, comments, follows) is the *rational* response for a scrolling human, and for the platform's algorithm that measures those humans.
 
@@ -64,6 +64,9 @@ Diagnose in this order: retention graph → hook → pacing → promise/payoff m
 - It uses empty adjectives (premium, best, powerful, seamless) instead of a specific proof, number or picture.
 - It reads like an ad. Native and human beats polished.
 - It isn't tied to the one message Sholz keeps repeating (Law of messaging): *small service businesses can run on simple apps built on the Google tools they already pay for.*
+
+## Hashtag layers (niche-proof)
+Brand core (always): AppSheet + Google Workspace → niche (currently property management; swap on a niche change) → 1–2 topic tags. Sholz's expertise is the constant; the niche can change.
 
 ## Sholz's own operating laws
 - **Law of 100:** 100 is the beginning. Count output in hundreds. Each completed 100 counts as one on the tracker.

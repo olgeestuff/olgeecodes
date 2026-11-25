@@ -29,7 +29,7 @@ Read this before any content, video or publishing work for Sholz. Last updated 2
 
 ## Captions (every post must have one)
 - Short, captivating, aligned with the video. Use curiosity, a question or a hot take: a psychological trigger.
-- TikTok: 1–2 lines plus a consistent hashtag core: `#propertymanagement #landlord #appsheet` + 3 topical tags.
+- Hashtags in three layers: brand core `#appsheet #googleworkspace` (always, niche-proof) → niche `#propertymanagement` (swap on a niche change) → 1–2 topic tags. TikTok: 1–2 lines + 3–5 tags.
 - LinkedIn: hook line, 3–5 short lines of story or lesson, a question, then 5 hashtags.
 - Sholz reviews captions and wording. This is where he wants the final say.
 

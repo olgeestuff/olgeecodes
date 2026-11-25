@@ -1,5 +1,8 @@
 # Changelog: attention-playbook-4sholz
 
+## 1.2.0 (2026-11-25)
+- Hashtags are now three layers: brand core (`#appsheet #googleworkspace`, niche-proof) → niche (`#propertymanagement`) → topic. Applied to TikTok, LinkedIn and the captions guide.
+
 ## 1.1.0 (2026-11-25)
 - Renamed to the `-4sholz` naming convention. Added versioning and the "Update the playbook" procedure.
 
