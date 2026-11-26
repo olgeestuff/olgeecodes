@@ -57,7 +57,7 @@ agent, CRM connectors, your own MCP server. Add later, if ever.
 | **Review/approve UI** | **AppSheet over Supabase or Sheets** (or Glide) | Your superpower. Row view, thumbs-down reject, an **Approve** button that flips a status column and fires an n8n webhook. You can build this in a day; a dev team takes a sprint. | $5–10/user |
 | **Brief → plan, and per-row qualification** | **Claude Haiku 5.5** (or Gemini Flash for the cheap pass) | JSON-mode output. Cheap model for scoring, better model only for the brief-interpretation call. Mirror Origami's `lite`/`max` split. | $10–30 |
 | **Search (SERP)** | **Serper.dev** | ~$1 per 1,000 searches entry, ~$0.30 at volume, 2,500 free. SerpAPI is 15–25× the price for features you don't need. | $50 prepaid, lasts months |
-| **Local business data** | **Google Places API** (direct) or an Apify Maps actor | Google Maps is Origami's single best-performing source and you can hit it legitimately. Highest-quality data per cent spent for service businesses. | usage |
+| **Local business data** | **Serper Maps** to discover, then **Google Places API** to enrich the keepers | Google Maps is Origami's best-performing source and you can hit it legitimately. Places Text Search (New, Pro) is **$32 per 1,000 requests with 5,000 requests/month free** — but each request returns up to 20 businesses, so ~**$0.0016 per business** and ~100k businesses/month inside the free tier. Never loop it per-business; always per-query. | $0 → usage |
 | **Page scraping / per-row research** | **Firecrawl** (~1 credit ≈ 1 page, +4 for JSON extraction) or self-hosted Playwright | Firecrawl for speed-to-ship; Playwright on your own VPS when volume justifies it. Browserbase is the premium option Origami uses. | $16–19 |
 | **Email finding** | **Prospeo** (~$0.01/email claimed) or **Anymail Finder** (volume-tiered, ~$0.03–0.07/credit) | Compare on **cost per valid email**, not list price. Only charge your client on hits. | $29–49 |
 | **Email verification** | MillionVerifier / Bouncer | Pennies. Non-negotiable — protects your sending domain. | $10 |
@@ -77,8 +77,28 @@ agent, CRM connectors, your own MCP server. Add later, if ever.
    claude.ai connector settings). Apollo is a database, not live sourcing — but for B2B
    firmographics it beats anything you'd scrape yourself.
 5. **Scrapingdog / ScraperAPI** — mid-tier managed scraping, simpler billing than Apify.
-6. **Keep Apify** for the handful of social/LinkedIn actors nobody else sells. Its real problem is
-   forecast-ability (compute units + actor rentals), not price. Use it as a specialist, not a backbone.
+6. **Apify** — drop it as your sourcing *backbone* (unforecastable compute-unit + actor-rental
+   billing is its real problem, not list price). **Keep the one thing you already have wired: the
+   LinkedIn keyword post monitor.** That is buying-signal detection, not bulk scraping — low
+   volume, high intent, no account risk, and genuinely hard to replace. A deliberate specialist,
+   not a default.
+
+### The zero-Apify source map
+
+| Need | Source | Notes |
+|---|---|---|
+| Local / service businesses | Serper Maps → Google Places API | Discover cheap, enrich the keepers |
+| Company sites, contact pages | Firecrawl, or self-hosted Playwright | |
+| "Who's hiring for X" signals | Serper with `site:` queries on job boards | No job-board API needed |
+| B2B firmographics | Apollo API | Connector needs authorizing in claude.ai settings |
+| Reddit | Official Reddit API | You already have a reddit-automation skill |
+| TikTok / IG / Shorts creators | **Virlo — already connected** | Covers the social sourcing Apify actors were for, plus Meta ads intelligence. Check this before buying anything new. |
+| LinkedIn bulk sourcing | *No clean route — accept the gap* | Don't build on it. Origami's own results show local/SMB niches don't need it. |
+| LinkedIn buying signals | Apify keyword post monitor | Narrow, high-intent, already wired |
+
+**Signal monitoring may be worth more to you than bulk sourcing.** Someone publicly posting
+"our spreadsheets are out of control" this week is a warmer lead than 500 scraped contractors —
+and it is precisely your pitch.
 
 ---
 
